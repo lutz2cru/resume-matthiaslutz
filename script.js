@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'formationTitle': 'Formation',
             'f1Title': "Cycle préparatoire d'ingénieur",
             'f1Date': 'Septembre 2024 - Présent',
-            'f1Desc': '<strong>Université de Technologie de Belfort-Montbéliard (UTBM)</strong>.',
+            'f1Desc': '<strong>Université de Technologie de Belfort-Montbéliard (UTBM)</strong>.<br>Certification Pix niveau avancé (550 pix).',
             'f2Title': 'Baccalauréat Général - Mention Bien',
             'f2Date': '2021 - 2024',
             'f2Desc': '<strong>Lycée Edouard Belin</strong> - Spécialités : Mathématiques, Physique/Chimie et Informatique.',
