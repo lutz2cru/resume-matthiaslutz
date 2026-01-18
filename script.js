@@ -165,6 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
             'p3Desc_copy': 'Participation à un projet universitaire intensif sur une semaine, axé sur la résolution de problématiques concrètes en équipe.',
             'p4Title_copy': 'Création de mon propre NAS',
             'p4Desc_copy': 'Création d\'un serveur NAS, me permettant de stocker à distance mes documents personnels, photos et vidéos en toute sécurité à l\'aide d\'un PC et de l\'OS Truenas Scale.',
+            'p5Title_copy': 'Création d\'une station météo',
+            'p5Desc_copy': 'Conception et réalisation d’une station météo connectée basée sur ESP32, intégrant plusieurs capteurs environnementaux, une interface Node-RED interactive et un système de visualisation et de contrôle via MQTT.',
             // Contact & Footer
             'contactTitle': 'Entrons en contact',
             'contactDesc': 'À la recherche d\'un apprentissage pour Septembre 2026, je suis disponible sur les secteurs de Vesoul, Belfort et Besançon.',
@@ -244,6 +246,8 @@ document.addEventListener('DOMContentLoaded', () => {
             'p3Desc_copy': 'Participation in a one-week intensive university project focused on solving concrete problems as a team.',
             'p4Title_copy': 'Custom NAS Server Build',
             'p4Desc_copy': 'Built a NAS server, allowing me to remotely store personal documents, photos, and videos securely using a PC and Truenas Scale OS.',
+            'p5Title_copy': 'Creation of a weather station',
+            'p5Desc_copy': 'Design and development of a connected weather station based on ESP32, integrating multiple environmental sensors, an interactive Node-RED dashboard, and real-time visualization and control using MQTT.',
             // Contact & Footer
             'contactTitle': 'Let\'s connect',
             'contactDesc': 'Looking for an apprenticeship starting September 2026, I am available in the Vesoul, Belfort, and Besançon areas.',
