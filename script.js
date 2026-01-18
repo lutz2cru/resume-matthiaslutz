@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'contactDesc': 'À la recherche d\'un apprentissage pour Septembre 2026, je suis disponible sur les secteurs de Vesoul, Belfort et Besançon.',
             'contactLinkedIn': '<i class="fab fa-linkedin"></i> LinkedIn',
             'contactEmail': '<i class="fas fa-envelope"></i> E-mail',
-            'footerText': '&copy; 2025 - Matthias LUTZ. Tous droits réservés.'
+            'footerText': '&copy; 2026 - Matthias LUTZ. Tous droits réservés.'
         },
         'en': {
             // Navigation
@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'contactDesc': 'Looking for an apprenticeship starting September 2026, I am available in the Vesoul, Belfort, and Besançon areas.',
             'contactLinkedIn': '<i class="fab fa-linkedin"></i> LinkedIn',
             'contactEmail': '<i class="fas fa-envelope"></i> Email',
-            'footerText': '&copy; 2025 - Matthias LUTZ. All rights reserved.'
+            'footerText': '&copy; 2026 - Matthias LUTZ. All rights reserved.'
         }
     };
 
