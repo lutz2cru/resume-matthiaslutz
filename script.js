@@ -125,6 +125,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Parcours
             'experienceTitle': 'Mon Parcours Scolaire & Professionnel',
             'formationTitle': 'Formation',
+            'f0Title': 'Semestre à l\'étranger - Cracovie',
+            'f0Date': 'Février à Juin 2026',
+            'f0Desc': '<strong>AGH University of Krakow.</strong><br>Une expérience internationale de 6 mois, pour perfectionner mes compétences linguistiques et découvrir une nouvelle culture.',
             'f1Title': "Cycle préparatoire d'ingénieur",
             'f1Date': 'Septembre 2024 - Présent',
             'f1Desc': '<strong>Université de Technologie de Belfort-Montbéliard (UTBM)</strong>.<br>Certification Pix niveau avancé (550 pix).',
@@ -217,6 +220,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Journey
             'experienceTitle': 'My Academic & Professional Journey',
             'formationTitle': 'Education',
+            'f0Title': 'Erasmus Semester - Krakow',
+            'f0Date': 'February to June 2026',
+            'f0Desc': '<strong>AGH University of Krakow.</strong><br>A 6-month international experience to improve my language skills and discover a new culture.',
             'f1Title': 'Engineering Preparatory Cycle',
             'f1Date': 'September 2024 - Now',
             'f1Desc': '<strong>University of Technology of Belfort-Montbéliard (UTBM)</strong>.',
