@@ -100,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'navSkills': 'Compétences',
             'navExperience': 'Parcours',
             'navProjects': 'Projets',
+            'navCV': 'CV',
             'navContact': 'Contact',
             // Hero
             'heroGreeting': 'Hello, World! Je suis',
@@ -181,6 +182,9 @@ document.addEventListener('DOMContentLoaded', () => {
             'p6Desc_copy': 'Ce projet consiste à développer un système expert en langage C capable de déduire un modèle de voiture à partir de caractéristiques fournies par l’utilisateur grâce à une base de connaissances et un moteur d’inférence.',
             'p7Title_copy': 'Gestionnaire de processus Linux',
             'p7Desc_copy': 'Développement en C d’un gestionnaire de processus sous Linux, inspiré de htop, permettant l’affichage dynamique des processus locaux, l’interaction via une interface ncurses et la préparation d’une extension vers la supervision distante.',
+            //CV
+            'cvTitle': 'Mon CV',
+            'cvButton': 'Cliquez ici !',
             // Contact & Footer
             'contactTitle': 'Entrons en contact',
             'contactDesc': 'À la recherche d\'un apprentissage pour Septembre 2026, je suis disponible sur les secteurs de Vesoul, Belfort et Besançon.',
@@ -195,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'navSkills': 'Skills',
             'navExperience': 'Journey',
             'navProjects': 'Projects',
+            'navCV': 'Resume',
             'navContact': 'Contact',
             // Hero
             'heroGreeting': 'Hello, World! I am',
@@ -276,6 +281,9 @@ document.addEventListener('DOMContentLoaded', () => {
             'p6Desc_copy': 'This project implements an expert system in C that infers a car model from user-defined characteristics using a knowledge base and a forward-chaining inference engine.',
             'p7Title_copy': 'Linux Process Manager',
             'p7Desc_copy': 'Development in C of a Linux process manager inspired by htop, featuring dynamic local process monitoring, interactive ncurses-based interface, and groundwork for future remote supervision capabilities.',
+            //CV
+            'cvTitle': 'My Resume',
+            'cvButton': 'Click here !',
             // Contact & Footer
             'contactTitle': 'Let\'s connect',
             'contactDesc': 'Looking for an apprenticeship starting September 2026, I am available in the Vesoul, Belfort, and Besançon areas.',
