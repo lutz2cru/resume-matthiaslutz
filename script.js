@@ -109,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // À propos
             'aboutTitle': 'À propos de moi',
             'aboutText': "Actuellement en Service Civique au sein du CSV70 Handball où je m'occupe d'une partie de la communication digitale, j'ai l'occasion de développer mes compétences en création de contenu pour diverses plateformes. Ancien membre du Conseil Municipal des Jeunes (CMJ) de ma commune et actuellement vice-trésorier de l'association du CMJ, je suis une personne engagée. Ma passion pour le handball m'a appris la discipline et le travail d'équipe, des qualités que je souhaite mettre au service des autres dans le cadre d'une alternance de trois ans dans le domaine de l'informatique.",
+            'CSV70Button': "Gardien de but au CSV70",
             // Compétences
             'skillsTitle': 'Mes Compétences',
             'skill1Title': 'Développement & Algorithmique',
@@ -208,6 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // About
             'aboutTitle': 'About Me',
             'aboutText': "Currently doing a Civic Service at CSV70 Handball where I handle part of the digital communication, I have the opportunity to develop my skills in content creation for various platforms. As a former member of my town's Youth Council (CMJ) and current vice-treasurer of its association, I am a committed person. My passion for handball has taught me discipline and teamwork, qualities I wish to apply in a three-year IT apprenticeship.",
+            'CSV70Button': "Goalkeeper at CSV70",
             // Skills
             'skillsTitle': 'My Skills',
             'skill1Title': 'Development & Algorithms',
