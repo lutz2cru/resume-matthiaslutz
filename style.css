@@ -458,8 +458,8 @@ body {
 
 .carousel-track {
     display: flex;
-    width: calc(340px * 8); 
-    animation: scroll 50s linear infinite;
+    width: max-content; /* ✅ S'adapte automatiquement à tes 16 cartes */
+    animation: scroll 40s linear infinite; /* J'ai réduit à 40s pour que ce soit un peu plus dynamique */
 }
 
 .carousel:hover .carousel-track {
@@ -473,8 +473,13 @@ body {
 }
 
 @keyframes scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-340px * 4)); }
+    0% { 
+        transform: translateX(0); 
+    }
+    100% { 
+        /* ✅ On décale de la largeur des 8 projets originaux (8 * 340px = 2720px) */
+        transform: translateX(calc(-340px * 8)); 
+    }
 }
 
 /* --- Barre de Progression --- */
