@@ -183,6 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
             'p6Desc_copy': 'Ce projet consiste à développer un système expert en langage C capable de déduire un modèle de voiture à partir de caractéristiques fournies par l’utilisateur grâce à une base de connaissances et un moteur d’inférence.',
             'p7Title_copy': 'Gestionnaire de processus Linux',
             'p7Desc_copy': 'Développement en C d’un gestionnaire de processus sous Linux, inspiré de htop, permettant l’affichage dynamique des processus locaux, l’interaction via une interface ncurses et la préparation d’une extension vers la supervision distante.',
+            'p8Title_copy':'Création d\'un clavier de raccourcis',
+            'p8Desc_copy':'Mini-Projet personnel utilisant AutoHotkey pour réceptionner les différentes touches de mon second clavier et les différencier. Configuration de plusieurs raccourcis comme Outlook, OneDrive, Mute Micrphone, ... ',
             //CV
             'cvTitle': 'Mon CV',
             'cvButton': 'Cliquez ici !',
@@ -283,6 +285,8 @@ document.addEventListener('DOMContentLoaded', () => {
             'p6Desc_copy': 'This project implements an expert system in C that infers a car model from user-defined characteristics using a knowledge base and a forward-chaining inference engine.',
             'p7Title_copy': 'Linux Process Manager',
             'p7Desc_copy': 'Development in C of a Linux process manager inspired by htop, featuring dynamic local process monitoring, interactive ncurses-based interface, and groundwork for future remote supervision capabilities.',
+            'p8Title_copy':'Creating a keyboard shortcuts',
+            'p8Desc_copy':'A small personal project using AutoHotkey to receive and differentiate the different keys from my second keyboard. Configuration of several shortcuts such as Outlook, OneDrive, Microphone Mute, etc. ',
             //CV
             'cvTitle': 'My Resume',
             'cvButton': 'Click here !',
