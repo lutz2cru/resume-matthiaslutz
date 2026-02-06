@@ -1,6 +1,4 @@
-/* ============================================= */
-/* --- 1. VARIABLES ET STYLES GÉNÉRAUX --- */
-/* ============================================= */
+
 :root {
     --primary-color: #007BFF;
     --background-color: #121212;
@@ -35,9 +33,7 @@ body {
     padding: 0 2rem;
 }
 
-/* ============================================= */
-/* --- 2. STRUCTURE PRINCIPALE (HEADER, SECTIONS, FOOTER) --- */
-/* ============================================= */
+
 .section {
     padding: 5rem 0;
     border-bottom: 1px solid #282828;
@@ -136,11 +132,7 @@ body {
     margin: 1rem 0 2.5rem 0;
 }
 
-/* ============================================= */
-/* --- 3. COMPOSANTS (BOUTONS, CARTES, TIMELINE) --- */
-/* ============================================= */
 
-/* --- Boutons --- */
 .btn {
     display: inline-block;
     padding: 0.9rem 2.2rem;
@@ -206,7 +198,6 @@ body {
     box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
 }
 
-/* --- Cartes (Glassmorphism & 3D Effect) --- */
 .skill-item, 
 .project-card, 
 .timeline-content {
@@ -226,7 +217,7 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* --- Timeline --- */
+
 .timeline {
     position: relative;
     max-width: 800px;
@@ -268,11 +259,8 @@ body {
 .timeline-item:nth-child(odd)::after { right: -10px; }
 .timeline-item:nth-child(even)::after { left: -10px; }
 
-/* ============================================= */
-/* --- 4. SECTIONS SPÉCIFIQUES --- */
-/* ============================================= */
 
-/* --- Section À Propos --- */
+
 .about-container {
     display: flex;
     align-items: center;
@@ -303,7 +291,7 @@ body {
     text-align: left;
 }
 
-/* --- Section Compétences --- */
+
 .skills-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -317,7 +305,7 @@ body {
     margin-bottom: 1rem;
 }
 
-/* --- Section Parcours --- */
+
 .parcours-subtitle {
     text-align: center;
     font-size: 1.8rem;
@@ -326,7 +314,7 @@ body {
     margin-bottom: 1.5rem;
 }
 
-/* --- Section Contact --- */
+
 .contact-links {
     display: flex;
     justify-content: center;
@@ -335,8 +323,7 @@ body {
     flex-wrap: wrap;
 }
 
-/* --- Sélecteur de langue --- */
-/* --- Style pour le sélecteur de langue --- */
+
 .lang-switcher {
     display: flex;
     gap: 0.5rem;
@@ -353,41 +340,25 @@ body {
     color: var(--text-color);
 }
 
-/* RÈGLE IMPORTANTE POUR LE SUR LIGNAGE */
+
 .lang-switcher span.active {
-    color: var(--primary-color); /* Met en bleu */
-    font-weight: 700;           /* Met en gras */
+    color: var(--primary-color);
+    font-weight: 700;         
 }
 
-/* Version PC */
 .desktop-lang {
     margin-left: 1rem;
 }
 
-/* Version Mobile */
+
 .mobile-lang {
     margin-top: 1.5rem;
     opacity: 0; 
     display: none; 
 }
 
-/* Version PC */
-.desktop-lang {
-    margin-left: 1rem;
-}
 
-/* Version Mobile (sera dans la liste) */
-.mobile-lang {
-    margin-top: 1.5rem;
-    opacity: 0; /* Géré par l'animation du menu burger */
-    display: none; /* Caché par défaut sur PC */
-}
 
-/* ============================================= */
-/* --- 5. ANIMATIONS & EFFETS SPÉCIAUX --- */
-/* ============================================= */
-
-/* --- Animation au défilement --- */
 .hidden {
     opacity: 0;
     transform: translateY(30px);
@@ -399,7 +370,6 @@ body {
     transform: translateY(0);
 }
 
-/* --- Effet Typewriter --- */
 .animated-gradient {
     background: linear-gradient(90deg, #007BFF, #00C6FF, #ee7752, #e73c7e);
     background-size: 400% 400%;
@@ -429,7 +399,6 @@ body {
     50% { opacity: 0; }
 }
 
-/* --- Animation Menu Burger --- */
 .toggle .line1 {
     transform: rotate(-45deg) translate(-5px, 6px);
 }
@@ -447,7 +416,7 @@ body {
     to { opacity: 1; transform: translateX(0px); }
 }
 
-/* --- Carrousel de Projets --- */
+
 .carousel {
     width: 100%;
     overflow: hidden;
@@ -458,8 +427,8 @@ body {
 
 .carousel-track {
     display: flex;
-    width: max-content; /* ✅ S'adapte automatiquement à tes 16 cartes */
-    animation: scroll 40s linear infinite; /* J'ai réduit à 40s pour que ce soit un peu plus dynamique */
+    width: max-content;
+    animation: scroll 40s linear infinite;
 }
 
 .carousel:hover .carousel-track {
@@ -477,12 +446,12 @@ body {
         transform: translateX(0); 
     }
     100% { 
-        /* ✅ On décale de la largeur des 8 projets originaux (8 * 340px = 2720px) */
+
         transform: translateX(calc(-340px * 8)); 
     }
 }
 
-/* --- Barre de Progression --- */
+
 #progress-bar {
     position: fixed;
     top: 0;
@@ -494,12 +463,10 @@ body {
     transition: width 0.1s linear;
 }
 
-/* ============================================= */
-/* --- 6. VUE MOBILE (RESPONSIVE) --- */
-/* ============================================= */
+
 @media screen and (max-width: 768px) {
 
-    /* --- Ajustements Généraux --- */
+
     body { 
         line-height: 1.6; 
     }
@@ -510,7 +477,7 @@ body {
         padding: 0 1.5rem; 
     }
 
-    /* --- Section d'Accueil --- */
+
     .hero h1 { 
         font-size: 2.8rem; 
     }
@@ -518,7 +485,6 @@ body {
         font-size: 1.2rem; 
     }
 
-    /* --- Menu Burger --- */
     .burger { 
         display: block; 
     }
@@ -545,7 +511,7 @@ body {
         transform: translateX(0%); 
     }
 
-    /* --- Section À Propos --- */
+
     .about-container { 
         flex-direction: column; 
         text-align: center; 
@@ -558,12 +524,12 @@ body {
         height: 280px; 
     }
 
-    /* --- Grilles --- */
+
     .skills-grid { 
         grid-template-columns: 1fr; 
     }
 
-    /* --- Timeline --- */
+
     .timeline::after { 
         left: 20px; 
     }
@@ -579,7 +545,7 @@ body {
         left: 10px; 
     }
 
-    /* --- Sélecteur de langue --- */
+
     .desktop-lang {
         display: none;
     }
