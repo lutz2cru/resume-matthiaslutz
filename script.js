@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- 1. ANIMATION DES SECTIONS AU DÉFILEMENT ---
+    // annimation défilement
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     hiddenElements.forEach((el) => observer.observe(el));
 
 
-    // --- 2. MENU BURGER INTERACTIF ---
+    // menu burger
     const burger = document.querySelector('.burger');
     const nav = document.querySelector('.nav-links');
     const navLinks = document.querySelectorAll('.nav-links li');
@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     burger.addEventListener('click', () => {
         nav.classList.toggle('nav-active');
 
-        // Note : .nav-links li inclut maintenant le .mobile-lang
         navLinks.forEach((link, index) => {
             if (link.style.animation) {
                 link.style.animation = '';
@@ -34,13 +33,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-// --- 3. EFFET MACHINE À ÉCRIRE (TYPEWRITER) ---
+// effet titre machine
     const typewriterElement = document.getElementById('typewriter');
-    const originalName = typewriterElement ? typewriterElement.innerHTML : ''; // Stocke le nom original
-    let typewriterTimeout; // Variable pour gérer le timeout
+    const originalName = typewriterElement ? typewriterElement.innerHTML : ''; 
+    let typewriterTimeout; 
 
     function startTypewriter(text) {
-        if (!typewriterElement) return; // Sécurité si l'élément n'existe pas
+        if (!typewriterElement) return; 
 
         clearTimeout(typewriterTimeout); // Arrête l'animation précédente si elle existe
         typewriterElement.innerHTML = ''; // Vide le nom actuel
@@ -53,12 +52,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 typewriterTimeout = setTimeout(type, 150); // Vitesse de frappe
             }
         }
-        // Lance l'animation après un court délai pour que la traduction ait le temps de s'appliquer
+
         setTimeout(type, 100); 
     }
 
     
-    // --- 4. EFFET 3D SUR LES CARTES ---
+    // effet 3d cartes
     const cards = document.querySelectorAll('.skill-item, .project-card, .timeline-content');
     cards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
@@ -76,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // --- 5. BARRE DE PROGRESSION AU DÉFILEMENT ---
+    //barre de progression
     const progressBar = document.getElementById('progress-bar');
     if(progressBar) {
         window.addEventListener('scroll', () => {
@@ -87,11 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ===============================================
-    // --- 6. SCRIPT DE TRADUCTION (MIS À JOUR) ---
-    // ===============================================
 
-    // 6.1. Le dictionnaire de traductions
+
+    // Le dictionnaire de traductions
     const translations = {
         'fr': {
             // Navigation
@@ -193,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'contactDesc': 'À la recherche d\'un apprentissage pour Septembre 2026, je suis disponible sur les secteurs de Vesoul, Belfort et Besançon.',
             'contactLinkedIn': '<i class="fab fa-linkedin"></i> LinkedIn',
             'contactEmail': '<i class="fas fa-envelope"></i> E-mail',
-            'contactGitHub': '<i class="fas fa-github"></i> Github',
+            'contactGitHub': '<i class="fas fa-github"></i> GitHub',
             'footerText': '&copy; 2026 - Matthias LUTZ. Tous droits réservés.'
         },
         'en': {
@@ -296,41 +293,35 @@ document.addEventListener('DOMContentLoaded', () => {
             'contactDesc': 'Looking for an apprenticeship starting September 2026, I am available in the Vesoul, Belfort, and Besançon areas.',
             'contactLinkedIn': '<i class="fab fa-linkedin"></i> LinkedIn',
             'contactEmail': '<i class="fas fa-envelope"></i> Email',
-            'contactGitHub': '<i class="fas fa-github"></i> Github',
+            'contactGitHub': '<i class="fas fa-github"></i> GitHub',
             'footerText': '&copy; 2026 - Matthias LUTZ. All rights reserved.'
         }
     };
 
-    // 6.2. Les sélecteurs de langue (MODIFIÉ pour les classes)
+    // sélecteur de langue
     const allLangFR = document.querySelectorAll('.lang-fr');
     const allLangEN = document.querySelectorAll('.lang-en');
 
-// 6.3. La fonction de traduction (MODIFIÉ)
+// fonction trad
     const translatePage = (lang) => {
-        // Traduction du texte (inchangé)
         document.querySelectorAll('[data-key]').forEach(element => {
             const key = element.dataset.key;
             if (translations[lang] && translations[lang][key]) {
-                // Gestion spéciale pour le H1 (avant le typewriter)
                 if (element.tagName === 'SPAN' && element.parentElement.tagName === 'H1') {
-                     element.textContent = translations[lang][key]; // Utilise textContent pour éviter les problèmes de HTML
+                     element.textContent = translations[lang][key]; 
                 } else {
                     element.innerHTML = translations[lang][key];
                 }
             }
         });
 
-        // Gérer le style actif pour TOUS les sélecteurs (inchangé)
-        if (lang === 'en') { /* ... */ } else { /* ... */ }
 
-        // Sauvegarder le choix (inchangé)
+
         localStorage.setItem('language', lang);
-
-        // Relancer l'animation Typewriter AVEC le nom original (MODIFIÉ)
         startTypewriter(originalName); 
     };
 
-    // 6.4. Les écouteurs d'événements (MODIFIÉ pour les classes)
+
     allLangFR.forEach(button => {
         button.addEventListener('click', () => translatePage('fr'));
     });
@@ -338,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', () => translatePage('en'));
     });
 
-    // 6.5. (Bonus) Vérifier la langue sauvegardée au chargement de la page
+
     const savedLang = localStorage.getItem('language') || 'fr';
     translatePage(savedLang);
 
