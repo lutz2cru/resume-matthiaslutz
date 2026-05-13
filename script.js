@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'navAbout': 'À propos',
             'navSkills': 'Compétences',
             'navExperience': 'Parcours',
+            'navErasmus': 'Erasmus & Voyages',
             'navProjects': 'Projets',
             'navCV': 'CV',
             'navContact': 'Contact',
@@ -121,6 +122,16 @@ document.addEventListener('DOMContentLoaded', () => {
             'skill5Desc': 'Pack Office, Visual Studio Code, Canva, outils de prototypage et gestion de projets techniques.',
             'skill6Title': 'Langues & Créativité',
             'skill6Desc': 'Anglais (professionnel), Allemand (avancé), photographie, montage photo et vidéo, réseaux sociaux.',
+
+            // Erasmus & Voyages
+            'erasmusTitle': 'Erasmus & Voyages',
+            'erasmusSubtitle': 'Une expérience internationale à Cracovie',
+            'erasmusText': "Dans le cadre de mon cursus d’étudiant ingénieur à l’UTBM, j’ai réalisé un semestre à l’étranger à l’AGH University of Krakow, en Pologne. Cette expérience m’a permis de renforcer mon autonomie, d’évoluer dans un environnement multiculturel et d’améliorer mes compétences linguistiques.",
+            'erasmusTravelText': "J’ai également profité de cette mobilité pour voyager et découvrir de nouvelles cultures. Une partie de cette expérience est documentée sur ma page Polarsteps.",
+            'erasmusButton': 'Découvrir mon Polarsteps',
+            'erasmusCardTitle': 'Carnet de voyage',
+            'erasmusCardText': 'Suivez les étapes de mon semestre Erasmus, mes déplacements et les moments marquants de cette expérience internationale.',
+            
             // Parcours
             'experienceTitle': 'Mon Parcours Scolaire & Professionnel',
             'formationTitle': 'Formation',
@@ -199,6 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'navAbout': 'About',
             'navSkills': 'Skills',
             'navExperience': 'Journey',
+            'navErasmus': 'Erasmus & Travels',
             'navProjects': 'Projects',
             'navCV': 'Resume',
             'navContact': 'Contact',
@@ -257,6 +269,17 @@ document.addEventListener('DOMContentLoaded', () => {
             'e5Title': 'Observation Internships (Middle School)',
             'e5Date': '2021 & 2022',
             'e5Desc': '3-day internship at <strong>MMC de Vesoul</strong> and 5-day internship in the IT department of <strong>Vesoul Agrocampus</strong>.',
+            
+            
+            // Erasmus & Travels
+            'erasmusTitle': 'Erasmus & Travels',
+            'erasmusSubtitle': 'An international experience in Krakow',
+            'erasmusText': "As part of my engineering studies at UTBM, I completed a semester abroad at AGH University of Krakow, in Poland. This experience allowed me to become more independent, evolve in a multicultural environment, and improve my language skills.",
+            'erasmusTravelText': "I also took advantage of this mobility period to travel and discover new cultures. Part of this experience is documented on my Polarsteps page.",
+            'erasmusButton': 'Discover my Polarsteps',
+            'erasmusCardTitle': 'Travel diary',
+            'erasmusCardText': 'Follow the stages of my Erasmus semester, my trips, and the key moments of this international experience.',
+            
             // Projects
             'projectsTitle': 'My Projects',
             'p1Title': 'Word Game in C',
