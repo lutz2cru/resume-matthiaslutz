@@ -1,417 +1,2128 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Portfolio | Matthias LUTZ - Étudiant Ingénieur en Informatique</title>
-    <meta name="description" content="Découvrez le portfolio de Matthias Lutz, étudiant ingénieur à l'UTBM. Explorez mes compétences, mes projets en développement web et C, et mon parcours professionnel.">
-    <meta name="author" content="Matthias LUTZ">
-    <link rel="icon" href="sources/tulz.png" type="image/png">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matthias LUTZ | Portfolio UTBM</title>
+  <meta name="description" content="Portfolio interactif de Matthias LUTZ, étudiant ingénieur en informatique à l'UTBM: terminal vivant, compétences, projets, parcours, Erasmus et contact.">
+  <meta name="author" content="Matthias LUTZ">
+  <meta property="og:title" content="Matthias LUTZ | Portfolio UTBM">
+  <meta property="og:description" content="Portfolio blueprint industriel: terminal interactif, projets, compétences, Erasmus et contact.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://tulz.fr/sources/Photo5.jpg">
+  <meta name="theme-color" content="#0a1628">
+  <link rel="icon" href="sources/tulz.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #0a1628;
+      --bg-card: #0f2040;
+      --bg-surface: #162a4a;
+      --accent-primary: #3b82f6;
+      --accent-second: #f59e0b;
+      --text-primary: #e2e8f0;
+      --text-muted: #94a3b8;
+      --grid-line: rgba(59,130,246,0.08);
+      --border-blue: rgba(59,130,246,0.24);
+      --font-title: "Space Grotesk", system-ui, sans-serif;
+      --font-body: "Inter", system-ui, sans-serif;
+      --font-code: "JetBrains Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+      --sidebar-collapsed: 72px;
+      --sidebar-expanded: 248px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 20px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-primary) var(--bg-main);
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--text-primary);
+      background-color: var(--bg-main);
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 40px 40px;
+      font-family: var(--font-body);
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: auto;
+    }
+
+    ::selection { background: var(--accent-primary); color: white; }
+    a { color: inherit; }
+    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--accent-second);
+      outline-offset: 4px;
+    }
+
+    .cursor-dot, .cursor-ring { display: none; }
+
+    .icon-sprite {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .nav-svg {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .cursor-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-second);
+    }
+
+    .cursor-ring {
+      width: 34px;
+      height: 34px;
+      border: 2px solid var(--accent-primary);
+      border-radius: 50%;
+      transition: width 160ms ease, height 160ms ease, border-color 160ms ease;
+    }
+
+    body.cursor-grow .cursor-ring {
+      width: 56px;
+      height: 56px;
+      border-color: var(--accent-second);
+    }
+
+    .sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 1500;
+      width: var(--sidebar-collapsed);
+      display: flex;
+      flex-direction: column;
+      padding: 18px 9px;
+      background:
+        linear-gradient(180deg, rgba(15,32,64,0.98), rgba(8,18,35,0.98)),
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: auto, 28px 28px, 28px 28px;
+      border-right: 1px solid rgba(59,130,246,0.2);
+      box-shadow: 18px 0 60px rgba(2,8,23,0.28);
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+    }
+
+    .sidebar:hover { width: var(--sidebar-expanded); }
+
+    .brand {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      text-decoration: none;
+      white-space: nowrap;
+      padding: 4px 6px;
+      border-radius: 16px;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border: 2px solid var(--accent-second);
+      color: var(--accent-second);
+      background: rgba(245,158,11,0.08);
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 1.05rem;
+      box-shadow: inset 0 0 22px rgba(245,158,11,0.08), 0 0 24px rgba(245,158,11,0.08);
+    }
+
+    .brand-label {
+      color: var(--text-primary);
+      font-family: var(--font-title);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .sidebar:hover .brand-label,
+    .sidebar:hover .nav-label,
+    .sidebar:hover .side-footer-label {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .side-nav,
+    .side-footer {
+      display: grid;
+      gap: 8px;
+    }
+
+    .side-footer {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid rgba(59,130,246,0.16);
+    }
+
+    .nav-item,
+    .side-footer-item {
+      position: relative;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 0;
+      border-radius: 16px;
+      color: var(--text-muted);
+      background: rgba(59,130,246,0.035);
+      text-decoration: none;
+      padding: 0 10px;
+      cursor: pointer;
+      transition: color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .side-footer-item { height: 48px; }
+    .nav-item .nav-svg,
+    .side-footer-item .nav-svg,
+    .nav-item svg,
+    .side-footer-item svg {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      stroke-width: 2;
+      padding: 8px;
+      border: 1px solid rgba(59,130,246,0.14);
+      border-radius: 13px;
+      background: rgba(10,22,40,0.58);
+      color: currentColor;
+      transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+    }
+
+    .nav-label,
+    .side-footer-label {
+      opacity: 0;
+      transform: translateX(-6px);
+      color: inherit;
+      font-size: 13.5px;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .nav-item::before,
+    .side-footer-item::before {
+      content: "";
+      position: absolute;
+      left: -9px;
+      width: 3px;
+      height: 24px;
+      border-radius: 999px;
+      background: var(--accent-second);
+      opacity: 0;
+      transform: scaleY(0.4);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .nav-item:hover,
+    .nav-item.active,
+    .side-footer-item:hover,
+    .side-footer-item.active {
+      color: #dbeafe;
+      background: linear-gradient(135deg, rgba(59,130,246,0.18), rgba(245,158,11,0.07));
+      box-shadow: inset 0 0 0 1px rgba(59,130,246,0.24), 0 10px 28px rgba(2,8,23,0.22);
+      transform: translateX(2px);
+    }
+
+    .nav-item:hover::before,
+    .nav-item.active::before,
+    .side-footer-item:hover::before,
+    .side-footer-item.active::before {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+
+    .nav-item:hover .nav-svg,
+    .nav-item:hover svg,
+    .nav-item.active .nav-svg,
+    .nav-item.active svg,
+    .side-footer-item:hover .nav-svg,
+    .side-footer-item:hover svg,
+    .side-footer-item.active .nav-svg,
+    .side-footer-item.active svg {
+      color: var(--accent-second);
+      border-color: rgba(245,158,11,0.36);
+      background: rgba(245,158,11,0.08);
+    }
+
+    .nav-item::after {
+      content: attr(data-label);
+      position: absolute;
+      left: calc(100% + 14px);
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 7px 10px;
+      border: 1px solid var(--border-blue);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      white-space: nowrap;
+      transition: opacity 160ms ease;
+    }
+
+    .sidebar:not(:hover) .nav-item:hover::after { opacity: 1; }
+
+    .lang-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border: 1px solid rgba(59,130,246,0.14);
+      border-radius: 13px;
+      background: rgba(10,22,40,0.58);
+      color: var(--accent-second);
+      font: 800 11px var(--font-title);
+      letter-spacing: 0.04em;
+    }
+
+    .bottom-bar {
+      display: none;
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      z-index: 1500;
+      height: 66px;
+      grid-template-columns: repeat(4, 1fr);
+      background: rgba(15,32,64,0.92);
+      border: 1px solid rgba(59,130,246,0.24);
+      border-radius: 20px;
+      box-shadow: 0 16px 50px rgba(2, 8, 23, 0.42);
+      backdrop-filter: blur(14px);
+      overflow: hidden;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .bottom-bar a {
+      display: flex;
+      flex-direction: column;
+      place-items: center;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 600;
+      position: relative;
+      transition: color 160ms ease, background 160ms ease;
+    }
+
+    .bottom-bar .nav-svg,
+    .bottom-bar svg {
+      width: 22px;
+      height: 22px;
+      padding: 2px;
+    }
+
+    .bottom-bar a.active,
+    .bottom-bar a:hover {
+      color: var(--accent-second);
+      background: rgba(59,130,246,0.12);
+    }
+
+    .bottom-bar a.active::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 28px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--accent-second);
+    }
+
+    .page {
+      margin-left: var(--sidebar-collapsed);
+    }
+
+    .section {
+      min-height: 100vh;
+      padding: 80px 6vw 76px;
+      position: relative;
+    }
+
+    .section-inner {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .section-header {
+      margin-bottom: 36px;
+    }
+
+    .section-kicker {
+      color: var(--accent-second);
+      font-family: var(--font-code);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: var(--font-title);
+      font-size: 36px;
+      line-height: 1.05;
+      margin-bottom: 16px;
+    }
+
+    .section-rule {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-rule::before {
+      content: "";
+      width: 40px;
+      height: 2px;
+      background: var(--accent-primary);
+    }
+
+    .section-rule::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background: var(--accent-second);
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 60fr 40fr;
+      align-items: center;
+      gap: 54px;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: 4vw;
+      bottom: 4vh;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      border: 1px solid rgba(59,130,246,0.18);
+      background:
+        radial-gradient(circle, transparent 24%, rgba(59,130,246,0.13) 25%, transparent 26%),
+        radial-gradient(circle, transparent 46%, rgba(59,130,246,0.12) 47%, transparent 48%),
+        radial-gradient(circle, transparent 68%, rgba(59,130,246,0.12) 69%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .breadcrumb {
+      color: var(--accent-second);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-title);
+      font-size: 72px;
+      line-height: 0.95;
+      margin-bottom: 18px;
+    }
+
+    .hero-line {
+      width: 60px;
+      height: 3px;
+      background: var(--accent-second);
+      margin-bottom: 24px;
+    }
+
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: 18px;
+      margin-bottom: 26px;
+    }
+
+    .terminal-window,
+    .blue-card,
+    .project-card-face,
+    .timeline-card,
+    .cv-card,
+    .contact-terminal {
+      background: rgba(15,32,64,0.86);
+      border: 1px solid rgba(59,130,246,0.24);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 70px rgba(2, 8, 23, 0.26);
+    }
+
+    .terminal-window {
+      height: 410px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      overflow: hidden;
+      font-family: var(--font-code);
+    }
+
+    .terminal-header {
+      min-height: 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding: 0 14px;
+      background: #0b1b35;
+      border-bottom: 1px solid rgba(59,130,246,0.24);
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .terminal-dots { display: flex; gap: 7px; }
+    .terminal-dots span { width: 9px; height: 9px; border-radius: 50%; background: #ef4444; }
+    .terminal-dots span:nth-child(2) { background: var(--accent-second); }
+    .terminal-dots span:nth-child(3) { background: #22c55e; }
+
+    .terminal-output {
+      padding: 16px;
+      overflow: auto;
+      color: #cfe4ff;
+      font-size: 13px;
+    }
+
+    .terminal-output pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin-bottom: 12px;
+    }
+
+    .prompt-line {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 16px;
+      border-top: 1px solid rgba(59,130,246,0.18);
+      background: rgba(10,22,40,0.88);
+    }
+
+    .prompt { color: var(--accent-second); font-weight: 700; white-space: nowrap; }
+    #terminal-input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      color: var(--text-primary);
+      background: transparent;
+      font-family: var(--font-code);
+    }
+
+    .quick-commands {
+      display: none;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .quick-commands button,
+    .filter-btn,
+    .city-chip,
+    .badge {
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid rgba(59,130,246,0.26);
+      color: var(--text-muted);
+      background: rgba(59,130,246,0.08);
+      font: 600 12px var(--font-body);
+      cursor: pointer;
+    }
+
+    .quick-commands button:hover,
+    .filter-btn:hover,
+    .filter-btn.active,
+    .city-chip:hover,
+    .city-chip.active,
+    .badge:hover {
+      color: white;
+      background: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .photo-frame {
+      position: relative;
+      padding: 14px;
+      align-self: center;
+    }
+
+    .photo-shell {
+      position: relative;
+      height: clamp(500px, 72vh, 560px);
+      min-height: 0;
+      border: 2px solid var(--accent-primary);
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 54px), calc(100% - 54px) 100%, 0 100%);
+      background: linear-gradient(145deg, rgba(59,130,246,0.22), rgba(245,158,11,0.08));
+      overflow: hidden;
+    }
+
+    .photo-shell img,
+    .ascii-photo {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      display: block;
+      object-fit: cover;
+      object-position: 50% 12%;
+      filter: contrast(1.05) saturate(0.92);
+    }
+
+    .ascii-photo {
+      display: none;
+      padding: 18px;
+      color: #8ec5ff;
+      background: #08152a;
+      font: 9px/1 var(--font-code);
+      white-space: pre;
+      overflow: hidden;
+    }
+
+    .photo-frame.ascii-mode img { display: none; }
+    .photo-frame.ascii-mode .ascii-photo { display: block; }
+
+    .corner {
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      border-color: var(--accent-primary);
+      z-index: 3;
+    }
+    .corner.tl { top: 0; left: 0; border-top: 2px solid; border-left: 2px solid; }
+    .corner.tr { top: 0; right: 0; border-top: 2px solid; border-right: 2px solid; }
+    .corner.bl { bottom: 0; left: 0; border-bottom: 2px solid; border-left: 2px solid; }
+    .corner.br { bottom: 0; right: 0; border-bottom: 2px solid; border-right: 2px solid; }
+
+    .photo-annotation {
+      display: none;
+    }
+
+    .hero-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      color: var(--text-primary);
+    }
+
+    .badge i {
+      width: 15px;
+      height: 15px;
+      color: var(--accent-second);
+    }
+
+    .about-card {
+      max-width: 900px;
+      padding: 28px;
+      border-left: 4px solid var(--accent-second);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .skill-card {
+      min-height: 190px;
+      padding: 22px;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(59,130,246,0.5);
+      background: rgba(22,42,74,0.92);
+    }
+
+    .skill-card i {
+      color: var(--accent-second);
+      width: 30px;
+      height: 30px;
+      margin-bottom: 18px;
+    }
+
+    .skill-card h3 {
+      font-family: var(--font-title);
+      margin-bottom: 12px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .tag {
+      padding: 5px 8px;
+      border: 1px solid rgba(59,130,246,0.28);
+      color: #bfdbfe;
+      background: rgba(59,130,246,0.08);
+      font-size: 12px;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: calc(50% - 1px);
+      width: 2px;
+      background: rgba(59,130,246,0.45);
+    }
+
+    .timeline-column h3 {
+      color: var(--accent-second);
+      font-family: var(--font-title);
+      margin-bottom: 18px;
+      padding-left: 14px;
+      border-left: 3px solid var(--accent-second);
+    }
+
+    .timeline-card {
+      position: relative;
+      display: block;
+      width: 100%;
+      margin-bottom: 16px;
+      padding: 20px;
+      border: 1px solid rgba(59,130,246,0.24);
+      color: var(--text-primary);
+      text-align: left;
+      cursor: pointer;
+      opacity: 1;
+      transform: translateX(0);
+      transition: opacity 420ms ease, transform 420ms ease, border-color 160ms ease;
+    }
+
+    .timeline-card p {
+      color: var(--text-muted);
+    }
+
+    .timeline-card::before {
+      content: "";
+      position: absolute;
+      top: 24px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--accent-primary);
+      box-shadow: 0 0 0 5px rgba(59,130,246,0.13);
+    }
+
+    .timeline-column:first-child .timeline-card::before { right: -30px; }
+    .timeline-column:nth-child(2) .timeline-card::before { left: -30px; }
+    .timeline-card.show-card { opacity: 1; transform: translateX(0); }
+    .timeline-card:hover { border-color: var(--accent-primary); }
+
+    .date {
+      color: var(--accent-primary);
+      font: 700 12px var(--font-code);
+    }
+
+    .timeline-card h4 {
+      margin: 8px 0;
+      font-family: var(--font-title);
+    }
+
+    .outline-link {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 12px;
+      min-height: 38px;
+      padding: 0 12px;
+      border: 1px solid var(--accent-primary);
+      color: #bfdbfe;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .outline-link:hover {
+      color: white;
+      background: var(--accent-primary);
+    }
+
+    .erasmus-layout {
+      display: grid;
+      grid-template-columns: minmax(330px, 0.9fr) minmax(460px, 1.1fr);
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    .erasmus-copy {
+      padding: 26px;
+      min-height: 100%;
+    }
+
+    .erasmus-copy p {
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .erasmus-copy h3 {
+      font-family: var(--font-title);
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .city-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 20px 0;
+    }
+
+    .route-ascii {
+      color: #bfdbfe;
+      font: 12px var(--font-code);
+      white-space: pre-wrap;
+      margin-top: 16px;
+    }
+
+    .travel-board {
+      min-height: 560px;
+      position: relative;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 22px;
+      padding: 28px;
+      border: 1px solid rgba(59,130,246,0.28);
+      background:
+        linear-gradient(135deg, rgba(15,32,64,0.92), rgba(6,16,36,0.96)),
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: auto, 34px 34px, 34px 34px;
+      overflow: hidden;
+    }
+
+    .travel-board::before {
+      content: "";
+      position: absolute;
+      inset: 26px;
+      border: 1px dashed rgba(245,158,11,0.28);
+      clip-path: polygon(0 0, 100% 0, 100% 72%, 88% 100%, 0 100%);
+      pointer-events: none;
+    }
+
+    .boarding-card {
+      position: relative;
+      z-index: 1;
+      padding: 18px;
+      border: 1px solid rgba(245,158,11,0.42);
+      background: rgba(245,158,11,0.08);
+      box-shadow: 0 18px 50px rgba(2,8,23,0.22);
+    }
+
+    .boarding-label {
+      color: var(--accent-second);
+      font: 700 11px var(--font-code);
+      letter-spacing: 0.18em;
+      margin-bottom: 10px;
+    }
+
+    .boarding-main {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 16px;
+      color: var(--text-primary);
+      font: 700 clamp(34px, 5vw, 58px) var(--font-title);
+      line-height: 1;
+    }
+
+    .boarding-main i {
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-second));
+      position: relative;
+    }
+
+    .boarding-main i::after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      top: 50%;
+      width: 10px;
+      height: 10px;
+      border-top: 2px solid var(--accent-second);
+      border-right: 2px solid var(--accent-second);
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    .passport-stack {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      align-content: center;
+    }
+
+    .travel-stamp {
+      min-height: 86px;
+      padding: 12px;
+      border: 1px solid rgba(59,130,246,0.26);
+      color: var(--text-muted);
+      background: rgba(10,22,40,0.58);
+      text-align: left;
+      cursor: pointer;
+      transform: rotate(var(--tilt, 0deg));
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+    }
+
+    .travel-stamp strong {
+      display: block;
+      color: var(--text-primary);
+      font: 700 16px var(--font-title);
+      margin-bottom: 4px;
+    }
+
+    .travel-stamp span {
+      font: 700 10px var(--font-code);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .travel-stamp:hover,
+    .travel-stamp.active {
+      color: white;
+      border-color: var(--accent-second);
+      background: linear-gradient(135deg, rgba(59,130,246,0.22), rgba(245,158,11,0.14));
+      transform: rotate(0deg) translateY(-4px);
+    }
+
+    .travel-stats {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .travel-stats div {
+      padding: 14px;
+      border: 1px solid rgba(59,130,246,0.22);
+      background: rgba(59,130,246,0.08);
+    }
+
+    .travel-stats strong {
+      display: block;
+      color: var(--accent-second);
+      font: 700 28px var(--font-title);
+      line-height: 1;
+    }
+
+    .travel-stats span {
+      color: var(--text-muted);
+      font: 700 10px var(--font-code);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+      perspective: 1200px;
+    }
+
+    .project-card {
+      min-height: 270px;
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 420ms ease, transform 420ms ease;
+    }
+
+    .project-card.hide { display: none; }
+    .project-card.show-card { opacity: 1; transform: translateY(0); }
+
+    .flip-inner {
+      position: relative;
+      min-height: 270px;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .project-card:hover .flip-inner,
+    .project-card:focus-within .flip-inner { transform: rotateY(180deg); }
+
+    .project-card-face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+      backface-visibility: hidden;
+      overflow: hidden;
+    }
+
+    .project-card-face::before {
+      content: attr(data-num);
+      position: absolute;
+      right: 12px;
+      bottom: -22px;
+      color: white;
+      opacity: 0.05;
+      font: 700 92px var(--font-title);
+      pointer-events: none;
+    }
+
+    .project-back {
+      transform: rotateY(180deg);
+      background: var(--bg-surface);
+    }
+
+    .project-back p {
+      color: var(--text-primary);
+    }
+
+    .project-icon {
+      color: var(--accent-second);
+    }
+
+    .cv-card {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 30px;
+      text-align: center;
+    }
+
+    .cv-card i {
+      width: 64px;
+      height: 64px;
+      color: var(--accent-second);
+      margin-bottom: 18px;
+    }
+
+    .primary-amber {
+      display: inline-flex;
+      align-items: center;
+      min-height: 48px;
+      padding: 0 18px;
+      margin-top: 22px;
+      color: #111827;
+      background: var(--accent-second);
+      text-decoration: none;
+      font-weight: 800;
+      transition: transform 160ms ease;
+    }
+
+    .primary-amber:hover { transform: scale(1.02); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .contact-panel {
+      position: relative;
+      min-height: 430px;
+      padding: clamp(26px, 4vw, 44px);
+      overflow: hidden;
+    }
+
+    .contact-panel::after {
+      content: "";
+      position: absolute;
+      right: -90px;
+      bottom: -90px;
+      width: 260px;
+      height: 260px;
+      border: 1px solid rgba(245,158,11,0.28);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, transparent 38%, rgba(245,158,11,0.14) 39%, transparent 40%),
+        radial-gradient(circle, transparent 62%, rgba(59,130,246,0.16) 63%, transparent 64%);
+      pointer-events: none;
+    }
+
+    .contact-panel h3 {
+      max-width: 620px;
+      font: 700 clamp(34px, 5vw, 62px)/0.96 var(--font-title);
+      margin-bottom: 22px;
+    }
+
+    .contact-panel p {
+      max-width: 620px;
+      color: var(--text-muted);
+      font-size: 17px;
+      line-height: 1.75;
+    }
+
+    .contact-availability {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 34px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .contact-availability span {
+      min-height: 76px;
+      display: grid;
+      place-items: center;
+      padding: 12px;
+      border: 1px solid rgba(59,130,246,0.24);
+      color: var(--text-primary);
+      background: rgba(59,130,246,0.08);
+      font: 700 12px var(--font-code);
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .contact-terminal {
+      padding: 24px;
+      font-family: var(--font-code);
+    }
+
+    .form-line {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: revealLine 500ms ease forwards;
+    }
+
+    .form-line:nth-child(2) { animation-delay: 150ms; }
+    .form-line:nth-child(3) { animation-delay: 300ms; }
+    .form-line:nth-child(4) { animation-delay: 450ms; }
+
+    @keyframes revealLine { to { opacity: 1; transform: translateY(0); } }
+    .form-line label { color: var(--accent-second); }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid rgba(59,130,246,0.24);
+      color: var(--text-primary);
+      background: rgba(10,22,40,0.82);
+      font: 14px var(--font-body);
+      resize: vertical;
+      cursor: text;
+    }
+
+    .send-btn {
+      min-height: 46px;
+      border: 1px solid var(--accent-primary);
+      color: white;
+      background: rgba(59,130,246,0.16);
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .send-btn:hover { background: var(--accent-primary); }
+
+    .social-card {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      align-content: stretch;
+      padding: 0;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+
+    .social-link {
+      min-height: 126px;
+      display: grid;
+      grid-template-columns: 54px 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 22px;
+      border: 1px solid rgba(59,130,246,0.26);
+      color: var(--text-primary);
+      text-decoration: none;
+      background:
+        linear-gradient(135deg, rgba(15,32,64,0.9), rgba(10,22,40,0.92)),
+        linear-gradient(90deg, rgba(59,130,246,0.12), transparent);
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .social-link:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-second);
+      box-shadow: 0 18px 42px rgba(2,8,23,0.28);
+      background:
+        linear-gradient(135deg, rgba(22,42,74,0.95), rgba(15,32,64,0.94)),
+        linear-gradient(90deg, rgba(245,158,11,0.1), transparent);
+    }
+
+    .social-link .nav-svg {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      padding: 13px;
+      border: 1px solid rgba(245,158,11,0.32);
+      color: var(--accent-second);
+      background: rgba(245,158,11,0.08);
+      flex: 0 0 auto;
+    }
+
+    .social-link strong {
+      display: block;
+      font: 700 22px var(--font-title);
+      margin-bottom: 4px;
+    }
+
+    .social-link span {
+      color: var(--text-muted);
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .social-link::after {
+      content: "→";
+      color: var(--accent-second);
+      font: 700 26px var(--font-title);
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(430px, 100vw);
+      height: 100vh;
+      z-index: 1900;
+      padding: 28px;
+      background: var(--bg-card);
+      border-left: 1px solid rgba(59,130,246,0.24);
+      transform: translateX(105%);
+      transition: transform 250ms ease;
+      overflow: auto;
+    }
+
+    .drawer.open { transform: translateX(0); }
+    .drawer-close {
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(59,130,246,0.28);
+      color: var(--text-primary);
+      background: transparent;
+      margin-bottom: 24px;
+      cursor: pointer;
+    }
+
+    .confetti {
+      position: fixed;
+      top: -20px;
+      width: 8px;
+      height: 14px;
+      pointer-events: none;
+      z-index: 2100;
+      animation: confettiFall 1200ms linear forwards;
+    }
+    @keyframes confettiFall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+
+    @media (max-width: 1100px) {
+      body { cursor: auto; }
+      .cursor-dot, .cursor-ring { display: none; }
+      .sidebar { display: none; }
+      .bottom-bar { display: grid; }
+      .page { margin-left: 0; padding-bottom: 96px; }
+      .hero, .erasmus-layout, .contact-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 70px; }
+      .hero h1 { font-size: 56px; }
+      .photo-shell { height: min(560px, 70vh); }
+      .photo-shell img, .ascii-photo { min-height: 0; }
+      .skills-grid, .projects-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .contact-panel { min-height: auto; }
+      .timeline { grid-template-columns: 1fr; }
+      .timeline::before { display: none; }
+      .timeline-column:first-child .timeline-card::before,
+      .timeline-column:nth-child(2) .timeline-card::before { display: none; }
+      .form-line { grid-template-columns: 1fr; }
+      a, button, .timeline-card, .quick-commands button, .filter-btn, .city-chip, .send-btn, .drawer-close { cursor: pointer; }
+    }
+
+    @media (max-width: 680px) {
+      .section { padding: 72px 18px 96px; }
+      .hero h1 { font-size: 42px; }
+      .section-title { font-size: 30px; }
+      .terminal-window { height: 460px; }
+      .quick-commands { display: flex; }
+      .photo-shell { height: min(560px, 76vh); }
+      .photo-shell img, .ascii-photo { min-height: 0; }
+      .hero-badges { flex-direction: column; }
+      .skills-grid, .projects-grid { grid-template-columns: 1fr; }
+      .contact-availability { grid-template-columns: 1fr; }
+      .social-link {
+        min-height: 106px;
+        grid-template-columns: 46px 1fr;
+      }
+      .social-link::after { display: none; }
+      .project-card, .flip-inner { min-height: 250px; }
+      .travel-board { min-height: 460px; padding: 20px; }
+      .passport-stack { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .bottom-bar span { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
 </head>
-
 <body>
-    <div id="progress-bar"></div>
-    <header>
-        <nav class="navbar">
-    <div class="container">
-        <a href="#" class="logo" data-key="navLogo">Bienvenue !</a>
-        <ul class="nav-links">
-            <li><a href="#about" data-key="navAbout">À propos</a></li>
-            <li><a href="#skills" data-key="navSkills">Compétences</a></li>
-            <li><a href="#experience" data-key="navExperience">Parcours</a></li>
-            <li><a href="#erasmus" data-key="navErasmus">Erasmus & Voyages</a></li>
-            <li><a href="#projects" data-key="navProjects">Projets</a></li>
-            <li><a href="#cv" data-key="navCV">CV</a></li>
-            <li><a href="#contact" data-key="navContact">Contact</a></li>
-            
-            <li class="lang-switcher mobile-lang">
-                <span class="lang-fr active">FR</span>
-                <span>|</span>
-                <span class="lang-en">EN</span>
-            </li>
-        </ul>
-        
-        <div class="lang-switcher desktop-lang">
-            <span class="lang-fr active">FR</span>
-            <span>|</span>
-            <span class="lang-en">EN</span>
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+  <svg class="icon-sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-terminal" viewBox="0 0 24 24"><path d="M4 17l5-5-5-5"/><path d="M12 19h8"/></symbol>
+    <symbol id="icon-user" viewBox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></symbol>
+    <symbol id="icon-code" viewBox="0 0 24 24"><path d="M8 8l-4 4 4 4"/><path d="M16 8l4 4-4 4"/><path d="M14 4l-4 16"/></symbol>
+    <symbol id="icon-briefcase" viewBox="0 0 24 24"><path d="M10 6V5a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v1"/><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 12h18"/><path d="M10 12v2h4v-2"/></symbol>
+    <symbol id="icon-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/></symbol>
+    <symbol id="icon-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M8 15h8"/></symbol>
+    <symbol id="icon-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6"/><path d="M9 17h6"/></symbol>
+    <symbol id="icon-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+    <symbol id="icon-linkedin" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4V9h4v2"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></symbol>
+    <symbol id="icon-github" viewBox="0 0 24 24"><path d="M9 19c-4 1.2-4-2-6-2"/><path d="M15 22v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6A4.7 4.7 0 0 0 18.7 7c.1-.4.5-1.8-.2-3.4 0 0-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6.6 3.3 5.5 3.6 5.5 3.6 4.8 5.2 5.2 6.6 5.3 7A4.7 4.7 0 0 0 4 10.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V22"/></symbol>
+  </svg>
+
+  <aside class="sidebar" aria-label="Navigation principale">
+    <a href="#hero" class="brand" aria-label="Retour au terminal">
+      <span class="brand-mark">ML</span>
+      <span class="brand-label">M. LUTZ</span>
+    </a>
+    <nav class="side-nav">
+      <a class="nav-item active" href="#hero" data-section="hero" data-label="Terminal"><svg class="nav-svg"><use href="#icon-terminal"></use></svg><span class="nav-label">Terminal</span></a>
+      <a class="nav-item" href="#about" data-section="about" data-label="À propos"><svg class="nav-svg"><use href="#icon-user"></use></svg><span class="nav-label">À propos</span></a>
+      <a class="nav-item" href="#skills" data-section="skills" data-label="Compétences"><svg class="nav-svg"><use href="#icon-code"></use></svg><span class="nav-label">Compétences</span></a>
+      <a class="nav-item" href="#experience" data-section="experience" data-label="Parcours"><svg class="nav-svg"><use href="#icon-briefcase"></use></svg><span class="nav-label">Parcours</span></a>
+      <a class="nav-item" href="#erasmus" data-section="erasmus" data-label="Erasmus"><svg class="nav-svg"><use href="#icon-globe"></use></svg><span class="nav-label">Erasmus</span></a>
+      <a class="nav-item" href="#projects" data-section="projects" data-label="Projets"><svg class="nav-svg"><use href="#icon-folder"></use></svg><span class="nav-label">Projets</span></a>
+      <a class="nav-item" href="#cv" data-section="cv" data-label="CV"><svg class="nav-svg"><use href="#icon-file"></use></svg><span class="nav-label">CV</span></a>
+      <a class="nav-item" href="#contact" data-section="contact" data-label="Contact"><svg class="nav-svg"><use href="#icon-mail"></use></svg><span class="nav-label">Contact</span></a>
+    </nav>
+  </aside>
+
+  <nav class="bottom-bar" aria-label="Navigation mobile">
+    <a href="#hero" class="active" data-section="hero"><svg class="nav-svg"><use href="#icon-terminal"></use></svg><span>Terminal</span></a>
+    <a href="#projects" data-section="projects"><svg class="nav-svg"><use href="#icon-folder"></use></svg><span>Projets</span></a>
+    <a href="#erasmus" data-section="erasmus"><svg class="nav-svg"><use href="#icon-globe"></use></svg><span>Erasmus</span></a>
+    <a href="#contact" data-section="contact"><svg class="nav-svg"><use href="#icon-mail"></use></svg><span>Contact</span></a>
+  </nav>
+
+  <main class="page">
+    <section class="section hero" id="hero" data-section="hero">
+      <div>
+        <p class="breadcrumb">PORTFOLIO / UTBM / 2026</p>
+        <h1>Matthias LUTZ</h1>
+        <div class="hero-line"></div>
+        <p class="hero-subtitle">Étudiant Ingénieur · IoT · Systèmes · Web</p>
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <div class="terminal-dots"><span></span><span></span><span></span></div>
+            <strong>matthias@portfolio:~</strong>
+            <span>blueprint mode</span>
+          </div>
+          <div class="terminal-output" id="terminal-output" aria-live="polite"></div>
+          <form class="prompt-line" id="terminal-form">
+            <span class="prompt">matthias@portfolio:~$</span>
+            <input id="terminal-input" autocomplete="off" spellcheck="false" aria-label="Commande terminal">
+          </form>
         </div>
-
-        <div class="burger">
-            <div class="line1"></div>
-            <div class="line2"></div>
-            <div class="line3"></div>
+        <div class="quick-commands">
+          <button type="button" data-command="whoami">whoami</button>
+          <button type="button" data-command="skills">skills</button>
+          <button type="button" data-command="projects">projects</button>
+          <button type="button" data-command="contact">contact</button>
         </div>
-    </div>
-</nav>
-    </header>
-
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1><span data-key="heroGreeting">Bonjour, je suis</span> <span id="typewriter" class="animated-gradient">Matthias LUTZ</span></h1>
-                <p class="subtitle" data-key="heroSubtitle">Étudiant ingénieur de 2e année à l'UTBM, passionné par <em>l'informatique et le sport.</em></p>
-                <a href="#about" class="btn" data-key="heroButton">En apprendre plus sur moi</a>
-            </div>
-        </section>
-
-        <section id="about" class="section hidden">
-            <div class="container about-container">
-                <div class="profile-photo-frame">
-                    <img src="sources/Photo5.jpg" alt="Photo de Matthias Lutz" class="profile-photo">
-                </div>
-                <div class="about-text">
-                    <h2 data-key="aboutTitle">À propos de moi</h2>
-                    <p data-key="aboutText">Actuellement en Service Civique au sein du CSV70 Handball où je m'occupe d'une partie de la communication digitale, j'ai l'occasion de développer mes compétences en création de contenu pour diverses plateformes. Ancien membre du Conseil Municipal des Jeunes (CMJ) de ma commune et actuellement vice-trésorier de l'association du CMJ, je suis une personne engagée. Ma passion pour le handball m'a appris la discipline et le travail d'équipe, des qualités que je souhaite mettre au service des autres dans le cadre d'une alternance de trois ans dans le domaine de l'informatique.
-                    </p>
-                </div>
-            </div>
-            <div class="CSV70Button1"><a href="https://c.estrepublicain.fr/sport/2026/02/01/matthias-lutz-pur-produit-de-la-formation-du-cs-vesoul" class="btn" data-key="CSV70Button" target="_blank">Gardien de But au CSV70</a></div>
-        </section>
-
-<section id="skills" class="section hidden">
-    <div class="container">
-        <h2 data-key="skillsTitle">Mes Compétences</h2>
-
-        <div class="skills-grid">
-
-            <div class="skill-item">
-                <i class="fas fa-code"></i>
-                <h3 data-key="skill1Title">Développement & Algorithmique</h3>
-                <p data-key="skill1Desc">
-                    Algorithmique (LO21), Langage C, Structures de données, 
-                    Programmation procédurale, Résolution de problèmes.
-                </p>
-            </div>
-
-            <div class="skill-item">
-                <i class="fas fa-globe"></i>
-                <h3 data-key="skill2Title">Web & Bases de données</h3>
-                <p data-key="skill2Desc">
-                    HTML, CSS, PHP, SQL (IF3E), Modélisation de bases de données,
-                    Applications web dynamiques.
-                </p>
-            </div>
-
-            <div class="skill-item">
-                <i class="fas fa-terminal"></i>
-                <h3 data-key="skill3Title">Systèmes & Environnements</h3>
-                <p data-key="skill3Desc">
-                    Linux, Processus, scripts bash, Git & GitHub,
-                    Programmation système.
-                </p>
-            </div>
-
-            <div class="skill-item">
-                <i class="fas fa-microchip"></i>
-                <h3 data-key="skill4Title">IoT & Projets techniques</h3>
-                <p data-key="skill4Desc">
-                    Arduino, Node-RED, MQTT, capteurs (CO₂, humidité, température),
-                    projets orientés objets connectés.
-                </p>
-            </div>
-
-            <div class="skill-item">
-                <i class="fas fa-tools"></i>
-                <h3 data-key="skill5Title">Outils & Logiciels</h3>
-                <p data-key="skill5Desc">
-                    Pack Office, Visual Studio Code, Canva, outils de prototypage,
-                    gestion de projets techniques.
-                </p>
-            </div>
-
-            <div class="skill-item">
-                <i class="fas fa-language"></i>
-                <h3 data-key="skill6Title">Langues & Créativité</h3>
-                <p data-key="skill6Desc">
-                    Anglais (professionnel), Allemand (avancé),
-                    Photographie, montage photo & vidéo, mailing, gestion de réseaux sociaux.
-                </p>
-            </div>
-
+      </div>
+      <aside class="photo-frame" id="photo-frame" title="Clique 5 fois pour le mode ASCII">
+        <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+        <div class="photo-annotation">MATTHIAS LUTZ / UTBM 2026</div>
+        <div class="photo-shell">
+          <img src="https://tulz.fr/sources/Photo5.jpg" alt="Photo de Matthias Lutz" width="420" height="560">
+          <pre class="ascii-photo" id="ascii-photo"></pre>
         </div>
-    </div>
-</section>
-
-
-        <section id="experience" class="section hidden">
-            <div class="container">
-                <h2 data-key="experienceTitle">Mon Parcours Scolaire & Professionnel</h2>
-                
-                <h3 class="parcours-subtitle" data-key="formationTitle">Formation</h3>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3 data-key="f0Title">Semestre à l'étranger - Cracovie</h3>
-                            <span class="date" data-key="f0Date">Février à Juin 2026</span>
-                            <p data-key="f0Desc"><strong>AGH University of Krakow</strong>.
-                            <br>Une expérience internationale de 6 mois, pour perfectionner mes compétences linguistiques et découvrir une nouvelle culture.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3 data-key="f1Title">Cycle préparatoire d'ingénieur</h3>
-                            <span class="date" data-key="f1Date">Septembre 2024 - Présent</span>
-                            <p data-key="f1Desc"><strong>Université de Technologie de Belfort-Montbéliard (UTBM)</strong>.
-                            <br>Certification Pix niveau avancé (550 pix).</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3 data-key="f2Title">Baccalauréat Général - Mention Bien</h3>
-                            <span class="date" data-key="f2Date">2021 - 2024</span>
-                            <p data-key="f2Desc"><strong>Lycée Edouard Belin</strong> - Spécialités : Mathématiques, Physique/Chimie et Informatique.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3 data-key="f3Title">Brevet des Collèges - Mention Très Bien</h3>
-                            <span class="date" data-key="f3Date">2017 - 2020</span>
-                            <p data-key="f3Desc"><strong>Collège René Cassin</strong>, Noidans-lès-Vesoul.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <h3 class="parcours-subtitle" data-key="expTitle">Expériences Professionnelles</h3>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3 data-key="e1Title">Assistant communication - Service Civique</h3>
-                            <span class="date" data-key="e1Date">Septembre 2025 - Présent</span>
-                            <p data-key="e1Desc"><strong>CSVesoul70 Partenaires</strong> - Gestion des réseaux, création de visuels et rédaction de contenu.</p>
-                            <a href="https://1drv.ms/b/c/e15c7d58f51b139c/IQDAdHpUl7maQZ_LaY847Zb0AT9RkhmTxhUMGO1v3kE_Kqk?e=NtcVm1" class="btn-secondary" target="_blank" data-key="e3Link">Voir le rapport</a>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3 data-key="e2Title">Opérateur de production & Stagiaire</h3>
-                            <span class="date" data-key="e2Date">Été & Hiver 2025</span>
-                            <p data-key="e2Desc"><strong>Stellantis</strong> - Missions variées incluant l'étiquetage, l'emballage, le contrôle qualité et la gestion de données techniques.</p>
-                            <a href="https://1drv.ms/b/c/e15c7d58f51b139c/EboHtLwsldFFlU6AZXj18bQB7lwSC62ScPIaaX9yN-5qdw?e=iY6x8T" class="btn-secondary" target="_blank" data-key="e2Link">Voir le rapport</a>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3 data-key="e3Title">Préparateur de commandes - Job d'été (7 semaines)</h3>
-                            <span class="date" data-key="e3Date">Été 2024</span>
-                            <p data-key="e3Desc"><strong>Mister Auto</strong> - Picking des articles en entrepôt, emballage des colis et préparation pour l'expédition.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3 data-key="e4Title">Aide cuisine & Aide-ménage - Jobs d'été (3 semaines)</h3>
-                            <span class="date" data-key="e4Date">Étés 2022 & 2023</span>
-                            <p data-key="e4Desc"><strong>Centre aéré de Vaivre-et-Montoille</strong> - Aide à la préparation des repas et entretien des locaux pour le bien-être des enfants.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3 data-key="e5Title">Stages d'observation (Collège)</h3>
-                            <span class="date" data-key="e5Date">2021 & 2022</span>
-                            <p data-key="e5Desc">Stage de 3 jours à la <strong>MMC de Vesoul</strong> et de 5 jours au service informatique de <strong>Vesoul Agrocampus</strong>.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-      
-<section id="erasmus" class="section hidden">
-    <div class="container erasmus-container">
-        <h2 data-key="erasmusTitle">Erasmus & Voyages</h2>
-
-        <div class="erasmus-content">
-            
-            <div class="erasmus-text">
-                <h3 data-key="erasmusSubtitle">Une expérience internationale à Cracovie</h3>
-
-                <p data-key="erasmusText">
-                    Dans le cadre de mon cursus d’étudiant ingénieur à l’UTBM, j’ai réalisé un semestre à l’étranger à l’AGH University of Krakow, en Pologne. 
-                    Cette expérience m’a permis de renforcer mon autonomie, d’évoluer dans un environnement multiculturel et d’améliorer mes compétences linguistiques.
-                </p>
-
-                <p data-key="erasmusTravelText">
-                    J’ai également profité de cette mobilité pour voyager et découvrir de nouvelles cultures. Une partie de cette expérience est documentée sur ma page Polarsteps.
-                </p>
-
-                <div class="erasmus-button-wrapper">
-                    <a href="https://www.polarsteps.com/lutz2cru" 
-                       class="btn" 
-                       target="_blank" 
-                       rel="noopener noreferrer"
-                       data-key="erasmusButton">
-                        Découvrir mon Polarsteps
-                    </a>
-                </div>
-            </div>
-
-            <div class="erasmus-photo-frame">
-                <img src="sources/erasmus.png" alt="Photo Erasmus à Cracovie" class="erasmus-photo">
-            </div>
-
+        <div class="hero-badges">
+          <span class="badge"><i data-lucide="shield"></i> Handball GK</span>
+          <span class="badge"><i data-lucide="map-pin"></i> Erasmus Cracovie</span>
+          <span class="badge"><i data-lucide="zap"></i> Alternance Sept. 2026</span>
         </div>
+      </aside>
+    </section>
 
-        <div class="erasmus-card">
-            <h3 data-key="erasmusCardTitle">Carnet de voyage</h3>
-            <p data-key="erasmusCardText">
-                Suivez les étapes de mon semestre Erasmus, mes déplacements et les moments marquants de cette expérience internationale.
-            </p>
+    <section class="section" id="about" data-section="about">
+      <div class="section-inner">
+        <header class="section-header">
+          <p class="section-kicker">02 /</p>
+          <h2 class="section-title">À propos</h2>
+          <div class="section-rule"></div>
+        </header>
+        <div class="blue-card about-card">
+          <p>Étudiant ingénieur à l'UTBM, je développe mes compétences à travers des projets techniques concrets: programmation C, systèmes Linux, web, bases de données et objets connectés. Mon parcours dans le handball et la communication digitale m'a appris à être fiable, clair et à avancer avec une équipe.</p>
         </div>
-    </div>
-</section>
+      </div>
+    </section>
 
-        <section id="projects" class="section hidden">
-            <div class="container">
-                <h2 data-key="projectsTitle">Mes Projets</h2>
-                <div class="carousel">
-                    <div class="carousel-track">
-                        <div class="project-card">
-                            <div class="project-info">
-                                <h3 data-key="p1Title">Jeu de lettres en C</h3>
-                                <p data-key="p1Desc">Développement d'un jeu de lettres : génération de grille, vérification des mots dans un dictionnaire, timer, score et historique des parties.</p>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-info">
-                                <h3 data-key="p2Title">Site de vocabulaire collaboratif</h3>
-                                <p data-key="p2Desc">Création d'un site web inspiré de Quizlet, permettant de réviser le vocabulaire anglais de manière collaborative et interactive.</p>
-                                <a href="https://matthiasvocable03.page.gd/?i=1" class="btn-secondary" target="_blank" data-key="p2Link">Voir le projet</a>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-info">
-                                <h3 data-key="p3Title">Crunch Time 2025</h3>
-                                <p data-key="p3Desc">Participation à un projet universitaire intensif sur une semaine, axé sur la résolution de problématiques concrètes en équipe.</p>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-info">
-                                <h3 data-key="p4Title">Création de mon propre NAS</h3>
-                                <p data-key="p4Desc">Création d'un serveur NAS, me permettant de stocker à distance mes documents personnels, photos et vidéos en toute sécurité à l'aide d'un PC et de l'OS Truenas Scale.</p>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-info">
-                                <h3 data-key="p5Title_copy">Création d'une station météo</h3>
-                                <p data-key="p5Desc_copy">Conception et réalisation d’une station météo connectée basée sur ESP32, intégrant plusieurs capteurs environnementaux, une interface Node-RED interactive et un système de visualisation et de contrôle via MQTT.</p>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-info">
-                                <h3 data-key="p6Title_copy">Système expert de déduction de modèles de voitures</h3>
-                                <p data-key="p6Desc_copy">Ce projet consiste à développer un système expert en langage C capable de déduire un modèle de voiture à partir de caractéristiques fournies par l’utilisateur grâce à une base de connaissances et un moteur d’inférence.</p>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-info">
-                                <h3 data-key="p7Title_copy">Gestionnaire de processus Linux</h3>
-                                <p data-key="p7Desc_copy">Développement en C d’un gestionnaire de processus sous Linux, inspiré de htop, permettant l’affichage dynamique des processus locaux, l’interaction via une interface ncurses et la préparation d’une extension vers la supervision distante.</p>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-info">
-                                <h3 data-key="p8Title_copy">Création d'un clavier de raccourcis</h3>
-                                <p data-key="p8Desc_copy">Mini-Projet personnel utilisant AutoHotkey pour réceptionner les différentes touches de mon second clavier et les différencier. Configuration de plusieurs raccourcis comme Outlook, OneDrive, Mute Micrphone, ... </p>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-info">
-                                <h3 data-key="p1Title_copy">Jeu de lettres en C</h3>
-                                <p data-key="p1Desc_copy">Développement d'un jeu de lettres : génération de grille, vérification des mots dans un dictionnaire, timer, score et historique des parties.</p>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-info">
-                                <h3 data-key="p2Title_copy">Site de vocabulaire collaboratif</h3>
-                                <p data-key="p2Desc_copy">Création d'un site web inspiré de Quizlet, permettant de réviser le vocabulaire anglais de manière collaborative et interactive.</p>
-                                <a href="https://matthiasvocable03.page.gd/?i=1" class="btn-secondary" target="_blank" data-key="p2Link_copy">Voir le projet</a>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-info">
-                                <h3 data-key="p3Title_copy">Crunch Time 2025</h3>
-                                <p data-key="p3Desc_copy">Participation à un projet universitaire intensif sur une semaine, axé sur la résolution de problématiques concrètes en équipe.</p>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-info">
-                                <h3 data-key="p4Title_copy">Création de mon propre NAS</h3>
-                                <p data-key="p4Desc_copy">Création d'un serveur NAS, me permettant de stocker à distance mes documents personnels, photos et vidéos en toute sécurité à l'aide d'un PC et de l'OS Truenas Scale.</p>
-                            </div>
-                        </div>
-                         <div class="project-card">
-                            <div class="project-info">
-                                <h3 data-key="p5Title_copy">Création d'une station météo</h3>
-                                <p data-key="p5Desc_copy">Conception et réalisation d’une station météo connectée basée sur ESP32, intégrant plusieurs capteurs environnementaux, une interface Node-RED interactive et un système de visualisation et de contrôle via MQTT.</p>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-info">
-                                <h3 data-key="p6Title_copy">Système expert de déduction de modèles de voitures</h3>
-                                <p data-key="p6Desc_copy">Ce projet consiste à développer un système expert en langage C capable de déduire un modèle de voiture à partir de caractéristiques fournies par l’utilisateur grâce à une base de connaissances et un moteur d’inférence.</p>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-info">
-                                <h3 data-key="p7Title_copy">Gestionnaire de processus Linux</h3>
-                                <p data-key="p7Desc_copy">Développement en C d’un gestionnaire de processus sous Linux, inspiré de htop, permettant l’affichage dynamique des processus locaux, l’interaction via une interface ncurses et la préparation d’une extension vers la supervision distante.</p>
-                            </div>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-info">
-                                <h3 data-key="p8Title_copy">Création d'un clavier de raccourcis</h3>
-                                <p data-key="p8Desc_copy">Mini-Projet personnel utilisant AutoHotkey pour réceptionner les différentes touches de mon second clavier et les différencier. Configuration de plusieurs raccourcis comme Outlook, OneDrive, Mute Micrphone, ... </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <section class="section" id="skills" data-section="skills">
+      <div class="section-inner">
+        <header class="section-header">
+          <p class="section-kicker">03 /</p>
+          <h2 class="section-title">Compétences</h2>
+          <div class="section-rule"></div>
+        </header>
+        <div class="skills-grid" id="skills-grid">
+          <article class="blue-card skill-card">
+            <i data-lucide="code-2">C</i>
+            <h3>Développement</h3>
+            <div class="tag-row"><span class="tag">C</span><span class="tag">Algorithmique</span><span class="tag">Structures de données</span></div>
+          </article>
+          <article class="blue-card skill-card">
+            <i data-lucide="database">D</i>
+            <h3>Web & données</h3>
+            <div class="tag-row"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">PHP</span><span class="tag">SQL</span></div>
+          </article>
+          <article class="blue-card skill-card">
+            <i data-lucide="cpu">S</i>
+            <h3>Systèmes</h3>
+            <div class="tag-row"><span class="tag">Linux</span><span class="tag">Bash</span><span class="tag">Git</span><span class="tag">ncurses</span></div>
+          </article>
+          <article class="blue-card skill-card">
+            <i data-lucide="network">I</i>
+            <h3>IoT</h3>
+            <div class="tag-row"><span class="tag">ESP32</span><span class="tag">Arduino</span><span class="tag">MQTT</span><span class="tag">Node-RED</span></div>
+          </article>
+          <article class="blue-card skill-card">
+            <i data-lucide="pen-tool">D</i>
+            <h3>Création digitale</h3>
+            <div class="tag-row"><span class="tag">Canva</span><span class="tag">Photo</span><span class="tag">Vidéo</span><span class="tag">Réseaux sociaux</span></div>
+          </article>
+          <article class="blue-card skill-card">
+            <i data-lucide="languages">L</i>
+            <h3>Langues</h3>
+            <div class="tag-row"><span class="tag">Anglais pro</span><span class="tag">Allemand avancé</span><span class="tag">International</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="experience" data-section="experience">
+      <div class="section-inner">
+        <header class="section-header">
+          <p class="section-kicker">04 /</p>
+          <h2 class="section-title">Parcours</h2>
+          <div class="section-rule"></div>
+        </header>
+        <div class="timeline">
+          <div class="timeline-column">
+            <h3>Formation</h3>
+            <div id="education-list">
+              <button class="timeline-card show-card" type="button"><span class="date">Février à juin 2026</span><h4>Semestre à l'étranger - Cracovie</h4><p>AGH University of Krakow. Cours en anglais, autonomie, mobilité européenne et progression linguistique.</p></button>
+              <button class="timeline-card show-card" type="button"><span class="date">Septembre 2024 - Juin 2026</span><h4>Cycle préparatoire d'ingénieur</h4><p>UTBM. Informatique, sciences de l'ingénieur, certification Pix niveau avancé.</p></button>
+              <button class="timeline-card show-card" type="button"><span class="date">2021 - 2024</span><h4>Baccalauréat général - Mention Bien</h4><p>Lycée Edouard Belin. Mathématiques, physique-chimie et informatique.</p></button>
             </div>
-        </section>
+          </div>
+          <div class="timeline-column">
+            <h3>Expériences</h3>
+            <div id="experience-list">
+              <button class="timeline-card show-card" type="button"><span class="date">Septembre 2025 - Mai 2026</span><h4>Assistant communication - Service Civique</h4><p>CSVesoul70 Partenaires. Réseaux sociaux, création de visuels, rédaction de contenu.</p><span class="outline-link">Voir le rapport</span></button>
+              <button class="timeline-card show-card" type="button"><span class="date">Été & hiver 2025</span><h4>Opérateur de production & stagiaire</h4><p>Stellantis. Étiquetage, emballage, contrôle qualité et données techniques.</p><span class="outline-link">Voir le rapport</span></button>
+              <button class="timeline-card show-card" type="button"><span class="date">Été 2024</span><h4>Préparateur de commandes</h4><p>Mister Auto. Picking, emballage et préparation à l'expédition.</p></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <section id="cv" class="section hidden">
-    <div class="container">
-        <h2 data-key="cvTitle">Mon CV</h2>
+    <section class="section" id="erasmus" data-section="erasmus">
+      <div class="section-inner">
+        <header class="section-header">
+          <p class="section-kicker">05 /</p>
+          <h2 class="section-title">Erasmus</h2>
+          <div class="section-rule"></div>
+        </header>
+        <div class="erasmus-layout">
+          <div class="blue-card erasmus-copy">
+            <h3>Carnet de bord Erasmus</h3>
+            <p id="city-detail">Cracovie: semestre à l'AGH University of Krakow, autonomie, cours en anglais et mobilité européenne.</p>
+            <div class="city-list" id="city-list">
+              <button class="city-chip active" type="button">Cracovie</button><button class="city-chip" type="button">Belfort</button><button class="city-chip" type="button">Copenhague</button><button class="city-chip" type="button">Bratislava</button><button class="city-chip" type="button">Varsovie</button><button class="city-chip" type="button">Tallinn</button><button class="city-chip" type="button">Riga</button><button class="city-chip" type="button">Vilnius</button><button class="city-chip" type="button">Malmö</button><button class="city-chip" type="button">Helsinki</button><button class="city-chip" type="button">Prague</button>
+            </div>
+            <pre class="route-ascii">BELFORT * . . . . . . . . . * CRACOVIE
+FRANCE        route Erasmus        POLOGNE</pre>
+            <a class="outline-link" href="https://www.polarsteps.com/lutz2cru" target="_blank" rel="noopener noreferrer">Polarsteps →</a>
+          </div>
+          <div class="travel-board" id="erasmus-journey" aria-label="Carnet Erasmus interactif">
+            <div class="boarding-card">
+              <p class="boarding-label">BOARDING PASS</p>
+              <div class="boarding-main">
+                <span>VES</span>
+                <i></i>
+                <span>KRK</span>
+              </div>
+              <p>Semestre Erasmus · AGH University of Krakow</p>
+            </div>
+            <div class="passport-stack" id="travel-stamps"></div>
+            <div class="travel-stats">
+              <div><strong>11</strong><span>villes</span></div>
+              <div><strong>8</strong><span>pays</span></div>
+              <div><strong>1</strong><span>semestre</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <div class="cv-button-wrapper">
-            <a href="https://cvdesignr.com/p/6900b1618eb03?hl=fr_FR"
-               class="btn"
-               target="_blank"
-               rel="noopener noreferrer"
-               data-key="cvButton">
-                Consulter mon CV
+    <section class="section" id="projects" data-section="projects">
+      <div class="section-inner">
+        <header class="section-header">
+          <p class="section-kicker">06 /</p>
+          <h2 class="section-title">Projets</h2>
+          <div class="section-rule"></div>
+        </header>
+        <div class="filters" id="project-filters">
+          <button class="filter-btn active" type="button">Tous</button><button class="filter-btn" type="button">C</button><button class="filter-btn" type="button">Web</button><button class="filter-btn" type="button">IoT</button><button class="filter-btn" type="button">Linux</button><button class="filter-btn" type="button">Autre</button>
+        </div>
+        <div class="projects-grid" id="project-grid">
+          <article class="project-card show-card"><div class="flip-inner"><div class="project-card-face project-front" data-num="01"><i class="project-icon" data-lucide="keyboard">C</i><h3>Jeu de lettres en C</h3><div class="tag-row"><span class="tag">C</span><span class="tag">Algorithmique</span></div></div><div class="project-card-face project-back" data-num="01"><p>Génération de grille, vérification dictionnaire, timer, score et historique.</p></div></div></article>
+          <article class="project-card show-card"><div class="flip-inner"><div class="project-card-face project-front" data-num="02"><i class="project-icon" data-lucide="code-2">W</i><h3>Site vocabulaire collaboratif</h3><div class="tag-row"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">PHP</span></div></div><div class="project-card-face project-back" data-num="02"><p>Site inspiré de Quizlet pour réviser du vocabulaire anglais.</p><a class="outline-link" href="https://matthiasvocable03.page.gd/?i=1" target="_blank" rel="noopener noreferrer">Voir le projet</a></div></div></article>
+          <article class="project-card show-card"><div class="flip-inner"><div class="project-card-face project-front" data-num="03"><i class="project-icon" data-lucide="server">N</i><h3>NAS personnel</h3><div class="tag-row"><span class="tag">Linux</span><span class="tag">Stockage</span></div></div><div class="project-card-face project-back" data-num="03"><p>Serveur TrueNAS Scale pour centraliser et sécuriser documents et médias.</p></div></div></article>
+          <article class="project-card show-card"><div class="flip-inner"><div class="project-card-face project-front" data-num="04"><i class="project-icon" data-lucide="cloud-sun">I</i><h3>Station météo ESP32</h3><div class="tag-row"><span class="tag">IoT</span><span class="tag">MQTT</span><span class="tag">Node-RED</span></div></div><div class="project-card-face project-back" data-num="04"><p>Capteurs, dashboard Node-RED et visualisation temps réel via MQTT.</p></div></div></article>
+          <article class="project-card show-card"><div class="flip-inner"><div class="project-card-face project-front" data-num="05"><i class="project-icon" data-lucide="cpu">L</i><h3>Gestionnaire processus Linux</h3><div class="tag-row"><span class="tag">C</span><span class="tag">Linux</span><span class="tag">ncurses</span></div></div><div class="project-card-face project-back" data-num="05"><p>Outil htop-like en C avec interface ncurses.</p></div></div></article>
+          <article class="project-card show-card"><div class="flip-inner"><div class="project-card-face project-front" data-num="06"><i class="project-icon" data-lucide="keyboard">A</i><h3>Clavier de raccourcis</h3><div class="tag-row"><span class="tag">AutoHotkey</span><span class="tag">Windows</span></div></div><div class="project-card-face project-back" data-num="06"><p>Second clavier transformé en console de raccourcis AutoHotkey.</p></div></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="cv" data-section="cv">
+      <div class="section-inner">
+        <header class="section-header">
+          <p class="section-kicker">07 /</p>
+          <h2 class="section-title">CV</h2>
+          <div class="section-rule"></div>
+        </header>
+        <div class="cv-card">
+          <i data-lucide="file-text"></i>
+          <h3>Curriculum Vitae</h3>
+          <p>Une vue synthétique de mon parcours, de mes projets et de mes expériences.</p>
+          <a class="primary-amber" href="https://cvdesignr.com/p/6900b1618eb03?hl=fr_FR" target="_blank" rel="noopener noreferrer">Consulter le CV →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact" data-section="contact">
+      <div class="section-inner">
+        <header class="section-header">
+          <p class="section-kicker">08 /</p>
+          <h2 class="section-title">Contact</h2>
+          <div class="section-rule"></div>
+        </header>
+        <div class="contact-grid">
+          <article class="blue-card contact-panel">
+            <p class="section-kicker">OPEN CHANNEL /</p>
+            <h3>Un projet, une idée, une opportunité ? Parlons-en simplement.</h3>
+            <p>Je préfère les échanges directs aux formulaires impersonnels. Un message clair, un lien, un contexte, et je reviens vers vous rapidement.</p>
+            <div class="contact-availability">
+              <span>Alternance trouvée</span>
+              <span>Projets info</span>
+              <span>UTBM · 2026</span>
+            </div>
+          </article>
+          <aside class="blue-card social-card">
+            <a class="social-link" href="mailto:matthias@tulz.fr">
+              <svg class="nav-svg" aria-hidden="true"><use href="#icon-mail"></use></svg>
+              <span><strong>Email</strong>matthias@tulz.fr</span>
             </a>
+            <a class="social-link" href="https://www.linkedin.com/in/matthias-lutz-97a853332/" target="_blank" rel="noopener noreferrer">
+              <svg class="nav-svg" aria-hidden="true"><use href="#icon-linkedin"></use></svg>
+              <span><strong>LinkedIn</strong>Profil professionnel</span>
+            </a>
+            <a class="social-link" href="https://github.com/lutz2cru" target="_blank" rel="noopener noreferrer">
+              <svg class="nav-svg" aria-hidden="true"><use href="#icon-github"></use></svg>
+              <span><strong>GitHub</strong>lutz2cru</span>
+            </a>
+          </aside>
         </div>
-    </div>
-</section>
+      </div>
+    </section>
+  </main>
 
-        <section id="contact" class="section hidden">
-            <div class="container">
-                <h2 data-key="contactTitle">Entrons en contact</h2>
-                <p data-key="contactDesc">À la recherche d'une alternance pour Septembre 2026, je suis disponible sur les secteurs de Vesoul, Belfort et Besançon.</p>
-                <div class="contact-links">
-                    <a href="https://www.linkedin.com/in/matthias-lutz-97a853332/" target="_blank" class="contact-button" data-key="contactLinkedIn">
-                        <i class="fab fa-linkedin"></i> LinkedIn
-                    </a>
-                    <a href="mailto:matthias@tulz.fr" class="contact-button" data-key="contactEmail">
-                        <i class="fas fa-envelope"></i> E-mail
-                    </a>
-                    <a href="https://github.com/lutz2cru" target="_blank" class="contact-button" data-key="contactGitHub">
-                        <i class="fas fa-github"></i> GitHub
-                    </a>
-                </div>
+  <aside class="drawer" id="drawer" aria-live="polite">
+    <button class="drawer-close" id="drawer-close" aria-label="Fermer">×</button>
+    <div id="drawer-content"></div>
+  </aside>
+
+  <script>
+    let lucideApi = null;
+    async function refreshIcons() {
+      if (!lucideApi) {
+        try {
+          const icons = await import('https://unpkg.com/lucide@latest/dist/esm/lucide.js');
+          lucideApi = {
+            createIcons: icons.createIcons,
+            icons: {
+              Terminal: icons.Terminal,
+              User: icons.User,
+              Code2: icons.Code2,
+              Briefcase: icons.Briefcase,
+              Globe: icons.Globe,
+              FolderGit2: icons.FolderGit2,
+              FileText: icons.FileText,
+              Mail: icons.Mail,
+              Github: icons.Github,
+              Linkedin: icons.Linkedin,
+              Cpu: icons.Cpu,
+              Database: icons.Database,
+              Network: icons.Network,
+              Languages: icons.Languages,
+              PenTool: icons.PenTool,
+              Server: icons.Server,
+              CloudSun: icons.CloudSun,
+              Boxes: icons.Boxes,
+              Keyboard: icons.Keyboard,
+              Trophy: icons.Trophy,
+              CircleDot: icons.CircleDot,
+              Shield: icons.Shield,
+              MapPin: icons.MapPin,
+              Zap: icons.Zap
+            }
+          };
+        } catch (error) {
+          return;
+        }
+      }
+      lucideApi.createIcons({ icons: lucideApi.icons });
+    }
+
+    const links = {
+      cv: 'https://cvdesignr.com/p/6900b1618eb03?hl=fr_FR',
+      vocab: 'https://matthiasvocable03.page.gd/?i=1',
+      article: 'https://c.estrepublicain.fr/sport/2026/02/01/matthias-lutz-pur-produit-de-la-formation-du-cs-vesoul',
+      linkedin: 'https://www.linkedin.com/in/matthias-lutz-97a853332/',
+      github: 'https://github.com/lutz2cru',
+      polarsteps: 'https://www.polarsteps.com/lutz2cru',
+      service: 'https://1drv.ms/b/c/e15c7d58f51b139c/IQDAdHpUl7maQZ_LaY847Zb0AT9RkhmTxhUMGO1v3kE_Kqk?e=NtcVm1',
+      stellantis: 'https://1drv.ms/b/c/e15c7d58f51b139c/EboHtLwsldFFlU6AZXj18bQB7lwSC62ScPIaaX9yN-5qdw?e=iY6x8T'
+    };
+
+    const projects = [
+      { id: 1, name: 'Jeu de lettres en C', icon: 'keyboard', group: 'C', tags: ['C', 'Algorithmique'], desc: 'Génération de grille, vérification dictionnaire, timer, score et historique.' },
+      { id: 2, name: 'Site vocabulaire collaboratif', icon: 'code-2', group: 'Web', tags: ['HTML', 'CSS', 'PHP'], desc: 'Site inspiré de Quizlet pour réviser du vocabulaire anglais.', link: links.vocab },
+      { id: 3, name: 'Crunch Time 2025', icon: 'trophy', group: 'Autre', tags: ['Travail équipe', 'Gestion de projet'], desc: 'Projet universitaire intensif d’une semaine en équipe.' },
+      { id: 4, name: 'NAS personnel', icon: 'server', group: 'Linux', tags: ['Linux', 'Réseaux', 'Stockage'], desc: 'Serveur TrueNAS Scale pour centraliser et sécuriser documents et médias.' },
+      { id: 5, name: 'Station météo ESP32', icon: 'cloud-sun', group: 'IoT', tags: ['IoT', 'MQTT', 'Node-RED', 'Arduino', 'ESP32'], desc: 'Capteurs, dashboard Node-RED et visualisation temps réel via MQTT.' },
+      { id: 6, name: 'Système expert voitures', icon: 'boxes', group: 'C', tags: ['C', 'IA symbolique', 'Base de connaissances'], desc: 'Déduction d’un modèle de voiture via base de connaissances et moteur d’inférence.' },
+      { id: 7, name: 'Gestionnaire processus Linux', icon: 'cpu', group: 'Linux', tags: ['C', 'Linux', 'ncurses'], desc: 'Outil htop-like en C avec interface ncurses.' },
+      { id: 8, name: 'Clavier de raccourcis', icon: 'keyboard', group: 'Autre', tags: ['Automatisation', 'Windows'], desc: 'Second clavier transformé en console de raccourcis AutoHotkey.' }
+    ];
+
+    const skillCategories = [
+      { icon: 'code-2', title: 'Développement', tags: ['C', 'Algorithmique', 'Structures de données'] },
+      { icon: 'database', title: 'Web & données', tags: ['HTML', 'CSS', 'PHP', 'SQL'] },
+      { icon: 'cpu', title: 'Systèmes', tags: ['Linux', 'Bash', 'Git', 'ncurses'] },
+      { icon: 'network', title: 'IoT', tags: ['ESP32', 'Arduino', 'MQTT', 'Node-RED'] },
+      { icon: 'pen-tool', title: 'Création digitale', tags: ['Canva', 'Photo', 'Vidéo', 'Réseaux sociaux'] },
+      { icon: 'languages', title: 'Langues', tags: ['Anglais pro', 'Allemand avancé', 'International'] }
+    ];
+
+    const education = [
+      { title: 'Semestre à l’étranger - Cracovie', date: 'Février à juin 2026', detail: 'AGH University of Krakow. Cours en anglais, autonomie, mobilité européenne et progression linguistique.' },
+      { title: "Cycle préparatoire d’ingénieur", date: 'Septembre 2024 - Juin 2026', detail: 'UTBM. Informatique, sciences de l’ingénieur, certification Pix niveau avancé.' },
+      { title: 'Baccalauréat général - Mention Bien', date: '2021 - 2024', detail: 'Lycée Edouard Belin. Spécialités mathématiques, physique-chimie et informatique.' }
+    ];
+
+    const experiences = [
+      { title: 'Assistant communication - Service Civique', date: 'Septembre 2025 - Mai 2026', detail: 'CSVesoul70 Partenaires. Réseaux sociaux, création de visuels, rédaction de contenu.', link: links.service },
+      { title: 'Opérateur de production & stagiaire', date: 'Été & hiver 2025', detail: 'Stellantis. Étiquetage, emballage, contrôle qualité et données techniques.', link: links.stellantis },
+      { title: "Préparateur de commandes", date: 'Été 2024', detail: 'Mister Auto. Picking, emballage et préparation à l’expédition.' },
+      { title: "Jobs d’été", date: 'Étés 2022 & 2023', detail: 'Centre aéré de Vaivre-et-Montoille. Aide cuisine et entretien des locaux.' }
+    ];
+
+    const travelCities = [
+      { name: 'Belfort', country: 'France', lat: 47.64, lon: 6.86, type: 'base', detail: 'Repère UTBM et point de départ du parcours.' },
+      { name: 'Cracovie', country: 'Pologne', lat: 50.06, lon: 19.94, type: 'main', detail: 'Semestre Erasmus à l’AGH University of Krakow.' },
+      { name: 'Varsovie', country: 'Pologne', lat: 52.23, lon: 21.01, type: 'visited', detail: 'Capitale polonaise et autre rythme urbain.' },
+      { name: 'Vilnius', country: 'Lituanie', lat: 54.69, lon: 25.28, type: 'visited', detail: 'Découverte balte et ville à taille humaine.' },
+      { name: 'Riga', country: 'Lettonie', lat: 56.95, lon: 24.10, type: 'visited', detail: 'Énergie baltique et grands espaces.' },
+      { name: 'Tallinn', country: 'Estonie', lat: 59.44, lon: 24.75, type: 'visited', detail: 'Ville nordique, numérique et médiévale.' },
+      { name: 'Helsinki', country: 'Finlande', lat: 60.17, lon: 24.94, type: 'visited', detail: 'Design, calme et organisation nordique.' },
+      { name: 'Copenhague', country: 'Danemark', lat: 55.68, lon: 12.57, type: 'visited', detail: 'Mobilité douce et qualité de vie.' },
+      { name: 'Malmö', country: 'Suède', lat: 55.61, lon: 13.00, type: 'visited', detail: 'Passage scandinave entre Suède et Danemark.' },
+      { name: 'Prague', country: 'Tchéquie', lat: 50.08, lon: 14.44, type: 'visited', detail: 'Architecture, histoire et culture d’Europe centrale.' },
+      { name: 'Bratislava', country: 'Slovaquie', lat: 48.15, lon: 17.11, type: 'visited', detail: 'Ville compacte et frontalière.' }
+    ];
+
+    const output = document.getElementById('terminal-output');
+    const input = document.getElementById('terminal-input');
+    const drawer = document.getElementById('drawer');
+    const drawerContent = document.getElementById('drawer-content');
+    const state = { mapReady: false };
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char]));
+    }
+
+    function bar(level) {
+      const filled = Math.round(level / 10);
+      return '█'.repeat(filled) + '░'.repeat(10 - filled);
+    }
+
+    function print(content, command = null) {
+      const block = document.createElement('pre');
+      block.innerHTML = command ? `<span class="prompt">matthias@portfolio:~$</span> ${escapeHtml(command)}\n${content}` : content;
+      output.appendChild(block);
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function openProject(project) {
+      drawerContent.innerHTML = `<p class="section-kicker">PROJECT ${String(project.id).padStart(2, '0')}</p><h2 class="section-title">${project.name}</h2><p>${project.desc}</p><p>${project.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}</p>${project.link ? `<p><a class="outline-link" href="${project.link}" target="_blank" rel="noopener noreferrer">Ouvrir le projet →</a></p>` : ''}`;
+      drawer.classList.add('open');
+      return `Ouverture overlay: ${project.name}`;
+    }
+
+    const commands = {
+      help: () => `Commandes disponibles:
+help, whoami, skills, projects, open <n>, experience, erasmus, handball,
+contact, cv, clear, nas`,
+      whoami: () => `{
+  "nom": "Matthias LUTZ",
+  "formation": "Étudiant ingénieur informatique - UTBM",
+  "localisation": "Vesoul / Belfort / Besançon",
+  "recherche": "Alternance informatique - septembre 2026",
+  "signature": "C, Linux, Web, IoT, handball, mobilité européenne"
+}`,
+      skills: () => {
+        location.hash = '#skills';
+        return `C           ${bar(82)} 82%
+Linux       ${bar(74)} 74%
+Web         ${bar(78)} 78%
+IoT         ${bar(72)} 72%
+Git         ${bar(70)} 70%
+Bash        ${bar(66)} 66%`;
+      },
+      projects: () => {
+        location.hash = '#projects';
+        return projects.map(project => `${project.id}. ${project.name} [${project.tags.join(', ')}]`).join('\n') + '\n\nTapez "open 3" pour ouvrir le 3e projet.';
+      },
+      experience: () => {
+        location.hash = '#experience';
+        return `FORMATION
+2026  ├─ Erasmus - AGH University of Krakow
+2024  ├─ Cycle préparatoire ingénieur - UTBM
+2021  └─ Bac général - Mention Bien
+
+EXPÉRIENCES
+2025  ├─ Service Civique - CSVesoul70 Partenaires
+2025  ├─ Stellantis - production & stage
+2024  └─ Mister Auto - préparateur de commandes`;
+      },
+      erasmus: () => {
+        location.hash = '#erasmus';
+        return `BELFORT * . . . . . . . . . * CRACOVIE
+Villes: Copenhague, Bratislava, Varsovie, Tallinn, Riga, Vilnius, Malmö, Helsinki, Prague.`;
+      },
+      handball: () => `     ______________________
+    |                      |
+    |    \\o/         o     |
+    |     |\\__            |
+    |    / \\              |
+    |______________________|
+
+Easter egg débloqué: gardien de but CSV70.
+Article: <a href="${links.article}" target="_blank" rel="noopener noreferrer">Est Républicain →</a>`,
+      contact: () => `Email: <a href="mailto:matthias@tulz.fr">matthias@tulz.fr</a>
+LinkedIn: <a href="${links.linkedin}" target="_blank" rel="noopener noreferrer">linkedin.com/in/matthias-lutz-97a853332</a>
+GitHub: <a href="${links.github}" target="_blank" rel="noopener noreferrer">github.com/lutz2cru</a>`,
+      cv: () => {
+        window.open(links.cv, '_blank', 'noopener,noreferrer');
+        return 'Ouverture du CV dans un nouvel onglet...';
+      },
+      clear: () => {
+        output.innerHTML = '';
+        return null;
+      },
+      nas: () => `PID   USER      CPU   MEM   PROCESS
+42    matthias  12%   128M  station_meteo.exe
+70    root      08%   256M  truenas_scale.service
+128   web       04%   092M  vocabulaire_php.worker
+256   c         16%   064M  htop_like_debug
+512   auto      02%   018M  shortcut_keyboard.ahk`
+    };
+
+    function runCommand(raw) {
+      const command = raw.trim();
+      if (!command) return;
+      const [base, arg] = command.split(/\s+/);
+      let response;
+      if (base === 'open') {
+        const project = projects.find(item => item.id === Number(arg));
+        response = project ? openProject(project) : 'Projet introuvable. Exemple: open 3';
+      } else if (commands[base]) {
+        response = commands[base]();
+      } else {
+        response = "Commande non reconnue. Tapez 'help' pour la liste.";
+      }
+      if (response !== null) print(response, command);
+    }
+
+    function renderSkills() {
+      document.getElementById('skills-grid').innerHTML = skillCategories.map(skill => `
+        <article class="blue-card skill-card">
+          <i data-lucide="${skill.icon}"></i>
+          <h3>${skill.title}</h3>
+          <div class="tag-row">${skill.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+        </article>
+      `).join('');
+      refreshIcons();
+    }
+
+    function renderProjects() {
+      const filters = ['Tous', 'C', 'Web', 'IoT', 'Linux', 'Autre'];
+      document.getElementById('project-filters').innerHTML = filters.map(filter => `<button class="filter-btn ${filter === 'Tous' ? 'active' : ''}" data-filter="${filter}">${filter}</button>`).join('');
+      document.getElementById('project-grid').innerHTML = projects.map(project => `
+        <article class="project-card" data-group="${project.group}" tabindex="0">
+          <div class="flip-inner">
+            <div class="project-card-face project-front" data-num="${String(project.id).padStart(2, '0')}">
+              <i class="project-icon" data-lucide="${project.icon}"></i>
+              <h3>${project.name}</h3>
+              <div class="tag-row">${project.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
             </div>
-        </section>
-    </main>
+            <div class="project-card-face project-back" data-num="${String(project.id).padStart(2, '0')}">
+              <p>${project.desc}</p>
+              <div class="tag-row">${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+              ${project.link ? `<a class="outline-link" href="${project.link}" target="_blank" rel="noopener noreferrer">Voir le projet →</a>` : '<span>Projet local / universitaire</span>'}
+            </div>
+          </div>
+        </article>
+      `).join('');
+      document.querySelectorAll('.filter-btn').forEach(button => button.addEventListener('click', () => filterProjects(button.dataset.filter)));
+      refreshIcons();
+    }
 
-    <footer>
-        <div class="container">
-            <p data-key="footerText">&copy; 2026 - Matthias LUTZ</p>
-        </div>
-    </footer>
+    function filterProjects(filter) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.filter === filter));
+      document.querySelectorAll('.project-card').forEach(card => card.classList.toggle('hide', filter !== 'Tous' && card.dataset.group !== filter));
+    }
 
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous" defer></script>
-    <script src="script.js"></script>
+    function renderTimeline() {
+      const item = (entry, type) => `<button class="timeline-card" data-type="${type}" data-title="${escapeHtml(entry.title)}" data-detail="${escapeHtml(entry.detail)}" data-link="${entry.link || ''}">
+        <span class="date">${entry.date}</span><h4>${entry.title}</h4><p>${entry.detail}</p>${entry.link ? '<span class="outline-link">Voir le rapport</span>' : ''}
+      </button>`;
+      document.getElementById('education-list').innerHTML = education.map(entry => item(entry, 'Formation')).join('');
+      document.getElementById('experience-list').innerHTML = experiences.map(entry => item(entry, 'Expérience')).join('');
+      document.querySelectorAll('.timeline-card').forEach(button => button.addEventListener('click', () => {
+        drawerContent.innerHTML = `<p class="section-kicker">${button.dataset.type}</p><h2 class="section-title">${button.dataset.title}</h2><p>${button.dataset.detail}</p>${button.dataset.link ? `<p><a class="outline-link" href="${button.dataset.link}" target="_blank" rel="noopener noreferrer">Ouvrir le rapport →</a></p>` : ''}`;
+        drawer.classList.add('open');
+      }));
+    }
+
+    function revealCards() {
+      document.querySelectorAll('.project-card, .timeline-card').forEach((card, index) => {
+        setTimeout(() => card.classList.add('show-card'), index * 70);
+      });
+    }
+
+    function initCursor() {
+      const dot = document.querySelector('.cursor-dot');
+      const ring = document.querySelector('.cursor-ring');
+      let rx = 0, ry = 0, tx = 0, ty = 0;
+      window.addEventListener('mousemove', event => {
+        tx = event.clientX; ty = event.clientY;
+        dot.style.left = `${tx}px`; dot.style.top = `${ty}px`;
+      });
+      function loop() {
+        rx += (tx - rx) * 0.18;
+        ry += (ty - ry) * 0.18;
+        ring.style.left = `${rx}px`; ring.style.top = `${ry}px`;
+        requestAnimationFrame(loop);
+      }
+      loop();
+      document.addEventListener('mouseover', event => {
+        if (event.target.closest('a, button, input, textarea')) document.body.classList.add('cursor-grow');
+      });
+      document.addEventListener('mouseout', event => {
+        if (event.target.closest('a, button, input, textarea')) document.body.classList.remove('cursor-grow');
+      });
+    }
+
+    function initPhotoEgg() {
+      const frame = document.getElementById('photo-frame');
+      const ascii = document.getElementById('ascii-photo');
+      ascii.textContent = `MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMNNNNNNNNNNNNNNNNNNNNNNNNNNMM
+MMN  MATTHIAS LUTZ :: ASCII  NMM
+MMN  UTBM  C  LINUX  IOT     NMM
+MMN  BLUEPRINT MODE ENABLED  NMM
+MMNNNNNNNNNNNNNNNNNNNNNNNNNNMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM`;
+      let clicks = 0;
+      frame.addEventListener('click', () => {
+        clicks += 1;
+        if (clicks >= 5) frame.classList.toggle('ascii-mode');
+      });
+    }
+
+    function initKonami() {
+      const sequence = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+      let index = 0;
+      document.addEventListener('keydown', event => {
+        if (event.key === sequence[index]) {
+          index += 1;
+          if (index === sequence.length) {
+            index = 0;
+            celebrate();
+          }
+        } else {
+          index = 0;
+        }
+      });
+    }
+
+    function celebrate() {
+      for (let i = 0; i < 70; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti';
+        piece.style.left = `${Math.random() * 100}vw`;
+        piece.style.background = Math.random() > 0.5 ? 'var(--accent-primary)' : 'var(--accent-second)';
+        piece.style.animationDelay = `${Math.random() * 280}ms`;
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 1600);
+      }
+    }
+
+    function initGlobe() {
+      initErasmusJourney();
+      return;
+      if (state.globeLoaded) return;
+      state.globeLoaded = true;
+      const container = document.getElementById('globe-container');
+      container.innerHTML = '';
+      const cityList = document.getElementById('city-list');
+      const cityDetail = document.getElementById('city-detail');
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+      camera.position.z = 4.4;
+
+      const earthGroup = new THREE.Group();
+      scene.add(earthGroup);
+      const globe = new THREE.Mesh(
+        new THREE.SphereGeometry(1.38, 72, 72),
+        new THREE.MeshBasicMaterial({ color: 0x17345d, wireframe: true, transparent: true, opacity: 0.72 })
+      );
+      earthGroup.add(globe);
+      const stars = new THREE.Points(
+        new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(Array.from({ length: 900 }, () => (Math.random() - 0.5) * 9), 3)),
+        new THREE.PointsMaterial({ color: 0x3b82f6, size: 0.012 })
+      );
+      scene.add(stars);
+
+      function cityToVector(city, radius = 1.43) {
+        const phi = (90 - city.lat) * Math.PI / 180;
+        const theta = (city.lon + 180) * Math.PI / 180;
+        return new THREE.Vector3(
+          -radius * Math.sin(phi) * Math.cos(theta),
+          radius * Math.cos(phi),
+          radius * Math.sin(phi) * Math.sin(theta)
+        );
+      }
+
+      const route = new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(travelCities.map(city => cityToVector(city, 1.45))),
+        new THREE.LineBasicMaterial({ color: 0xf59e0b, transparent: true, opacity: 0.9 })
+      );
+      earthGroup.add(route);
+
+      const meshes = [];
+      travelCities.forEach(city => {
+        const color = city.type === 'main' ? 0xf59e0b : city.type === 'base' ? 0x93c5fd : 0x3b82f6;
+        const mesh = new THREE.Mesh(new THREE.SphereGeometry(city.type === 'visited' ? 0.032 : 0.048, 18, 18), new THREE.MeshBasicMaterial({ color }));
+        mesh.position.copy(cityToVector(city));
+        mesh.userData.city = city;
+        meshes.push(mesh);
+        earthGroup.add(mesh);
+      });
+
+      cityList.innerHTML = travelCities.map(city => `<button class="city-chip" type="button" data-city="${city.name}">${city.name}</button>`).join('');
+      function showCity(city) {
+        cityDetail.textContent = `${city.name} (${city.country}) — ${city.detail}`;
+        document.querySelectorAll('.city-chip').forEach(chip => chip.classList.toggle('active', chip.dataset.city === city.name));
+      }
+      cityList.addEventListener('click', event => {
+        const chip = event.target.closest('.city-chip');
+        if (!chip) return;
+        const city = travelCities.find(item => item.name === chip.dataset.city);
+        if (city) showCity(city);
+      });
+      showCity(travelCities[1]);
+
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
+      container.addEventListener('click', event => {
+        const rect = container.getBoundingClientRect();
+        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        raycaster.setFromCamera(mouse, camera);
+        const hit = raycaster.intersectObjects(meshes)[0];
+        if (hit) showCity(hit.object.userData.city);
+      });
+
+      function animate() {
+        earthGroup.rotation.y += 0.002;
+        stars.rotation.y -= 0.0007;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+      }
+      animate();
+      window.addEventListener('resize', () => {
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+      });
+    }
+
+    function initErasmusJourney() {
+      if (state.mapReady) return;
+      const stamps = document.getElementById('travel-stamps');
+      const cityList = document.getElementById('city-list');
+      const cityDetail = document.getElementById('city-detail');
+      if (!stamps || !cityList || !cityDetail) return;
+      state.mapReady = true;
+
+      const tilts = [-2, 1.5, -1, 2.2, -1.8, 1, -2.4, 1.8, -1.2, 2.5, -1.6];
+      cityList.innerHTML = travelCities.map(city => `<button class="city-chip" type="button" data-city="${escapeHtml(city.name)}">${escapeHtml(city.name)}</button>`).join('');
+      stamps.innerHTML = travelCities.map((city, index) => `
+        <button class="travel-stamp" type="button" data-city="${escapeHtml(city.name)}" style="--tilt:${tilts[index % tilts.length]}deg">
+          <span>${String(index + 1).padStart(2, '0')} / ${escapeHtml(city.country)}</span>
+          <strong>${escapeHtml(city.name)}</strong>
+        </button>
+      `).join('');
+
+      function showCity(city) {
+        cityDetail.textContent = `${city.name} (${city.country}) - ${city.detail}`;
+        document.querySelectorAll('.city-chip').forEach(chip => chip.classList.toggle('active', chip.dataset.city === city.name));
+        document.querySelectorAll('.travel-stamp').forEach(stamp => stamp.classList.toggle('active', stamp.dataset.city === city.name));
+      }
+
+      cityList.addEventListener('click', event => {
+        const chip = event.target.closest('.city-chip');
+        if (!chip) return;
+        const city = travelCities.find(item => item.name === chip.dataset.city);
+        if (city) showCity(city);
+      });
+
+      stamps.addEventListener('click', event => {
+        const stamp = event.target.closest('.travel-stamp');
+        if (!stamp) return;
+        const city = travelCities.find(item => item.name === stamp.dataset.city);
+        if (city) showCity(city);
+      });
+
+      showCity(travelCities[1]);
+    }
+
+    function initObservers() {
+      const sectionObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const id = entry.target.id;
+          document.querySelectorAll('[data-section]').forEach(item => item.classList.toggle('active', item.dataset.section === id));
+          if (id === 'erasmus') initErasmusJourney();
+          if (id === 'projects' || id === 'experience') revealCards();
+        });
+      }, { threshold: 0.35 });
+      document.querySelectorAll('section[data-section]').forEach(section => sectionObserver.observe(section));
+
+      const cardObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('show-card');
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.project-card, .timeline-card').forEach(card => cardObserver.observe(card));
+    }
+
+    function initProgress() {
+    }
+
+    document.getElementById('terminal-form').addEventListener('submit', event => {
+      event.preventDefault();
+      runCommand(document.getElementById('terminal-input').value);
+      document.getElementById('terminal-input').value = '';
+    });
+    document.querySelectorAll('.quick-commands button').forEach(button => button.addEventListener('click', () => runCommand(button.dataset.command)));
+    document.getElementById('drawer-close').addEventListener('click', () => drawer.classList.remove('open'));
+
+    renderSkills();
+    renderProjects();
+    renderTimeline();
+    initErasmusJourney();
+    refreshIcons();
+    initCursor();
+    initPhotoEgg();
+    initKonami();
+    initObservers();
+    initProgress();
+    print('Blueprint chargé. Tapez "help" pour la liste des commandes.');
+  </script>
 </body>
 </html>
