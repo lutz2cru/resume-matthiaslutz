@@ -1750,8 +1750,8 @@ FRANCE        route Erasmus        POLOGNE</pre>
     }
 
     const commands = {
-      help: () => `Commandes disponibles:
-help, whoami, skills, projects, open <n>, experience, erasmus, handball,
+      matthias: () => `Commandes disponibles:
+matthias, whoami, skills, projects, open <n>, experience, erasmus, handball,
 contact, cv, clear, nas`,
       whoami: () => `{
   "nom": "Matthias LUTZ",
@@ -1829,7 +1829,7 @@ GitHub: <a href="${links.github}" target="_blank" rel="noopener noreferrer">gith
       } else if (commands[base]) {
         response = commands[base]();
       } else {
-        response = "Commande non reconnue. Tapez 'help' pour la liste.";
+        response = "Commande non reconnue. Tapez 'matthias' pour la liste.";
       }
       if (response !== null) print(response, command);
     }
@@ -2134,7 +2134,7 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM`;
     initKonami();
     initObservers();
     initProgress();
-    print('Blueprint chargé. Tapez "help" pour la liste des commandes.');
+    print('Blueprint chargé. Tapez "matthias" pour la liste des commandes.');
   </script>
 </body>
 </html>
