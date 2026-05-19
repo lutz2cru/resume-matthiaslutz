@@ -9,7 +9,7 @@
   <meta property="og:title" content="Matthias LUTZ | Portfolio UTBM">
   <meta property="og:description" content="Portfolio blueprint industriel: terminal interactif, projets, compétences, Erasmus et contact.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://tulz.fr/sources/Photo5.jpg">
+  <meta property="og:image" content="https://tulz.fr/sources/portrait-matthias.png">
   <meta name="theme-color" content="#0a1628">
   <link rel="icon" href="sources/tulz.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -580,7 +580,19 @@
       border: 2px solid var(--accent-primary);
       clip-path: polygon(0 0, 100% 0, 100% calc(100% - 54px), calc(100% - 54px) 100%, 0 100%);
       background: linear-gradient(145deg, rgba(59,130,246,0.22), rgba(245,158,11,0.08));
+      box-shadow: 0 26px 70px rgba(2,8,23,0.34), 0 0 0 1px rgba(245,158,11,0.12);
       overflow: hidden;
+    }
+
+    .photo-shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(10,22,40,0.02), rgba(10,22,40,0.26)),
+        linear-gradient(90deg, rgba(59,130,246,0.16), transparent 28%, transparent 72%, rgba(245,158,11,0.1));
+      mix-blend-mode: multiply;
+      pointer-events: none;
     }
 
     .photo-shell img,
@@ -590,8 +602,8 @@
       min-height: 0;
       display: block;
       object-fit: cover;
-      object-position: 50% 12%;
-      filter: contrast(1.05) saturate(0.92);
+      object-position: 50% 38%;
+      filter: contrast(1.03) saturate(0.96);
     }
 
     .ascii-photo {
@@ -1397,7 +1409,7 @@
         <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
         <div class="photo-annotation">MATTHIAS LUTZ / UTBM 2026</div>
         <div class="photo-shell">
-          <img src="https://tulz.fr/sources/Photo5.jpg" alt="Photo de Matthias Lutz" width="420" height="560">
+          <img src="sources/portrait-matthias.png" alt="Photo de Matthias Lutz" width="1100" height="1649">
           <pre class="ascii-photo" id="ascii-photo"></pre>
         </div>
         <div class="hero-badges">
