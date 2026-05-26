@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -9,7 +9,7 @@
   <meta property="og:title" content="Matthias LUTZ | Portfolio UTBM">
   <meta property="og:description" content="Portfolio blueprint industriel: terminal interactif, projets, compétences, Erasmus et contact.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://tulz.fr/sources/Photo5.jpg">
+  <meta property="og:image" content="https://tulz.fr/sources/portrait-matthias.jpg">
   <meta name="theme-color" content="#0a1628">
   <link rel="icon" href="sources/tulz.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +17,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-mode="recruiter">
   <div class="cursor-dot"></div>
   <div class="cursor-ring"></div>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -48,7 +48,16 @@
       <a class="nav-item" href="#cv" data-section="cv" data-label="CV"><svg class="nav-svg"><use href="#icon-file"></use></svg><span class="nav-label">CV</span></a>
       <a class="nav-item" href="#contact" data-section="contact" data-label="Contact"><svg class="nav-svg"><use href="#icon-mail"></use></svg><span class="nav-label">Contact</span></a>
     </nav>
+    <div class="sidebar-tools">
+      <div class="live-status" data-label="Alternance trouvée pour Sept. 2026">
+        <span class="status-dot"></span>
+        <span class="status-text">Cracovie · Erasmus</span>
+      </div>
+      <button class="mode-toggle" id="mode-toggle" type="button" aria-label="Basculer entre mode recruteur et mode tech"><svg class="nav-svg"><use href="#icon-code"></use></svg><span class="side-tool-label">Mode tech</span></button>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Basculer le thème clair ou sombre"><svg class="nav-svg"><use href="#icon-globe"></use></svg><span class="side-tool-label">Thème</span></button>
+    </div>
   </aside>
+  <div class="scroll-progress" id="scroll-progress" data-label="Terminal"><span></span></div>
 
   <nav class="bottom-bar" aria-label="Navigation mobile">
     <a href="#hero" class="active" data-section="hero"><svg class="nav-svg"><use href="#icon-terminal"></use></svg><span>Terminal</span></a>
@@ -59,9 +68,10 @@
 
   <main class="page">
     <section class="section hero" id="hero" data-section="hero">
+      <canvas class="hero-particles" id="hero-particles" aria-hidden="true"></canvas>
       <div>
         <p class="breadcrumb">PORTFOLIO / UTBM / 2026</p>
-        <h1>Matthias LUTZ</h1>
+        <h1 data-text="Matthias LUTZ">Matthias LUTZ</h1>
         <div class="hero-line"></div>
         <p class="hero-subtitle">Étudiant Ingénieur · IoT · Systèmes · Web</p>
         <div class="terminal-window">
@@ -87,13 +97,13 @@
         <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
         <div class="photo-annotation">MATTHIAS LUTZ / UTBM 2026</div>
         <div class="photo-shell">
-          <img src="sources/Photo5.jpg" alt="Photo de Matthias Lutz" width="1100" height="1649">
+          <img src="sources/portrait-matthias.jpg" alt="Photo de Matthias Lutz" width="1100" height="1649">
           <pre class="ascii-photo" id="ascii-photo"></pre>
         </div>
         <div class="hero-badges">
           <span class="badge"><i data-lucide="shield"></i> Handball GK</span>
           <span class="badge"><i data-lucide="map-pin"></i> Erasmus Cracovie</span>
-          <span class="badge"><i data-lucide="zap"></i> Alternance Sept. 2026</span>
+          <span class="badge"><i data-lucide="zap"></i> Alternance trouvée</span>
         </div>
       </aside>
     </section>
@@ -102,7 +112,7 @@
       <div class="section-inner">
         <header class="section-header">
           <p class="section-kicker">02 /</p>
-          <h2 class="section-title">À propos</h2>
+          <h2 class="section-title" data-tech-title="README.md">À propos</h2>
           <div class="section-rule"></div>
         </header>
         <div class="about-layout">
@@ -114,6 +124,11 @@
               <span>Culture projet</span>
               <span>Autonomie</span>
             </div>
+            <pre class="about-readme"><span># Matthias LUTZ</span>
+<!-- Etudiant ingenieur UTBM -->
+Stack: C, Linux, Web, IoT
+Focus: comprendre, prototyper, livrer
+Status: alternance trouvee - Sept. 2026</pre>
           </article>
           <aside class="about-side">
             <div class="about-side-item"><strong>Ce que j'aime construire</strong><p>Des interfaces sobres, des outils techniques fiables, des projets qui connectent logiciel, matériel et usages réels.</p></div>
@@ -126,12 +141,19 @@
 
     <section class="section" id="skills" data-section="skills">
       <div class="section-inner">
-        <header class="section-header">
-          <p class="section-kicker">03 /</p>
-          <h2 class="section-title">Compétences</h2>
-          <div class="section-rule"></div>
+        <header class="section-header section-actions">
+          <div>
+            <p class="section-kicker">03 /</p>
+            <h2 class="section-title" data-tech-title="stack.json">Compétences</h2>
+            <div class="section-rule"></div>
+          </div>
+          <div class="view-toggle" role="group" aria-label="Affichage des compétences">
+            <button class="view-btn active" type="button" data-view="grid">Grid</button>
+            <button class="view-btn" type="button" data-view="bars">Bars</button>
+          </div>
         </header>
-        <div class="skills-grid" id="skills-grid">
+        <div class="skills-shell">
+          <div class="skills-grid" id="skills-grid">
           <article class="blue-card skill-card">
             <i data-lucide="code-2">C</i>
             <h3>Développement</h3>
@@ -162,6 +184,8 @@
             <h3>Langues</h3>
             <div class="tag-row"><span class="tag">Anglais pro</span><span class="tag">Allemand avancé</span><span class="tag">International</span></div>
           </article>
+          </div>
+          <div class="skill-bars" id="skill-bars" aria-label="Compétences en barres"></div>
         </div>
       </div>
     </section>
@@ -170,7 +194,7 @@
       <div class="section-inner">
         <header class="section-header">
           <p class="section-kicker">04 /</p>
-          <h2 class="section-title">Parcours</h2>
+          <h2 class="section-title" data-tech-title="git log --oneline">Parcours</h2>
           <div class="section-rule"></div>
         </header>
         <div class="timeline">
@@ -198,7 +222,7 @@
       <div class="section-inner">
         <header class="section-header">
           <p class="section-kicker">05 /</p>
-          <h2 class="section-title">Erasmus</h2>
+          <h2 class="section-title" data-tech-title="travel.log">Erasmus</h2>
           <div class="section-rule"></div>
         </header>
         <div class="erasmus-layout">
@@ -207,7 +231,7 @@
             <p id="city-detail">Cracovie: semestre à l'AGH University of Krakow, autonomie, cours en anglais et mobilité européenne.</p>
             <div class="erasmus-focus">
               <div><strong>KRK</strong><span>Base Erasmus</span></div>
-              <div><strong>11</strong><span>Villes</span></div>
+              <div><strong data-count="11">11</strong><span>Villes</span></div>
               <div><strong>Nord</strong><span>Europe</span></div>
             </div>
             <div class="city-list" id="city-list">
@@ -233,9 +257,9 @@ FRANCE        route Erasmus        POLOGNE</pre>
             </div>
             <div class="passport-stack" id="travel-stamps"></div>
             <div class="travel-stats">
-              <div><strong>11</strong><span>villes</span></div>
-              <div><strong>8</strong><span>pays</span></div>
-              <div><strong>1</strong><span>semestre</span></div>
+              <div><strong data-count="11">11</strong><span>villes</span></div>
+              <div><strong data-count="8">8</strong><span>pays</span></div>
+              <div><strong data-count="1">1</strong><span>semestre</span></div>
             </div>
           </div>
         </div>
@@ -246,20 +270,13 @@ FRANCE        route Erasmus        POLOGNE</pre>
       <div class="section-inner">
         <header class="section-header">
           <p class="section-kicker">06 /</p>
-          <h2 class="section-title">Projets</h2>
+          <h2 class="section-title" data-tech-title="ls -la /projects/">Projets</h2>
           <div class="section-rule"></div>
         </header>
         <div class="filters" id="project-filters">
           <button class="filter-btn active" type="button">Tous</button><button class="filter-btn" type="button">C</button><button class="filter-btn" type="button">Web</button><button class="filter-btn" type="button">IoT</button><button class="filter-btn" type="button">Linux</button><button class="filter-btn" type="button">Autre</button>
         </div>
-        <div class="projects-grid" id="project-grid">
-          <article class="project-card show-card"><div class="flip-inner"><div class="project-card-face project-front" data-num="01"><i class="project-icon" data-lucide="keyboard">C</i><h3>Jeu de lettres en C</h3><div class="tag-row"><span class="tag">C</span><span class="tag">Algorithmique</span></div></div><div class="project-card-face project-back" data-num="01"><p>Génération de grille, vérification dictionnaire, timer, score et historique.</p></div></div></article>
-          <article class="project-card show-card"><div class="flip-inner"><div class="project-card-face project-front" data-num="02"><i class="project-icon" data-lucide="code-2">W</i><h3>Site vocabulaire collaboratif</h3><div class="tag-row"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">PHP</span></div></div><div class="project-card-face project-back" data-num="02"><p>Site inspiré de Quizlet pour réviser du vocabulaire anglais.</p><a class="outline-link" href="https://matthiasvocable03.page.gd/?i=1" target="_blank" rel="noopener noreferrer">Voir le projet</a></div></div></article>
-          <article class="project-card show-card"><div class="flip-inner"><div class="project-card-face project-front" data-num="03"><i class="project-icon" data-lucide="server">N</i><h3>NAS personnel</h3><div class="tag-row"><span class="tag">Linux</span><span class="tag">Stockage</span></div></div><div class="project-card-face project-back" data-num="03"><p>Serveur TrueNAS Scale pour centraliser et sécuriser documents et médias.</p></div></div></article>
-          <article class="project-card show-card"><div class="flip-inner"><div class="project-card-face project-front" data-num="04"><i class="project-icon" data-lucide="cloud-sun">I</i><h3>Station météo ESP32</h3><div class="tag-row"><span class="tag">IoT</span><span class="tag">MQTT</span><span class="tag">Node-RED</span></div></div><div class="project-card-face project-back" data-num="04"><p>Capteurs, dashboard Node-RED et visualisation temps réel via MQTT.</p></div></div></article>
-          <article class="project-card show-card"><div class="flip-inner"><div class="project-card-face project-front" data-num="05"><i class="project-icon" data-lucide="cpu">L</i><h3>Gestionnaire processus Linux</h3><div class="tag-row"><span class="tag">C</span><span class="tag">Linux</span><span class="tag">ncurses</span></div></div><div class="project-card-face project-back" data-num="05"><p>Outil htop-like en C avec interface ncurses.</p></div></div></article>
-          <article class="project-card show-card"><div class="flip-inner"><div class="project-card-face project-front" data-num="06"><i class="project-icon" data-lucide="keyboard">A</i><h3>Clavier de raccourcis</h3><div class="tag-row"><span class="tag">AutoHotkey</span><span class="tag">Windows</span></div></div><div class="project-card-face project-back" data-num="06"><p>Second clavier transformé en console de raccourcis AutoHotkey.</p></div></div></article>
-        </div>
+        <div class="projects-grid" id="project-grid"></div>
       </div>
     </section>
 
@@ -267,7 +284,7 @@ FRANCE        route Erasmus        POLOGNE</pre>
       <div class="section-inner">
         <header class="section-header">
           <p class="section-kicker">07 /</p>
-          <h2 class="section-title">CV</h2>
+          <h2 class="section-title" data-tech-title="resume.pdf">CV</h2>
           <div class="section-rule"></div>
         </header>
         <div class="cv-card">
@@ -286,6 +303,13 @@ FRANCE        route Erasmus        POLOGNE</pre>
               <span>Web</span>
               <span>Communication</span>
             </div>
+            <pre class="tech-only tech-manifest">{
+  "profile": "Matthias LUTZ",
+  "school": "UTBM",
+  "focus": ["C", "Linux", "Web", "IoT"],
+  "mobility": "AGH Krakow 2026",
+  "status": "alternance_found"
+}</pre>
             <a class="primary-amber" href="https://cvdesignr.com/p/6900b1618eb03?hl=fr_FR" target="_blank" rel="noopener noreferrer">Consulter le CV →</a>
           </div>
           <div class="cv-details">
@@ -302,7 +326,7 @@ FRANCE        route Erasmus        POLOGNE</pre>
       <div class="section-inner">
         <header class="section-header">
           <p class="section-kicker">08 /</p>
-          <h2 class="section-title">Contact</h2>
+          <h2 class="section-title" data-tech-title="ssh contact">Contact</h2>
           <div class="section-rule"></div>
         </header>
         <div class="contact-grid">
@@ -315,6 +339,10 @@ FRANCE        route Erasmus        POLOGNE</pre>
               <span>Projets info</span>
               <span>UTBM · 2026</span>
             </div>
+            <pre class="tech-only tech-manifest">$ mail matthias@tulz.fr
+$ open linkedin --profile matthias-lutz
+$ git remote add contact github.com/lutz2cru
+$ status --availability projects</pre>
           </article>
           <aside class="blue-card social-card">
             <a class="social-link" href="mailto:matthias@tulz.fr">
@@ -384,7 +412,6 @@ FRANCE        route Erasmus        POLOGNE</pre>
 
     const links = {
       cv: 'https://cvdesignr.com/p/6900b1618eb03?hl=fr_FR',
-      vocab: 'https://matthiasvocable03.page.gd/?i=1',
       article: 'https://c.estrepublicain.fr/sport/2026/02/01/matthias-lutz-pur-produit-de-la-formation-du-cs-vesoul',
       linkedin: 'https://www.linkedin.com/in/matthias-lutz-97a853332/',
       github: 'https://github.com/lutz2cru',
@@ -395,7 +422,7 @@ FRANCE        route Erasmus        POLOGNE</pre>
 
     const projects = [
       { id: 1, name: 'Jeu de lettres en C', icon: 'keyboard', group: 'C', tags: ['C', 'Algorithmique'], desc: 'Génération de grille, vérification dictionnaire, timer, score et historique.' },
-      { id: 2, name: 'Site vocabulaire collaboratif', icon: 'code-2', group: 'Web', tags: ['HTML', 'CSS', 'PHP'], desc: 'Site inspiré de Quizlet pour réviser du vocabulaire anglais.', link: links.vocab },
+      { id: 2, name: 'Site vocabulaire collaboratif', icon: 'code-2', group: 'Web', tags: ['HTML', 'CSS', 'PHP'], desc: 'Site inspiré de Quizlet pour réviser du vocabulaire anglais.' },
       { id: 3, name: 'Crunch Time 2025', icon: 'trophy', group: 'Autre', tags: ['Travail équipe', 'Gestion de projet'], desc: 'Projet universitaire intensif d’une semaine en équipe.' },
       { id: 4, name: 'NAS personnel', icon: 'server', group: 'Linux', tags: ['Linux', 'Réseaux', 'Stockage'], desc: 'Serveur TrueNAS Scale pour centraliser et sécuriser documents et médias.' },
       { id: 5, name: 'Station météo ESP32', icon: 'cloud-sun', group: 'IoT', tags: ['IoT', 'MQTT', 'Node-RED', 'Arduino', 'ESP32'], desc: 'Capteurs, dashboard Node-RED et visualisation temps réel via MQTT.' },
@@ -444,7 +471,11 @@ FRANCE        route Erasmus        POLOGNE</pre>
     const input = document.getElementById('terminal-input');
     const drawer = document.getElementById('drawer');
     const drawerContent = document.getElementById('drawer-content');
-    const state = { mapReady: false };
+    const state = {
+      mapReady: false,
+      history: JSON.parse(sessionStorage.getItem('termHistory') || '[]'),
+      historyIndex: 0
+    };
 
     function escapeHtml(value) {
       return String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char]));
@@ -455,28 +486,74 @@ FRANCE        route Erasmus        POLOGNE</pre>
       return '█'.repeat(filled) + '░'.repeat(10 - filled);
     }
 
+    function currentPrompt() {
+      return document.body.dataset.mode === 'tech' ? 'matthias@portfolio:~/tech-mode$' : 'matthias@portfolio:~$';
+    }
+
+    function syncPrompt() {
+      document.querySelectorAll('.prompt').forEach(prompt => {
+        prompt.textContent = currentPrompt();
+      });
+      const header = document.querySelector('.terminal-header strong');
+      if (header) header.textContent = currentPrompt().replace('$', '');
+    }
+
     function print(content, command = null) {
       const block = document.createElement('pre');
-      block.innerHTML = command ? `<span class="prompt">matthias@portfolio:~$</span> ${escapeHtml(command)}\n${content}` : content;
+      block.innerHTML = command ? `<span class="prompt">${currentPrompt()}</span> ${escapeHtml(command)}\n${content}` : content;
       output.appendChild(block);
       output.scrollTop = output.scrollHeight;
     }
 
     function openProject(project) {
-      drawerContent.innerHTML = `<p class="section-kicker">PROJECT ${String(project.id).padStart(2, '0')}</p><h2 class="section-title">${project.name}</h2><p>${project.desc}</p><p>${project.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}</p>${project.link ? `<p><a class="outline-link" href="${project.link}" target="_blank" rel="noopener noreferrer">Ouvrir le projet →</a></p>` : ''}`;
+      const lang = project.lang || project.tags.join(' · ');
+      const type = project.type || (project.group === 'Autre' ? 'Projet transversal' : `Projet ${project.group}`);
+      const status = project.status || 'Terminé';
+      const fullDesc = project.fullDesc || project.desc;
+      drawerContent.innerHTML = `
+        <div class="drawer-project">
+          <span class="drawer-num">${String(project.id).padStart(2, '0')} /</span>
+          <h2>${escapeHtml(project.name)}</h2>
+          <div class="tag-row">${project.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
+          <p class="drawer-desc">${escapeHtml(fullDesc)}</p>
+          <div class="drawer-meta">
+            <div><strong>LANG</strong><span>${escapeHtml(lang)}</span></div>
+            <div><strong>TYPE</strong><span>${escapeHtml(type)}</span></div>
+            <div><strong>STATUS</strong><span>${escapeHtml(status)}</span></div>
+          </div>
+          ${project.link ? `<a class="outline-link" href="${project.link}" target="_blank" rel="noopener noreferrer">Voir le code →</a>` : ''}
+        </div>`;
       drawer.classList.add('open');
-      return `Ouverture overlay: ${project.name}`;
+      return `Ouverture du dossier projet: ${project.name}`;
+    }
+
+    function matrixRain(command) {
+      const block = print('<span class="matrix-rain"></span>', command);
+      const target = block.querySelector('.matrix-rain');
+      const chars = '01 MATTHIAS LUTZ UTBM BLUEPRINT '.split('');
+      let ticks = 0;
+      const timer = setInterval(() => {
+        target.textContent = Array.from({ length: 12 }, () =>
+          Array.from({ length: 48 }, () => chars[Math.floor(Math.random() * chars.length)]).join('')
+        ).join('\n');
+        ticks += 1;
+        if (ticks > 18) {
+          clearInterval(timer);
+          target.textContent = 'Matrix fermée. Retour au mode blueprint.';
+        }
+      }, 150);
     }
 
     const commands = {
+      help: () => commands.matthias(),
       matthias: () => `Commandes disponibles:
-matthias, whoami, skills, projects, open <n>, experience, erasmus, handball,
-contact, cv, clear, nas`,
+help, matthias, whoami, skills, projects, open <n>, experience, erasmus, handball,
+contact, cv, clear, nas, neofetch, cat about.txt, ping matthias`,
       whoami: () => `{
   "nom": "Matthias LUTZ",
   "formation": "Étudiant ingénieur informatique - UTBM",
   "localisation": "Vesoul / Belfort / Besançon",
-  "recherche": "Alternance informatique - septembre 2026",
+  "recherche": "Alternance trouvée - septembre 2026",
   "signature": "C, Linux, Web, IoT, handball, mobilité européenne"
 }`,
       skills: () => {
@@ -536,23 +613,72 @@ GitHub: <a href="${links.github}" target="_blank" rel="noopener noreferrer">gith
 70    root      08%   256M  truenas_scale.service
 128   web       04%   092M  vocabulaire_php.worker
 256   c         16%   064M  htop_like_debug
-512   auto      02%   018M  shortcut_keyboard.ahk`
+512   auto      02%   018M  shortcut_keyboard.ahk`,
+      neofetch: () => `        /\\
+       /  \\        OS: Portfolio v2.0
+      /____\\       Host: tulz.fr
+     /      \\      Uptime: depuis Erasmus 2026
+    /  ML    \\     Shell: JS vanilla
+                    CPU: UTBM Brain v4.2
+                    Memory: 8 projets / 8 projets`,
+      'cat about.txt': () => `Matthias LUTZ, étudiant ingénieur UTBM, construit son profil autour des systèmes, du web, de Linux et de l’IoT.
+Il aime transformer des idées techniques en outils lisibles, documentés et réellement utilisables.`,
+      'ping matthias': () => 'PING matthias.lutz (127.0.0.1): Réponse en 0ms - disponible pour projets et collaborations.',
+      'rm -rf portfolio': () => 'Permission denied: Ce portfolio est protégé par l’amour-propre.',
+      'sudo hire matthias': () => {
+        celebrate('Excellente décision. Redirection vers matthias@tulz.fr...');
+        setTimeout(() => { window.location.href = 'mailto:matthias@tulz.fr'; }, 1500);
+        return 'Excellente décision. Redirection vers matthias@tulz.fr...';
+      },
+      matrix: command => {
+        matrixRain(command);
+        return null;
+      }
     };
 
     function runCommand(raw) {
       const command = raw.trim();
       if (!command) return;
+      state.history.push(command);
+      state.history = state.history.slice(-50);
+      state.historyIndex = state.history.length;
+      sessionStorage.setItem('termHistory', JSON.stringify(state.history));
       const [base, arg] = command.split(/\s+/);
       let response;
       if (base === 'open') {
         const project = projects.find(item => item.id === Number(arg));
         response = project ? openProject(project) : 'Projet introuvable. Exemple: open 3';
+      } else if (commands[command]) {
+        response = commands[command](command);
       } else if (commands[base]) {
-        response = commands[base]();
+        response = commands[base](command);
       } else {
-        response = "Commande non reconnue. Tapez 'matthias' pour la liste.";
+        response = "Commande non reconnue. Tapez 'help' pour la liste.";
       }
       if (response !== null) print(response, command);
+    }
+
+    function initTerminalInput() {
+      const availableCommands = Object.keys(commands).concat(['open']);
+      input.addEventListener('keydown', event => {
+        if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          state.historyIndex = Math.max(0, state.historyIndex - 1);
+          input.value = state.history[state.historyIndex] || '';
+        }
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          state.historyIndex = Math.min(state.history.length, state.historyIndex + 1);
+          input.value = state.history[state.historyIndex] || '';
+        }
+        if (event.key === 'Tab') {
+          event.preventDefault();
+          const current = input.value.trim();
+          const matches = availableCommands.filter(item => item.startsWith(current));
+          if (matches.length === 1) input.value = matches[0];
+          if (matches.length > 1) print(matches.join('   '), current || 'tab');
+        }
+      });
     }
 
     function renderSkills() {
@@ -561,21 +687,53 @@ GitHub: <a href="${links.github}" target="_blank" rel="noopener noreferrer">gith
           <i data-lucide="${skill.icon}"></i>
           <h3>${skill.title}</h3>
           <div class="tag-row">${skill.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+          <pre class="skill-json">{ "stack": "${escapeHtml(skill.title)}", "level": ${skill.level || 70}, "status": "active" }</pre>
         </article>
       `).join('');
+      const bars = [
+        ['C / Algorithmique', 80],
+        ['HTML / CSS / PHP', 72],
+        ['Linux / Bash / Git', 75],
+        ['IoT / ESP32 / MQTT', 64],
+        ['SQL / Données', 68],
+        ['Communication digitale', 70]
+      ];
+      document.getElementById('skill-bars').innerHTML = bars.map(([name, level]) => `
+        <div class="skill-bar-row">
+          <span>${escapeHtml(name)}</span>
+          <span class="skill-track"><span class="skill-fill" style="--target:${level}%"></span></span>
+          <strong>${level}%</strong>
+        </div>
+      `).join('');
       refreshIcons();
+    }
+
+    function initSkillViews() {
+      const shell = document.querySelector('.skills-shell');
+      if (!shell) return;
+      shell.dataset.view = 'grid';
+      document.querySelectorAll('.view-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          shell.dataset.view = button.dataset.view;
+          document.querySelectorAll('.view-btn').forEach(item => item.classList.toggle('active', item === button));
+          if (button.dataset.view === 'bars') document.getElementById('skill-bars').classList.add('animate');
+        });
+      });
     }
 
     function renderProjects() {
       const filters = ['Tous', 'C', 'Web', 'IoT', 'Linux', 'Autre'];
       document.getElementById('project-filters').innerHTML = filters.map(filter => `<button class="filter-btn ${filter === 'Tous' ? 'active' : ''}" data-filter="${filter}">${filter}</button>`).join('');
       document.getElementById('project-grid').innerHTML = projects.map(project => `
-        <article class="project-card" data-group="${project.group}" tabindex="0">
+        <article class="project-card" data-group="${project.group}" data-project-id="${project.id}" tabindex="0" role="button" aria-label="Ouvrir ${escapeHtml(project.name)}">
           <div class="flip-inner">
             <div class="project-card-face project-front" data-num="${String(project.id).padStart(2, '0')}">
               <i class="project-icon" data-lucide="${project.icon}"></i>
               <h3>${project.name}</h3>
               <div class="tag-row">${project.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+              <pre class="tech-only project-tech-meta">repo: /projects/${String(project.id).padStart(2, '0')}-${escapeHtml(project.name.toLowerCase().replace(/\s+/g, '-'))}
+stack: ${escapeHtml(project.tags.join(' | '))}
+status: ${escapeHtml(project.status || 'done')}</pre>
             </div>
             <div class="project-card-face project-back" data-num="${String(project.id).padStart(2, '0')}">
               <p>${project.desc}</p>
@@ -586,6 +744,16 @@ GitHub: <a href="${links.github}" target="_blank" rel="noopener noreferrer">gith
         </article>
       `).join('');
       document.querySelectorAll('.filter-btn').forEach(button => button.addEventListener('click', () => filterProjects(button.dataset.filter)));
+      document.querySelectorAll('.project-card').forEach(card => {
+        const project = projects.find(item => item.id === Number(card.dataset.projectId));
+        card.addEventListener('click', () => openProject(project));
+        card.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            openProject(project);
+          }
+        });
+      });
       refreshIcons();
     }
 
@@ -680,100 +848,6 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM`;
       }
     }
 
-    function initGlobe() {
-      initErasmusJourney();
-      return;
-      if (state.globeLoaded) return;
-      state.globeLoaded = true;
-      const container = document.getElementById('globe-container');
-      container.innerHTML = '';
-      const cityList = document.getElementById('city-list');
-      const cityDetail = document.getElementById('city-detail');
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setSize(container.clientWidth, container.clientHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      container.appendChild(renderer.domElement);
-      camera.position.z = 4.4;
-
-      const earthGroup = new THREE.Group();
-      scene.add(earthGroup);
-      const globe = new THREE.Mesh(
-        new THREE.SphereGeometry(1.38, 72, 72),
-        new THREE.MeshBasicMaterial({ color: 0x17345d, wireframe: true, transparent: true, opacity: 0.72 })
-      );
-      earthGroup.add(globe);
-      const stars = new THREE.Points(
-        new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(Array.from({ length: 900 }, () => (Math.random() - 0.5) * 9), 3)),
-        new THREE.PointsMaterial({ color: 0x3b82f6, size: 0.012 })
-      );
-      scene.add(stars);
-
-      function cityToVector(city, radius = 1.43) {
-        const phi = (90 - city.lat) * Math.PI / 180;
-        const theta = (city.lon + 180) * Math.PI / 180;
-        return new THREE.Vector3(
-          -radius * Math.sin(phi) * Math.cos(theta),
-          radius * Math.cos(phi),
-          radius * Math.sin(phi) * Math.sin(theta)
-        );
-      }
-
-      const route = new THREE.Line(
-        new THREE.BufferGeometry().setFromPoints(travelCities.map(city => cityToVector(city, 1.45))),
-        new THREE.LineBasicMaterial({ color: 0xf59e0b, transparent: true, opacity: 0.9 })
-      );
-      earthGroup.add(route);
-
-      const meshes = [];
-      travelCities.forEach(city => {
-        const color = city.type === 'main' ? 0xf59e0b : city.type === 'base' ? 0x93c5fd : 0x3b82f6;
-        const mesh = new THREE.Mesh(new THREE.SphereGeometry(city.type === 'visited' ? 0.032 : 0.048, 18, 18), new THREE.MeshBasicMaterial({ color }));
-        mesh.position.copy(cityToVector(city));
-        mesh.userData.city = city;
-        meshes.push(mesh);
-        earthGroup.add(mesh);
-      });
-
-      cityList.innerHTML = travelCities.map(city => `<button class="city-chip" type="button" data-city="${city.name}">${city.name}</button>`).join('');
-      function showCity(city) {
-        cityDetail.textContent = `${city.name} (${city.country}) — ${city.detail}`;
-        document.querySelectorAll('.city-chip').forEach(chip => chip.classList.toggle('active', chip.dataset.city === city.name));
-      }
-      cityList.addEventListener('click', event => {
-        const chip = event.target.closest('.city-chip');
-        if (!chip) return;
-        const city = travelCities.find(item => item.name === chip.dataset.city);
-        if (city) showCity(city);
-      });
-      showCity(travelCities[1]);
-
-      const raycaster = new THREE.Raycaster();
-      const mouse = new THREE.Vector2();
-      container.addEventListener('click', event => {
-        const rect = container.getBoundingClientRect();
-        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-        raycaster.setFromCamera(mouse, camera);
-        const hit = raycaster.intersectObjects(meshes)[0];
-        if (hit) showCity(hit.object.userData.city);
-      });
-
-      function animate() {
-        earthGroup.rotation.y += 0.002;
-        stars.rotation.y -= 0.0007;
-        renderer.render(scene, camera);
-        requestAnimationFrame(animate);
-      }
-      animate();
-      window.addEventListener('resize', () => {
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        camera.aspect = container.clientWidth / container.clientHeight;
-        camera.updateProjectionMatrix();
-      });
-    }
-
     function initErasmusJourney() {
       if (state.mapReady) return;
       const stamps = document.getElementById('travel-stamps');
@@ -835,6 +909,146 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM`;
     }
 
     function initProgress() {
+      const progress = document.getElementById('scroll-progress');
+      const fill = progress?.querySelector('span');
+      const sections = Array.from(document.querySelectorAll('section[data-section]'));
+      if (!progress || !fill) return;
+      function update() {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const ratio = max > 0 ? window.scrollY / max : 0;
+        fill.style.height = `${Math.max(0, Math.min(100, ratio * 100))}%`;
+        const active = sections.reduce((best, section) =>
+          Math.abs(section.getBoundingClientRect().top) < Math.abs(best.getBoundingClientRect().top) ? section : best,
+        sections[0]);
+        progress.dataset.label = active?.querySelector('.section-title')?.textContent?.trim() || 'Terminal';
+      }
+      update();
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+    }
+
+    function initModes() {
+      const modeButton = document.getElementById('mode-toggle');
+      const themeButton = document.getElementById('theme-toggle');
+      const savedMode = localStorage.getItem('portfolioMode') || 'recruiter';
+      const savedTheme = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      function applyMode(mode) {
+        document.body.dataset.mode = mode;
+        localStorage.setItem('portfolioMode', mode);
+        const label = modeButton?.querySelector('.side-tool-label');
+        if (label) label.textContent = mode === 'tech' ? 'Mode recruteur' : 'Mode tech';
+        syncPrompt();
+      }
+      function applyTheme(theme) {
+        document.body.classList.toggle('light-mode', theme === 'light');
+        localStorage.setItem('theme', theme);
+        const label = themeButton?.querySelector('.side-tool-label');
+        if (label) label.textContent = theme === 'light' ? 'Mode sombre' : 'Thème clair';
+      }
+      modeButton?.addEventListener('click', () => applyMode(document.body.dataset.mode === 'tech' ? 'recruiter' : 'tech'));
+      themeButton?.addEventListener('click', () => applyTheme(document.body.classList.contains('light-mode') ? 'dark' : 'light'));
+      applyMode(savedMode);
+      applyTheme(savedTheme);
+    }
+
+    function initCounters() {
+      const counters = document.querySelectorAll('[data-count]');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting || entry.target.dataset.done) return;
+          entry.target.dataset.done = 'true';
+          const el = entry.target;
+          const target = Number(el.dataset.count);
+          const suffix = el.textContent.replace(/[0-9]/g, '');
+          const start = performance.now();
+          function tick(now) {
+            const progress = Math.min(1, (now - start) / 1200);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = `${Math.round(target * eased)}${suffix}`;
+            if (progress < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        });
+      }, { threshold: 0.5 });
+      counters.forEach(counter => observer.observe(counter));
+    }
+
+    function initParticles() {
+      const canvas = document.getElementById('hero-particles');
+      const hero = document.getElementById('hero');
+      if (!canvas || !hero || window.innerWidth < 768 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const ctx = canvas.getContext('2d');
+      const pointer = { x: -9999, y: -9999 };
+      let particles = [];
+      function resize() {
+        const rect = hero.getBoundingClientRect();
+        canvas.width = Math.floor(rect.width * devicePixelRatio);
+        canvas.height = Math.floor(rect.height * devicePixelRatio);
+        canvas.style.width = `${rect.width}px`;
+        canvas.style.height = `${rect.height}px`;
+        ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+        particles = Array.from({ length: Math.min(60, Math.floor(rect.width / 22)) }, () => ({
+          x: Math.random() * rect.width,
+          y: Math.random() * rect.height,
+          vx: (Math.random() - 0.5) * 0.45,
+          vy: (Math.random() - 0.5) * 0.45
+        }));
+      }
+      function draw() {
+        const rect = hero.getBoundingClientRect();
+        ctx.clearRect(0, 0, rect.width, rect.height);
+        particles.forEach((p, i) => {
+          const dx = p.x - pointer.x;
+          const dy = p.y - pointer.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 80) {
+            p.x += dx / Math.max(dist, 1) * 0.9;
+            p.y += dy / Math.max(dist, 1) * 0.9;
+          }
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0 || p.x > rect.width) p.vx *= -1;
+          if (p.y < 0 || p.y > rect.height) p.vy *= -1;
+          ctx.fillStyle = 'rgba(59,130,246,0.4)';
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 1.6, 0, Math.PI * 2);
+          ctx.fill();
+          for (let j = i + 1; j < particles.length; j++) {
+            const q = particles[j];
+            const d = Math.hypot(p.x - q.x, p.y - q.y);
+            if (d < 120) {
+              ctx.strokeStyle = `rgba(59,130,246,${0.08 * (1 - d / 120)})`;
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(q.x, q.y);
+              ctx.stroke();
+            }
+          }
+        });
+        requestAnimationFrame(draw);
+      }
+      hero.addEventListener('mousemove', event => {
+        const rect = hero.getBoundingClientRect();
+        pointer.x = event.clientX - rect.left;
+        pointer.y = event.clientY - rect.top;
+      });
+      hero.addEventListener('mouseleave', () => {
+        pointer.x = -9999;
+        pointer.y = -9999;
+      });
+      resize();
+      draw();
+      window.addEventListener('resize', resize);
+    }
+
+    function bootTerminal() {
+      [
+        '[    0.000] Initializing portfolio kernel...',
+        '[    0.213] Loading modules: skills, projects, erasmus',
+        '[    0.891] Mounting sections... done',
+        '[    1.204] Blueprint mode: ACTIVE',
+        'Blueprint chargé. Tapez "help" pour la liste des commandes.'
+      ].forEach((line, index) => setTimeout(() => print(line), 180 + index * 230));
     }
 
     document.getElementById('terminal-form').addEventListener('submit', event => {
@@ -848,14 +1062,19 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM`;
     renderSkills();
     renderProjects();
     renderTimeline();
+    initModes();
+    initSkillViews();
+    initTerminalInput();
     initErasmusJourney();
     refreshIcons();
     initCursor();
     initPhotoEgg();
     initKonami();
+    initCounters();
+    initParticles();
     initObservers();
     initProgress();
-    print('Blueprint chargé. Tapez "matthias" pour la liste des commandes.');
+    bootTerminal();
   </script>
 </body>
 </html>
