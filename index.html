@@ -65,6 +65,10 @@
     <a href="#erasmus" data-section="erasmus"><svg class="nav-svg"><use href="#icon-globe"></use></svg><span>Erasmus</span></a>
     <a href="#contact" data-section="contact"><svg class="nav-svg"><use href="#icon-mail"></use></svg><span>Contact</span></a>
   </nav>
+  <button class="mobile-theme-toggle" id="mobile-theme-toggle" type="button" aria-label="Basculer le thème clair ou sombre">
+    <svg class="nav-svg" aria-hidden="true"><use href="#icon-globe"></use></svg>
+    <span>Clair</span>
+  </button>
 
   <main class="page">
     <section class="section hero" id="hero" data-section="hero">
@@ -930,6 +934,7 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM`;
     function initModes() {
       const modeButton = document.getElementById('mode-toggle');
       const themeButton = document.getElementById('theme-toggle');
+      const mobileThemeButton = document.getElementById('mobile-theme-toggle');
       const savedMode = localStorage.getItem('portfolioMode') || 'recruiter';
       const savedTheme = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
       function applyMode(mode) {
@@ -944,9 +949,12 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM`;
         localStorage.setItem('theme', theme);
         const label = themeButton?.querySelector('.side-tool-label');
         if (label) label.textContent = theme === 'light' ? 'Mode sombre' : 'Thème clair';
+        const mobileLabel = mobileThemeButton?.querySelector('span');
+        if (mobileLabel) mobileLabel.textContent = theme === 'light' ? 'Sombre' : 'Clair';
       }
       modeButton?.addEventListener('click', () => applyMode(document.body.dataset.mode === 'tech' ? 'recruiter' : 'tech'));
       themeButton?.addEventListener('click', () => applyTheme(document.body.classList.contains('light-mode') ? 'dark' : 'light'));
+      mobileThemeButton?.addEventListener('click', () => applyTheme(document.body.classList.contains('light-mode') ? 'dark' : 'light'));
       applyMode(savedMode);
       applyTheme(savedTheme);
     }
