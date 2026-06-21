@@ -2666,3 +2666,43 @@ body.light-mode .drawer-close {
     height: 390px;
   }
 }
+
+/* Desktop portrait framing */
+@media (min-width: 1101px) {
+  .hero {
+    grid-template-columns: minmax(0, 1.28fr) minmax(360px, 0.72fr);
+    gap: clamp(56px, 5vw, 96px);
+  }
+
+  .photo-frame {
+    width: min(34vw, 520px);
+    justify-self: center;
+    padding: 16px;
+  }
+
+  .photo-shell {
+    height: clamp(560px, 72vh, 760px);
+    display: grid;
+    place-items: center;
+    background:
+      linear-gradient(145deg, rgba(59,130,246,0.18), rgba(245,158,11,0.07)),
+      radial-gradient(circle at 50% 28%, rgba(59,130,246,0.16), transparent 46%);
+  }
+
+  .photo-shell img,
+  .photo-frame:not(.ascii-mode) .photo-shell img {
+    width: 100%;
+    height: 100%;
+    padding: 18px 10px 0;
+    object-fit: contain;
+    object-position: center bottom;
+    transform: scale(0.94);
+    transform-origin: center bottom;
+  }
+
+  body.light-mode .photo-shell {
+    background:
+      linear-gradient(145deg, rgba(255,255,255,0.52), rgba(37,99,235,0.10)),
+      radial-gradient(circle at 50% 28%, rgba(37,99,235,0.13), transparent 48%);
+  }
+}
