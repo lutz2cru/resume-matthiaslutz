@@ -2675,16 +2675,19 @@ body.light-mode .drawer-close {
   }
 
   .photo-frame {
-    width: min(34vw, 520px);
+    width: clamp(360px, min(30vw, 48vh), 500px);
     justify-self: center;
     padding: 16px;
   }
 
   .photo-shell {
-    height: clamp(560px, 72vh, 760px);
+    aspect-ratio: 933 / 1500;
+    height: auto;
+    min-height: 0;
     background:
       linear-gradient(145deg, rgba(59,130,246,0.18), rgba(245,158,11,0.07)),
       radial-gradient(circle at 50% 28%, rgba(59,130,246,0.16), transparent 46%);
+    isolation: isolate;
   }
 
   .photo-shell img,
@@ -2697,9 +2700,13 @@ body.light-mode .drawer-close {
     min-height: 100%;
     padding: 0;
     object-fit: cover;
-    object-position: 50% 36%;
-    transform: scale(1.035);
-    transform-origin: center center;
+    object-position: center center;
+    transform: none;
+    z-index: 1;
+  }
+
+  .photo-shell::after {
+    z-index: 2;
   }
 
   body.light-mode .photo-shell {
