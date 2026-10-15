@@ -486,6 +486,7 @@ code {
 }
 .tl-org { margin: 0 0 10px; font-size: .9375rem; font-weight: 500; color: var(--accent); }
 .tl-desc { margin: 0; max-width: 64ch; color: var(--ink-2); }
+.tl-link { margin: 14px 0 0; font-size: .875rem; }
 
 /* ---------- Projects ---------- */
 .p-meta {
