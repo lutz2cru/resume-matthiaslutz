@@ -1,4 +1,19 @@
 // Progressive enhancement only: the page is complete without this script.
+
+// Mobile contents: close after jumping to a section, or on Escape.
+(() => {
+  const menu = document.querySelector('.mnav');
+  if (!menu) return;
+  menu.addEventListener('click', (e) => {
+    if (e.target.closest('a')) menu.open = false;
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu.open) {
+      menu.open = false;
+      menu.querySelector('summary').focus();
+    }
+  });
+})();
 (() => {
   if (!('IntersectionObserver' in window)) return;
 

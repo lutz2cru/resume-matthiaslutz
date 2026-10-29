@@ -1,0 +1,5 @@
+# Outils locaux (Claude Code, Impeccable) : ne pas publier sur le site
+.claude/settings.local.json
+.claude/skills/
+.claude/agents/
+.impeccable/live/
