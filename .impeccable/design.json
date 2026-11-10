@@ -1,0 +1,714 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-10T10:55:18Z",
+  "title": "Design System: tulz.fr — Matthias Lutz",
+  "extensions": {
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "Blanc",
+        "canonical": "oklch(100.0% 0.000 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#666666",
+          "#898989",
+          "#aeaeae",
+          "#d1d1d1",
+          "#eeeeee"
+        ]
+      },
+      "bg-alt": {
+        "role": "neutral",
+        "displayName": "Gris très clair",
+        "canonical": "oklch(97.1% 0.003 286)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262627",
+          "#454546",
+          "#666667",
+          "#89898b",
+          "#aeaeaf",
+          "#d1d1d2",
+          "#eeeeef"
+        ]
+      },
+      "panel": {
+        "role": "neutral",
+        "displayName": "Panneau",
+        "canonical": "oklch(100.0% 0.000 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#666666",
+          "#898989",
+          "#aeaeae",
+          "#d1d1d1",
+          "#eeeeee"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Encre",
+        "canonical": "oklch(23.2% 0.004 286)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262628",
+          "#454547",
+          "#666668",
+          "#89898b",
+          "#aeaeb0",
+          "#d1d1d3",
+          "#eeeef0"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Encre secondaire",
+        "canonical": "oklch(41.5% 0.008 286)",
+        "tonalRamp": [
+          "#0b0b0d",
+          "#26262a",
+          "#444449",
+          "#65656b",
+          "#88888e",
+          "#adadb3",
+          "#d0d0d5",
+          "#eeeef2"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Encre tertiaire",
+        "canonical": "oklch(52.6% 0.009 286)",
+        "tonalRamp": [
+          "#0b0b0e",
+          "#26262a",
+          "#44444a",
+          "#65656b",
+          "#88888f",
+          "#adadb3",
+          "#d0d0d6",
+          "#eeeef2"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Filet",
+        "canonical": "oklch(86.5% 0.007 286)",
+        "tonalRamp": [
+          "#0b0b0d",
+          "#262629",
+          "#454548",
+          "#66666a",
+          "#89898d",
+          "#adadb2",
+          "#d0d0d4",
+          "#eeeef1"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Bleu de lien (sur clair)",
+        "canonical": "oklch(52.2% 0.177 256)",
+        "tonalRamp": [
+          "#000a24",
+          "#002551",
+          "#014389",
+          "#0163c5",
+          "#3588f0",
+          "#75b0ff",
+          "#b4d4fe",
+          "#e6effc"
+        ]
+      },
+      "accent-soft": {
+        "role": "primary",
+        "displayName": "Bleu voilé",
+        "canonical": "oklch(94.7% 0.021 248)",
+        "tonalRamp": [
+          "#070c11",
+          "#20272f",
+          "#3d464f",
+          "#5d6772",
+          "#808b95",
+          "#a5afba",
+          "#c9d2db",
+          "#e8f0f7"
+        ]
+      },
+      "btn": {
+        "role": "primary",
+        "displayName": "Bleu d'action",
+        "canonical": "oklch(56.3% 0.193 256)",
+        "tonalRamp": [
+          "#000925",
+          "#002552",
+          "#00428b",
+          "#0463c6",
+          "#2987f9",
+          "#76b0fe",
+          "#b4d4ff",
+          "#e5f0fe"
+        ]
+      },
+      "btn-hover": {
+        "role": "primary",
+        "displayName": "Bleu d'action, survol",
+        "canonical": "oklch(50.7% 0.172 256)",
+        "tonalRamp": [
+          "#000a24",
+          "#002551",
+          "#024388",
+          "#0363c5",
+          "#3889ec",
+          "#75b0fe",
+          "#b4d4fe",
+          "#e6effd"
+        ]
+      },
+      "btn-ink": {
+        "role": "neutral",
+        "displayName": "Texte de bouton",
+        "canonical": "oklch(100.0% 0.000 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#666666",
+          "#898989",
+          "#aeaeae",
+          "#d1d1d1",
+          "#eeeeee"
+        ]
+      },
+      "dark-bg": {
+        "role": "neutral",
+        "displayName": "Noir de tuile",
+        "canonical": "oklch(0.0% 0.000 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#666666",
+          "#898989",
+          "#aeaeae",
+          "#d1d1d1",
+          "#eeeeee"
+        ]
+      },
+      "dark-bg-alt": {
+        "role": "neutral",
+        "displayName": "Noir alterné",
+        "canonical": "oklch(17.9% 0.004 286)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262628",
+          "#454547",
+          "#666668",
+          "#89898b",
+          "#adadb0",
+          "#d1d1d3",
+          "#eeeef0"
+        ]
+      },
+      "dark-panel": {
+        "role": "neutral",
+        "displayName": "Panneau sombre",
+        "canonical": "oklch(22.7% 0.004 286)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262628",
+          "#454547",
+          "#666668",
+          "#89898b",
+          "#aeaeb0",
+          "#d1d1d3",
+          "#eeeef0"
+        ]
+      },
+      "dark-ink": {
+        "role": "neutral",
+        "displayName": "Encre sur sombre",
+        "canonical": "oklch(97.1% 0.003 286)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262627",
+          "#454546",
+          "#666667",
+          "#89898b",
+          "#aeaeaf",
+          "#d1d1d2",
+          "#eeeeef"
+        ]
+      },
+      "dark-ink-2": {
+        "role": "neutral",
+        "displayName": "Encre secondaire sur sombre",
+        "canonical": "oklch(77.2% 0.008 286)",
+        "tonalRamp": [
+          "#0b0b0d",
+          "#26262a",
+          "#444449",
+          "#65656b",
+          "#88888e",
+          "#adadb3",
+          "#d0d0d5",
+          "#eeeef2"
+        ]
+      },
+      "dark-ink-3": {
+        "role": "neutral",
+        "displayName": "Encre tertiaire sur sombre",
+        "canonical": "oklch(64.8% 0.007 286)",
+        "tonalRamp": [
+          "#0b0b0d",
+          "#262629",
+          "#444449",
+          "#65656a",
+          "#89898d",
+          "#adadb2",
+          "#d0d0d5",
+          "#eeeef2"
+        ]
+      },
+      "dark-line": {
+        "role": "neutral",
+        "displayName": "Filet sur sombre",
+        "canonical": "oklch(32.2% 0.005 286)",
+        "tonalRamp": [
+          "#0b0b0d",
+          "#262628",
+          "#454548",
+          "#666669",
+          "#89898c",
+          "#adadb1",
+          "#d0d0d4",
+          "#eeeef1"
+        ]
+      },
+      "dark-accent": {
+        "role": "primary",
+        "displayName": "Bleu de lien (sur sombre)",
+        "canonical": "oklch(66.9% 0.181 252)",
+        "tonalRamp": [
+          "#000b1f",
+          "#00274d",
+          "#024680",
+          "#0067b9",
+          "#198bf0",
+          "#6eb2fd",
+          "#b1d5fd",
+          "#e4f0fe"
+        ]
+      },
+      "dark-accent-soft": {
+        "role": "primary",
+        "displayName": "Bleu voilé sur sombre",
+        "canonical": "oklch(26.3% 0.052 251)",
+        "tonalRamp": [
+          "#020c19",
+          "#16283b",
+          "#31475f",
+          "#506883",
+          "#738ca8",
+          "#99b1cc",
+          "#bed4ec",
+          "#e4f0fd"
+        ]
+      },
+      "dark-tile-on-dark": {
+        "role": "neutral",
+        "displayName": "Tuile sombre en thème sombre",
+        "canonical": "oklch(20.1% 0.004 286)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262628",
+          "#454547",
+          "#666668",
+          "#89898b",
+          "#adaeb0",
+          "#d1d1d3",
+          "#eeeef0"
+        ]
+      },
+      "dark-panel-on-dark": {
+        "role": "neutral",
+        "displayName": "Panneau de tuile sombre en thème sombre",
+        "canonical": "oklch(25.7% 0.006 286)",
+        "tonalRamp": [
+          "#0b0b0d",
+          "#262629",
+          "#454548",
+          "#666669",
+          "#89898c",
+          "#adadb1",
+          "#d0d0d4",
+          "#eeeef1"
+        ]
+      },
+      "hero-bg": {
+        "role": "secondary",
+        "displayName": "Prune du portrait",
+        "canonical": "oklch(26.1% 0.020 330)",
+        "tonalRamp": [
+          "#0e090e",
+          "#2b242a",
+          "#4b424a",
+          "#6d626c",
+          "#90858f",
+          "#b5aab3",
+          "#d7cdd6",
+          "#f4ebf3"
+        ]
+      },
+      "hero-glow": {
+        "role": "secondary",
+        "displayName": "Halo prune",
+        "canonical": "oklch(38.1% 0.023 337)",
+        "tonalRamp": [
+          "#0f090d",
+          "#2d232a",
+          "#4d4149",
+          "#6f616b",
+          "#93848e",
+          "#b7a9b3",
+          "#d9cdd5",
+          "#f6ebf2"
+        ]
+      },
+      "hero-ink-2": {
+        "role": "secondary",
+        "displayName": "Texte secondaire sur prune",
+        "canonical": "oklch(82.1% 0.016 332)",
+        "tonalRamp": [
+          "#0e0a0d",
+          "#2a2429",
+          "#4a4249",
+          "#6c636a",
+          "#8f868d",
+          "#b4abb2",
+          "#d6ced5",
+          "#f3ecf1"
+        ]
+      },
+      "post-red": {
+        "role": "tertiary",
+        "displayName": "Rouge des poteaux",
+        "canonical": "oklch(61.0% 0.195 31)",
+        "tonalRamp": [
+          "#210000",
+          "#4e0400",
+          "#821101",
+          "#bc1d03",
+          "#e64d36",
+          "#ff8671",
+          "#febfb3",
+          "#fee9e5"
+        ]
+      },
+      "post-white": {
+        "role": "tertiary",
+        "displayName": "Blanc des poteaux",
+        "canonical": "oklch(97.1% 0.003 286)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262627",
+          "#454546",
+          "#666667",
+          "#89898b",
+          "#aeaeaf",
+          "#d1d1d2",
+          "#eeeeef"
+        ]
+      },
+      "cn-gold": {
+        "role": "tertiary",
+        "displayName": "Or Caisse Noire",
+        "canonical": "oklch(84.3% 0.151 88)",
+        "tonalRamp": [
+          "#110a00",
+          "#312501",
+          "#564202",
+          "#7e6205",
+          "#a98300",
+          "#d2a831",
+          "#f1cd6f",
+          "#ffedc2"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Le nom dans la tuile d'accueil et le 404 ; le titre de contact reprend son interlettrage."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Titre de section et citation de la cage."
+      },
+      "title-lg": {
+        "displayName": "Title large",
+        "purpose": "Titre d'un panneau de projet phare."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Titres de carte, de ligne d'expérience, de groupe de compétences."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Phrase d'introduction sous un titre de section, en ink-2."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Texte courant, 58 à 66ch ; 1rem sous 760 px."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Dates, métadonnées, technologies, légendes, en ink-3."
+      },
+      "nav": {
+        "displayName": "Nav",
+        "purpose": "Liens de la barre et sélecteur de langue."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Code en ligne et maquette de terminal uniquement."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card-hover",
+        "value": "0 22px 40px -26px rgb(0 0 0 / .4)",
+        "purpose": "Survol d'une carte de projet cliquable, avec translateY(-4px)."
+      },
+      {
+        "name": "menu-panel",
+        "value": "0 24px 40px -24px rgb(0 0 0 / .35)",
+        "purpose": "Panneau du menu mobile au-dessus de la page."
+      },
+      {
+        "name": "terminal",
+        "value": "0 30px 60px -30px rgb(0 0 0 / .55)",
+        "purpose": "Ombre d'objet de la maquette de terminal."
+      },
+      {
+        "name": "phone",
+        "value": "0 0 0 1px #2b2b31, 0 44px 80px -34px rgb(0 0 0 / .8)",
+        "purpose": "Ombre d'objet de la maquette de téléphone Caisse Noire."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(.16, 1, .3, 1)",
+        "purpose": "Courbe unique des transitions d'état et de l'entrée de l'accueil (--ease)."
+      },
+      {
+        "name": "settle",
+        "value": "from { transform: scale(.92); opacity: .55 } ; animation: settle linear both; animation-timeline: view(); animation-range: entry 0% entry 80%",
+        "purpose": "Mouvement signature : les grands panneaux visuels (classe settle) se posent en entrant dans l'écran. Sous @supports et prefers-reduced-motion: no-preference."
+      },
+      {
+        "name": "rise",
+        "value": "from { opacity: 0; transform: translateY(18px) } ; 1s var(--ease) both ; délais 0s / .08s / .16s",
+        "purpose": "Entrée du nom, de la phrase de rôle et des actions de la tuile d'accueil."
+      },
+      {
+        "name": "develop",
+        "value": "from { opacity: 0; transform: scale(1.06); filter: blur(10px) } ; 1.6s var(--ease) both .1s",
+        "purpose": "Révélation du portrait de l'accueil."
+      },
+      {
+        "name": "link-transition",
+        "value": "color .2s, background-color .2s, border-color .2s",
+        "purpose": "Liens et boutons."
+      },
+      {
+        "name": "icon-nudge",
+        "value": "transform .25s var(--ease) ; translate(2px, -2px) | translateX(3px) | translateY(-2px)",
+        "purpose": "L'icône glisse dans son sens au survol du lien."
+      },
+      {
+        "name": "card-lift",
+        "value": "transform .5s var(--ease), box-shadow .5s var(--ease) ; translateY(-4px)",
+        "purpose": "Survol d'une carte de projet."
+      },
+      {
+        "name": "shot-zoom",
+        "value": "transform .8s var(--ease) ; scale(1.04)",
+        "purpose": "Survol d'une photo de la galerie."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation: none !important; transition: none !important; scroll-behavior: auto",
+        "purpose": "prefers-reduced-motion: reduce coupe tout mouvement."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "tablet",
+        "value": "max-width: 1023px"
+      },
+      {
+        "name": "mobile",
+        "value": "max-width: 760px"
+      }
+    ],
+    "themes": {
+      "mechanism": "prefers-color-scheme sur :root ; classe .dark pour les tuiles qui restent sombres dans les deux thèmes ; .hero surcharge --bg et --ink-2.",
+      "navBg": {
+        "light": "rgb(255 255 255 / .78)",
+        "dark": "rgb(0 0 0 / .72)"
+      },
+      "navBackdrop": "saturate(180%) blur(20px)",
+      "wrapMaxWidth": "1120px"
+    }
+  },
+  "components": [
+    {
+      "name": "Bouton plein",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Pilule bleue, action principale d'un groupe.",
+      "html": "<a class=\"ds-btn\" href=\"#\">Voir le parcours</a>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 0 22px; border: 1px solid var(--btn, #0071e3); border-radius: 999px; background: var(--btn, #0071e3); color: var(--btn-ink, #fff); font-family: var(--sans, 'Geist', 'Helvetica Neue', Helvetica, Arial, sans-serif); font-size: 1.0625rem; white-space: nowrap; text-decoration: none; transition: color .2s, background-color .2s, border-color .2s; } .ds-btn:hover { background: var(--btn-hover, #0062c4); border-color: var(--btn-hover, #0062c4); } .ds-btn:focus-visible { outline: 2px solid var(--accent, #0066cc); outline-offset: 3px; }"
+    },
+    {
+      "name": "Bouton fantôme",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Pilule à contour, en groupe pour les liens de contact externes.",
+      "html": "<a class=\"ds-btn-ghost\" href=\"#\">LinkedIn <svg class=\"ds-ic\" viewBox=\"0 0 12 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M2.5 9.5 9.5 2.5M4 2.5h5.5V8\"/></svg></a>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 0 22px; border: 1px solid var(--accent, #0066cc); border-radius: 999px; background: transparent; color: var(--accent, #0066cc); font-family: var(--sans, 'Geist', 'Helvetica Neue', Helvetica, Arial, sans-serif); font-size: 1.0625rem; white-space: nowrap; text-decoration: none; transition: color .2s, background-color .2s, border-color .2s; } .ds-btn-ghost:hover { background: var(--accent, #0066cc); color: var(--bg, #fff); } .ds-btn-ghost:hover .ds-ic { transform: translate(2px, -2px); } .ds-btn-ghost:focus-visible { outline: 2px solid var(--accent, #0066cc); outline-offset: 3px; } .ds-ic { width: .62em; height: .62em; flex: none; transition: transform .25s cubic-bezier(.16, 1, .3, 1); }"
+    },
+    {
+      "name": "Lien à chevron",
+      "kind": "custom",
+      "refersTo": "link-more",
+      "description": "Action secondaire en texte bleu ; chevron pour l'interne, flèche diagonale pour un nouvel onglet.",
+      "html": "<a class=\"ds-more\" href=\"#\">English version <svg class=\"ds-ic\" viewBox=\"0 0 12 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m4.25 2 4 4-4 4\"/></svg></a>",
+      "css": ".ds-more { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; color: var(--accent, #0066cc); font-family: var(--sans, 'Geist', 'Helvetica Neue', Helvetica, Arial, sans-serif); font-size: 1.0625rem; text-decoration: none; text-underline-offset: 3px; } .ds-more:hover { text-decoration: underline; } .ds-more:hover .ds-ic { transform: translateX(3px); } .ds-more:focus-visible { outline: 2px solid var(--accent, #0066cc); outline-offset: 3px; border-radius: 6px; } .ds-ic { width: .62em; height: .62em; flex: none; transition: transform .25s cubic-bezier(.16, 1, .3, 1); }"
+    },
+    {
+      "name": "Barre de navigation",
+      "kind": "nav",
+      "refersTo": "nav-bar",
+      "description": "Barre collante de 52 px, translucide et floutée ; section en cours en 600.",
+      "html": "<header class=\"ds-nav\"><a class=\"ds-nav-brand\" href=\"#\">Matthias Lutz</a><ul class=\"ds-nav-links\"><li><a href=\"#\" aria-current=\"true\">Expérience</a></li><li><a href=\"#\">Handball</a></li><li><a href=\"#\">Projets</a></li></ul><div class=\"ds-lang\"><span>FR</span><a href=\"#\">EN</a></div></header>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 52px; padding: 0 24px; background: var(--nav-bg, rgb(255 255 255 / .78)); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid color-mix(in srgb, var(--line, #d2d2d7) 60%, transparent); font-family: var(--sans, 'Geist', 'Helvetica Neue', Helvetica, Arial, sans-serif); } .ds-nav a { text-decoration: none; transition: color .2s, background-color .2s; } .ds-nav-brand { font-weight: 600; font-size: 1.0625rem; letter-spacing: -0.015em; color: var(--ink, #1d1d1f); } .ds-nav-links { display: flex; gap: 24px; margin: 0; padding: 0; list-style: none; } .ds-nav-links a { display: block; padding: 8px 0; font-size: .8125rem; color: var(--ink-2, #4b4b50); } .ds-nav-links a:hover, .ds-nav-links a[aria-current=\"true\"] { color: var(--ink, #1d1d1f); } .ds-nav-links a[aria-current=\"true\"] { font-weight: 600; } .ds-lang { display: flex; align-items: center; gap: 2px; font-size: .8125rem; } .ds-lang a, .ds-lang span { display: grid; place-items: center; min-width: 36px; height: 36px; border-radius: 999px; } .ds-lang span { font-weight: 600; color: var(--ink, #1d1d1f); } .ds-lang a { color: var(--ink-2, #4b4b50); } .ds-lang a:hover { color: var(--ink, #1d1d1f); background: var(--bg-alt, #f5f5f7); } .ds-nav a:focus-visible { outline: 2px solid var(--accent, #0066cc); outline-offset: 3px; }"
+    },
+    {
+      "name": "Puces et badge",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Puce de compétence (non cliquable) et badge d'état.",
+      "html": "<ul class=\"ds-chips\"><li>Python</li><li>Docker</li><li>Linux</li></ul><span class=\"ds-badge\">En cours</span>",
+      "css": ".ds-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; padding: 0; list-style: none; font-family: var(--sans, 'Geist', 'Helvetica Neue', Helvetica, Arial, sans-serif); color: var(--ink, #1d1d1f); } .ds-chips li { padding: 6px 14px; font-size: .9375rem; background: var(--bg-alt, #f5f5f7); border-radius: 999px; } .ds-badge { padding: 4px 10px; font-family: var(--sans, 'Geist', 'Helvetica Neue', Helvetica, Arial, sans-serif); font-size: .75rem; font-weight: 600; color: var(--accent, #0066cc); background: var(--accent-soft, #e3effb); border-radius: 999px; }"
+    },
+    {
+      "name": "Carte de projet",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Carte grise de 20 px de rayon, entièrement cliquable, plate au repos, qui monte au survol.",
+      "html": "<div class=\"ds-card\"><h3><a href=\"#\">SP-Bot <svg class=\"ds-ic\" viewBox=\"0 0 12 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M2.5 9.5 9.5 2.5M4 2.5h5.5V8\"/></svg></a></h3><p class=\"ds-card-meta\">Automatisation</p><p class=\"ds-card-desc\">Robot qui surveille le carburant dans 13 stations et envoie une alerte push.</p><ul class=\"ds-tags\"><li>Python</li><li>ntfy</li></ul></div>",
+      "css": ".ds-card { position: relative; display: flex; flex-direction: column; max-width: 360px; padding: clamp(24px, 3vw, 32px); background: var(--bg-alt, #f5f5f7); border-radius: var(--r-md, 20px); font-family: var(--sans, 'Geist', 'Helvetica Neue', Helvetica, Arial, sans-serif); font-size: 1.0625rem; line-height: 1.5; transition: transform .5s cubic-bezier(.16, 1, .3, 1), box-shadow .5s cubic-bezier(.16, 1, .3, 1); } .ds-card:hover { transform: translateY(-4px); box-shadow: 0 22px 40px -26px rgb(0 0 0 / .4); } .ds-card h3 { margin: 0; font-size: 1.5rem; font-weight: 600; line-height: 1.15; letter-spacing: -0.025em; } .ds-card h3 a { color: var(--ink, #1d1d1f); text-decoration: none; } .ds-card h3 a::after { content: \"\"; position: absolute; inset: 0; border-radius: inherit; } .ds-card h3 a:focus-visible { outline: 2px solid var(--accent, #0066cc); outline-offset: 3px; } .ds-card h3 .ds-ic { margin-left: 4px; color: var(--accent, #0066cc); } .ds-card:hover .ds-ic { transform: translate(2px, -2px); } .ds-card-meta { margin: 8px 0 0; font-size: .9375rem; color: var(--ink-3, #6a6a70); } .ds-card-desc { margin: 14px 0 0; color: var(--ink-2, #4b4b50); } .ds-tags { display: flex; flex-wrap: wrap; margin: 0; padding: 20px 0 0; list-style: none; font-size: .9375rem; color: var(--ink-3, #6a6a70); } .ds-tags li:not(:last-child)::after { content: \"·\"; margin: 0 .55em; } .ds-ic { width: .62em; height: .62em; flex: none; transition: transform .25s cubic-bezier(.16, 1, .3, 1); }"
+    },
+    {
+      "name": "Panneau phare",
+      "kind": "card",
+      "refersTo": "feature-panel",
+      "description": "Grand panneau de 28 px de rayon pour un projet mis en avant : titre large, métadonnée, description, action.",
+      "html": "<article class=\"ds-feature\"><h3>Gestionnaire de processus Linux</h3><p class=\"ds-feature-meta\">Systèmes · Projet de cours UTBM</p><p class=\"ds-feature-desc\">Un outil inspiré de htop, écrit en C, qui lit <code>/proc</code> pour afficher les processus en temps réel.</p><a class=\"ds-feature-more\" href=\"#\">Voir le code <svg class=\"ds-ic\" viewBox=\"0 0 12 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M2.5 9.5 9.5 2.5M4 2.5h5.5V8\"/></svg></a></article>",
+      "css": ".ds-feature { padding: clamp(28px, 5vw, 64px); background: var(--bg-alt, #f5f5f7); color: var(--ink, #1d1d1f); border-radius: var(--r-lg, 28px); font-family: var(--sans, 'Geist', 'Helvetica Neue', Helvetica, Arial, sans-serif); font-size: 1.0625rem; line-height: 1.5; } .ds-feature h3 { margin: 0; font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; line-height: 1.05; letter-spacing: -0.035em; } .ds-feature-meta { margin: 8px 0 0; font-size: .9375rem; color: var(--ink-3, #6a6a70); } .ds-feature-desc { max-width: 58ch; margin: 18px 0 0; color: var(--ink-2, #4b4b50); } .ds-feature code { font: .875em var(--mono, 'Geist Mono', ui-monospace, Consolas, monospace); padding: 1px 6px; border-radius: 6px; background: var(--bg, #fff); } .ds-feature-more { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; margin-top: 26px; color: var(--accent, #0066cc); text-decoration: none; text-underline-offset: 3px; } .ds-feature-more:hover { text-decoration: underline; } .ds-feature-more:hover .ds-ic { transform: translate(2px, -2px); } .ds-feature-more:focus-visible { outline: 2px solid var(--accent, #0066cc); outline-offset: 3px; border-radius: 6px; } .ds-ic { width: .62em; height: .62em; flex: none; transition: transform .25s cubic-bezier(.16, 1, .3, 1); }"
+    },
+    {
+      "name": "Ligne de parcours",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Ligne de liste en deux colonnes séparée par un filet : date en label, titre, organisation, description.",
+      "html": "<div class=\"ds-row\"><div class=\"ds-row-date\">sept. 2026 — aujourd'hui</div><div><h3>Apprenti ingénieur Data &amp; IA <span class=\"ds-row-badge\">En cours</span></h3><p class=\"ds-row-org\">ARNia BFC · Dijon</p><p class=\"ds-row-desc\">Développement d'un outil interne pour les collectivités de la région.</p></div></div>",
+      "css": ".ds-row { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); gap: 8px 40px; padding: 32px 0; border-top: 1px solid var(--line, #d2d2d7); font-family: var(--sans, 'Geist', 'Helvetica Neue', Helvetica, Arial, sans-serif); font-size: 1.0625rem; line-height: 1.5; color: var(--ink, #1d1d1f); } .ds-row-date { padding-top: 3px; font-size: .9375rem; font-variant-numeric: tabular-nums; color: var(--ink-3, #6a6a70); } .ds-row h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 0; font-size: clamp(1.25rem, 2vw, 1.5rem); font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; } .ds-row-badge { padding: 4px 10px; font-size: .75rem; font-weight: 600; letter-spacing: 0; color: var(--accent, #0066cc); background: var(--accent-soft, #e3effb); border-radius: 999px; } .ds-row-org { margin: 6px 0 0; font-weight: 500; } .ds-row-desc { max-width: 66ch; margin: 10px 0 0; color: var(--ink-2, #4b4b50); }"
+    },
+    {
+      "name": "Titre en deux tons",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Titre en forme de phrase : début en encre, fin en encre secondaire, sur une tuile sombre.",
+      "html": "<div class=\"ds-two-tone\"><h2>Un projet, une question, <em>une opportunité ?</em></h2></div>",
+      "css": ".ds-two-tone { padding: 48px 32px; background: #000; text-align: center; font-family: var(--sans, 'Geist', 'Helvetica Neue', Helvetica, Arial, sans-serif); } .ds-two-tone h2 { max-width: 13em; margin: 0 auto; font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 600; line-height: 1.03; letter-spacing: -0.04em; color: #f5f5f7; text-wrap: balance; } .ds-two-tone em { font-style: normal; color: #b4b4ba; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "La page produit d'une personne",
+    "overview": "Le portfolio attendu, joué sans ironie avec la finition d'une page produit : chaque facette de Matthias (le poste, le gardien, le photographe, le voyageur, les projets) occupe une tuile pleine largeur avec un grand titre et un grand visuel. Les tuiles alternent blanc, gris très clair et noir, et c'est ce changement de fond qui sépare les sujets, pas des cadres ni des filets de section.\n\nLe système est calme et dense en air. Une seule couleur agit (le bleu), une seule famille de caractères parle (Geist), et les seules autres couleurs appartiennent à des objets représentés : les poteaux rouge et blanc de la cage, l'or de Caisse Noire, la palette du terminal. La profondeur vient des fonds, pas des ombres. Un seul mouvement signe la page : les grands panneaux se posent en entrant dans l'écran.\n\nL'ancienne identité (fond crème, serif italique, colonne latérale numérotée) est abandonnée et ne doit pas revenir.",
+    "keyCharacteristics": [
+      "Tuiles pleine largeur alternées : blanc, gris très clair, noir, plus une tuile d'accueil prune tirée du fond du portrait.",
+      "Un seul bleu d'action, décliné selon le fond (bouton, lien sur clair, lien sur sombre).",
+      "Geist partout, en semi-gras serré pour les titres ; Geist Mono réservé au code et au terminal.",
+      "Grands rayons (28 px et 20 px) et formes pilule ; aucun angle vif sur un panneau.",
+      "Plat au repos : la hiérarchie vient du fond des tuiles, pas d'ombres portées.",
+      "Thèmes clair et sombre automatiques, avec des tuiles « dark » qui restent sombres dans les deux.",
+      "Un mouvement signature piloté par le défilement, coupé en mouvement réduit."
+    ],
+    "rules": [
+      {
+        "name": "La règle du Bleu Unique",
+        "body": "Tout ce qui se clique est bleu ou devient bleu ; rien d'autre n'est bleu. Le bouton plein prend `btn`, le lien prend `accent`, et le fond décide de la nuance, jamais le goût.",
+        "section": "colors"
+      },
+      {
+        "name": "La règle de la Couleur d'Objet",
+        "body": "Rouge, or et couleurs de terminal restent à l'intérieur de l'objet qu'ils dessinent. Ils ne colorent jamais un titre, un bouton ou un fond de tuile.",
+        "section": "colors"
+      },
+      {
+        "name": "La règle du Fond qui Sépare",
+        "body": "Deux tuiles voisines n'ont jamais le même fond. L'ordre construit est : prune, blanc, gris, noir, blanc, gris, blanc, gris, blanc, noir, puis pied de page gris.",
+        "section": "colors"
+      },
+      {
+        "name": "La règle des Deux Tons",
+        "body": "Un titre en forme de phrase se coupe en deux : le début en `ink`, la fin en `ink-2`, par un `<em>` sans italique. Construit pour la phrase de rôle de l'accueil, la citation de la cage et le titre de contact. Les titres de section d'un seul mot restent d'un seul ton.",
+        "section": "typography"
+      },
+      {
+        "name": "La règle des Trois Graisses",
+        "body": "400 pour lire, 500 pour introduire, 600 pour titrer. Le 700 n'existe que dans la maquette de téléphone, qui représente une autre application.",
+        "section": "typography"
+      },
+      {
+        "name": "La règle du Mono Rare",
+        "body": "Geist Mono signale du code réel : un chemin, une commande, le terminal. Jamais une date, une étiquette ou un titre.",
+        "section": "typography"
+      },
+      {
+        "name": "La règle du Plat au Repos",
+        "body": "Une surface ne porte une ombre que si elle répond à un geste (survol), passe au-dessus de la page (menu) ou représente un objet (téléphone, terminal).",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** alterner le fond à chaque nouvelle tuile (`bg`, `bg-alt`, série sombre) et laisser ce changement faire la séparation.",
+      "**Do** réserver le bleu à ce qui se clique : `btn` pour le bouton plein, `accent` pour les liens sur clair, `dark-accent` sur sombre.",
+      "**Do** composer tout le texte en Geist, titres en 600 avec un interlettrage de −0.02em à −0.04em selon la taille.",
+      "**Do** donner à chaque tuile un grand titre et, quand le sujet s'y prête, un grand visuel arrondi à 28 px.",
+      "**Do** utiliser les jetons `--ink`, `--ink-2`, `--ink-3`, `--bg`, `--bg-alt`, `--line`, `--accent` plutôt que des valeurs fixes, pour que les thèmes clair et sombre et les tuiles « dark » suivent sans réglage.",
+      "**Do** dessiner les icônes par masque CSS dans la couleur du texte, et marquer tout lien externe par la flèche diagonale.",
+      "**Do** garder 44 px de hauteur minimale aux cibles, un focus visible de 2 px en `accent`, et couper tout mouvement en mouvement réduit.",
+      "**Do** reporter tout changement visuel sur les deux versions linguistiques."
+    ],
+    "donts": [
+      "**Don't** revenir à l'ancienne identité : fond crème, serif italique, colonne latérale numérotée.",
+      "**Don't** introduire une seconde couleur d'accent d'interface ; rouge, or et couleurs de terminal restent dans leur objet.",
+      "**Don't** utiliser Geist Mono pour des étiquettes, des dates ou des titres.",
+      "**Don't** poser d'ombre ou de bordure sur une carte au repos, ni encadrer un bloc avec un filet.",
+      "**Don't** donner un rayon à une tuile pleine largeur, ni un angle vif à un panneau ou à une photo.",
+      "**Don't** ajouter de sur-titre en petites capitales interlettrées au-dessus d'un titre ; les étiquettes en capitales n'existent que dans la maquette de téléphone, qui représente une autre application.",
+      "**Don't** ajouter un second mouvement d'entrée aux sections ; seuls les grands panneaux visuels « se posent ».",
+      "**Don't** utiliser de dégradé comme décor ou dans un texte ; un dégradé est une lumière derrière un objet ou un voile sous une légende."
+    ]
+  }
+}

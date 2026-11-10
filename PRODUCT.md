@@ -30,7 +30,8 @@ Les projets techniques (du C/Linux à l'ESP32 puis à React/Supabase) appuient c
 
 - Site statique : `index.html` (FR), `en/index.html` (EN), `style.css`, `main.js`, `404.html`. Pas de framework ni d'étape de build.
 - Domaine personnalisé `tulz.fr` via `CNAME`. Aperçu local : `python -m http.server 8765` (voir `.claude/launch.json`).
-- Sections numérotées 01 à 08 : Expérience, Handball, Photographie, Erasmus, Projets, Formation, Compétences, Contact (accueil non numéroté avant).
+- Huit sections après l'accueil, sans numéros : Expérience, Handball, Photographie, Erasmus, Projets, Formation, Compétences, Contact. Navigation par une barre fixe en haut.
+- Parti pris visuel choisi par Matthias (10 nov. 2026) : le portfolio standard, sobre, à la manière des pages produit Apple (grandes images, sections pleine largeur), avec une section visuelle par passion. Pas d'univers décalé.
 - Données structurées schema.org `Person` dans le `<head>`.
 
 ## Capabilities and Constraints
