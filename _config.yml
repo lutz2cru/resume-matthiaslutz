@@ -1,0 +1,7 @@
+# Configuration Jekyll utilisée par GitHub Pages pour tulz.fr.
+# Le site est en HTML statique : Jekyll ne fait que copier les fichiers.
+# Les dossiers commençant par un point (.claude/, .impeccable/) sont déjà
+# ignorés par Jekyll ; on exclut ici les notes de travail à la racine.
+exclude:
+  - PRODUCT.md
+  - DESIGN.md
