@@ -72,7 +72,8 @@ class Terrain {
     onMotionChange(() => this.update());
 
     window.addEventListener('pointermove', (e) => this.onPointer(e), { passive: true });
-    root.addEventListener('pointerleave', () => (this.pointer.target = 0));
+    // Le terrain ignore les pointeurs (pointer-events: none) : on écoute la sortie de la fenêtre.
+    document.documentElement.addEventListener('mouseleave', () => (this.pointer.target = 0));
     this.resize();
     root.classList.add('is-live');
   }

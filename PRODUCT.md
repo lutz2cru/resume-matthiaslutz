@@ -28,11 +28,11 @@ Les projets techniques (du C/Linux à l'ESP32 puis à React/Supabase) appuient c
 
 ## Operating Context
 
-- Site statique : `index.html` (FR), `en/index.html` (EN), `style.css`, `main.js`, `404.html`. Pas de framework ni d'étape de build.
-- Domaine personnalisé `tulz.fr` via `CNAME`. Aperçu local : `python -m http.server 8765` (voir `.claude/launch.json`).
-- Huit sections après l'accueil, sans numéros : Expérience, Handball, Photographie, Erasmus, Projets, Formation, Compétences, Contact. Navigation par une barre fixe en haut.
-- Parti pris visuel choisi par Matthias (10 nov. 2026) : le portfolio standard, sobre, à la manière des pages produit Apple (grandes images, sections pleine largeur), avec une section visuelle par passion. Pas d'univers décalé.
-- Données structurées schema.org `Person` dans le `<head>`.
+- Site Astro statique (voir `ARCHITECTURE.md`) : le contenu vit dans `src/content/*.yaml`, FR et EN côte à côte. Build : `npm run build` ; aperçu : `npm run dev`.
+- Domaine personnalisé `tulz.fr` via `public/CNAME`, déployé par GitHub Actions (`.github/workflows/deploy.yml`).
+- Six territoires numérotés après l'accueil : À propos, Projets (liste + fiches), Parcours, Compétences, Hors-code (handball, photo, voyages), Contact. Navigation par une barre fixe et une palette de commandes (Ctrl/⌘ K).
+- **Parti pris visuel (brief du 21 nov. 2026, remplace celui du 10 nov.)** : TULZ, « Personal Digital Universe » — minimalisme sombre, typographie expressive, le site traité comme une carte topographique personnelle. Voir `DESIGN_SYSTEM.md`.
+- Données structurées schema.org `Person` sur l'accueil et À propos.
 
 ## Capabilities and Constraints
 

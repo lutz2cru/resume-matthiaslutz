@@ -47,5 +47,7 @@ execFileSync(
   ],
   { stdio: 'ignore' },
 );
+const optimised = await sharp(out).png({ palette: true, quality: 92, compressionLevel: 9 }).toBuffer();
+writeFileSync(out, optimised);
 const meta = await sharp(out).metadata();
-console.log(`og.png : ${meta.width} × ${meta.height}`);
+console.log(`og.png : ${meta.width} × ${meta.height}, ${Math.round(optimised.length / 1024)} Ko`);

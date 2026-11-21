@@ -45,7 +45,10 @@ const href = (p: { id: string; data: { kind: string } }) => (p.data.kind === 'ca
 
       {
         GROUPS.map((g, gi) => {
-          const items = skills.filter((s) => s.data.group === g);
+          const rank = { solid: 0, learning: 1, none: 2 } as const;
+          const items = skills
+            .filter((s) => s.data.group === g)
+            .sort((a, b) => rank[a.data.level ?? 'none'] - rank[b.data.level ?? 'none'] || pick(lang, a.data.label).localeCompare(pick(lang, b.data.label), lang));
           return (
             <section class="group" aria-labelledby={`g-${g}`} data-group>
               <header class="group-head">

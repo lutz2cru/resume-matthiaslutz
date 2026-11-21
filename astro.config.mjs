@@ -21,8 +21,9 @@ export default defineConfig({
       filter: (page) => !page.includes('/covers/') && !page.endsWith('/404/'),
     }),
   ],
+  // Préchargement des pages internes au survol : navigation quasi instantanée.
   prefetch: {
-    prefetchAll: false,
+    prefetchAll: true,
     defaultStrategy: 'hover',
   },
   devToolbar: { enabled: false },

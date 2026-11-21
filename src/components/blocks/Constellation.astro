@@ -33,7 +33,7 @@ const pos = (id: string) => byId.get(id)!.data;
         {Array.from({ length: 5 }, (_, i) => <line x1="0" y1={(i + 1) * 100 + 10} x2="1000" y2={(i + 1) * 100 + 10} />)}
       </g>
       <g class="edges" aria-hidden="true">
-        {edges.map((e) => <line class="edge" data-a={e.a} data-b={e.b} x1={pos(e.a).x} y1={pos(e.a).y} x2={pos(e.b).x} y2={pos(e.b).y} pathLength="1" />)}
+        {edges.map((e) => <path class="edge" data-a={e.a} data-b={e.b} d={`M${pos(e.a).x} ${pos(e.a).y}L${pos(e.b).x} ${pos(e.b).y}`} pathLength="1" />)}
       </g>
       <g class="nodes">
         {
@@ -71,7 +71,10 @@ const pos = (id: string) => byId.get(id)!.data;
   </div>
 
   <aside class="panel" aria-live="polite" data-panel>
-    <p class="label" id="const-hint">{t(lang, 'beyond.constellation.hint')}</p>
+    <p class="label" id="const-hint">
+      <span class="hint-fine">{t(lang, 'beyond.constellation.hint')}</span>
+      <span class="hint-touch">{lang === 'fr' ? 'Touche un point pour voir ses liens, une seconde fois pour l’ouvrir.' : 'Tap a point to see its links, tap again to open it.'}</span>
+    </p>
     <div class="panel-body" data-panel-body>
       <p class="p-title">{lang === 'fr' ? `${interests.length} centres d’intérêt, ${items.length} points de rencontre` : `${interests.length} interests, ${items.length} meeting points`}</p>
       <p class="p-note">
@@ -131,9 +134,10 @@ const pos = (id: string) => byId.get(id)!.data;
   }
 
   .edge {
+    fill: none;
     stroke: var(--c-text-3);
     stroke-width: 1;
-    stroke-opacity: 0.55;
+    stroke-opacity: 0.7;
     stroke-dasharray: 1;
     stroke-dashoffset: 0;
     transition:
@@ -204,11 +208,11 @@ const pos = (id: string) => byId.get(id)!.data;
     stroke-opacity: 0.12;
   }
 
-  .constellation.is-active .node:not(.is-on) .lbl {
+  .constellation.is-active .node:not(.is-on):not(.is-focus) .lbl {
     opacity: 0.35;
   }
 
-  .constellation.is-active .node:not(.is-on) .core {
+  .constellation.is-active .node:not(.is-on):not(.is-focus) .core {
     fill: var(--c-line);
   }
 
@@ -238,6 +242,20 @@ const pos = (id: string) => byId.get(id)!.data;
   .node:focus-visible .hit {
     stroke: var(--c-accent);
     stroke-width: 2;
+  }
+
+  .hint-touch {
+    display: none;
+  }
+
+  @media (hover: none) {
+    .hint-fine {
+      display: none;
+    }
+
+    .hint-touch {
+      display: inline;
+    }
   }
 
   /* panneau */
@@ -341,12 +359,22 @@ const pos = (id: string) => byId.get(id)!.data;
   }
 
   @media (max-width: 640px) {
-    .lbl {
-      font-size: 22px;
+    /* Sur téléphone : seuls les centres d'intérêt sont nommés ; un point touché affiche son nom et ses liens. */
+    .node--item .lbl {
+      display: none;
+      font-size: 24px;
+    }
+
+    .node--item.is-focus .lbl {
+      display: block;
     }
 
     .node--interest .lbl {
-      font-size: 24px;
+      font-size: 26px;
+    }
+
+    .core {
+      transform: scale(1.5);
     }
 
     .plain-list {
@@ -360,7 +388,7 @@ const pos = (id: string) => byId.get(id)!.data;
   if (root) {
     const svg = root.querySelector<SVGSVGElement>('[data-sky]')!;
     const nodes = [...root.querySelectorAll<SVGAElement>('.node')];
-    const edges = [...root.querySelectorAll<SVGLineElement>('.edge')];
+    const edges = [...root.querySelectorAll<SVGPathElement>('.edge')];
     const body = root.querySelector<HTMLElement>('[data-panel-body]')!;
     const initial = body.innerHTML;
     const byId = new Map(nodes.map((n) => [n.dataset.id!, n]));
@@ -394,9 +422,20 @@ const pos = (id: string) => byId.get(id)!.data;
         .join('')}</ul>`;
     };
 
+    let lastPointer = 'mouse';
     nodes.forEach((n) => {
-      n.addEventListener('pointerenter', () => activate(n.dataset.id!));
+      n.addEventListener('pointerdown', (e) => (lastPointer = e.pointerType));
+      n.addEventListener('pointerenter', (e) => {
+        if (e.pointerType === 'mouse') activate(n.dataset.id!);
+      });
       n.addEventListener('focus', () => activate(n.dataset.id!));
+      // Au doigt : un premier toucher sélectionne, le second ouvre le lien.
+      n.addEventListener('click', (e) => {
+        if (lastPointer !== 'mouse' && current !== n.dataset.id) {
+          e.preventDefault();
+          activate(n.dataset.id!);
+        }
+      });
     });
     svg.addEventListener('pointerleave', () => activate(null));
     root.addEventListener('focusout', (e) => {
@@ -428,10 +467,7 @@ const pos = (id: string) => byId.get(id)!.data;
       edges.forEach((e) => {
         const a = at(byId.get(e.dataset.a!)!);
         const b = at(byId.get(e.dataset.b!)!);
-        e.setAttribute('x1', String(a.x));
-        e.setAttribute('y1', String(a.y));
-        e.setAttribute('x2', String(b.x));
-        e.setAttribute('y2', String(b.y));
+        e.setAttribute('d', `M${a.x} ${a.y}L${b.x} ${b.y}`);
       });
       root.querySelectorAll<SVGLineElement>('.grid line').forEach((l) => (l.style.display = portrait ? 'none' : ''));
     };

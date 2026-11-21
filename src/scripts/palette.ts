@@ -20,6 +20,7 @@ function score(item: Item, query: string): number {
   if (label.startsWith(query)) return 100 - label.length / 100;
   if (label.split(/\s+/).some((w) => w.startsWith(query))) return 80;
   if (hay.includes(query)) return 60;
+  if (query.length < 3) return -1;
   let qi = 0;
   for (const ch of label) if (ch === query[qi]) qi++;
   return qi === query.length ? 30 : -1;

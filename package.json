@@ -15,7 +15,7 @@
     "verify": "node scripts/validate-yaml.mjs && astro check && astro build && node scripts/check-links.mjs"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.23.4"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.6",

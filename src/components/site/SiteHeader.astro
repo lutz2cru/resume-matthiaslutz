@@ -18,9 +18,9 @@ const isActive = (key: PageKey) => current === key || (key === 'projects' && cur
 
 <header class="site-header">
   <div class="wrap bar">
-    <a class="brand" href={path(lang, 'home')} aria-current={current === 'home' ? 'page' : undefined}>
-      <span class="brand-mark" aria-hidden="true">TULZ</span>
-      <span class="brand-name">{profile.name}<span class="sr-only"> — {t(lang, 'page.home')}</span></span>
+    <a class="brand" href={path(lang, 'home')} aria-current={current === 'home' ? 'page' : undefined} aria-label={`TULZ — ${profile.name} · ${t(lang, 'page.home')}`}>
+      <span class="brand-mark">TULZ</span>
+      <span class="brand-name" aria-hidden="true">{profile.name}</span>
     </a>
 
     <nav class="nav" aria-label={t(lang, 'nav.label')}>
@@ -83,10 +83,19 @@ const isActive = (key: PageKey) => current === key || (key === 'projects' && cur
     top: 0;
     z-index: var(--z-header);
     view-transition-name: site-header;
+    border-bottom: 1px solid var(--c-line-soft);
+  }
+
+  /* Le flou est porté par un pseudo-élément : un backdrop-filter sur l'en-tête lui-même
+     deviendrait le bloc conteneur du menu mobile (position: fixed) et le rognerait. */
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
     background: rgb(16 19 25 / 0.82);
     backdrop-filter: blur(14px) saturate(1.2);
     -webkit-backdrop-filter: blur(14px) saturate(1.2);
-    border-bottom: 1px solid var(--c-line-soft);
   }
 
   .bar {

@@ -80,8 +80,8 @@ sp-bot:
 process-manager:
   kind: item
   label: { fr: "Gestionnaire de processus", en: "Process manager" }
-  x: 150
-  y: 470
+  x: 110
+  y: 545
   links: [infra, code]
   note:
     fr: Un outil façon htop en C, qui lit /proc.

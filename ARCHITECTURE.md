@@ -45,7 +45,8 @@ src/
     404.astro
   scripts/               scripts client (palette, révélations, terrain, filtres…)
   styles/                jetons, base, typographie, utilitaires
-scripts/check-links.mjs  vérification des liens internes du build
+scripts/                 validate-yaml, check-links, make-assets (icônes + og.png)
+.github/workflows/       déploiement GitHub Pages
 legacy/                  ancien site statique (référence ; non publié)
 ```
 
@@ -73,7 +74,13 @@ lib/terrain.ts ──► pages/covers/[slug].svg.ts (build)   et   scripts/terra
 | Fond | Grille de points CSS | Terrain animé (image fixe si mouvement réduit) |
 | Transitions | Navigation normale | Transitions natives si le navigateur les gère |
 
-## 5. Commandes
+## 5. Notes
+
+- `hreflang` : chaque page déclare son équivalent dans l'autre langue dans son `<head>` (les URL sont traduites : `/projets/` ↔ `/en/projects/`). Le sitemap ne regroupe que les URL de même chemin ; les balises `<head>` font foi.
+- Les illustrations HTML (`components/mocks/`) sont décoratives (`aria-hidden`) et signalées comme reconstitutions.
+- Préchargement au survol (`prefetch`) : les pages internes sont récupérées avant le clic.
+
+## 6. Commandes
 
 ```bash
 npm install          # dépendances
@@ -85,6 +92,6 @@ npm run test:links   # vérifie les liens internes de dist/
 npm run verify       # check + build + liens
 ```
 
-## 6. Déploiement
+## 7. Déploiement
 
 Voir `README.md` : GitHub Actions construit `dist/` et le publie sur GitHub Pages. Il faut passer la source Pages du dépôt sur « GitHub Actions » (réglage à faire par toi, non effectué).

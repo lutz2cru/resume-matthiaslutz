@@ -112,6 +112,11 @@ const elsewhere = [
     padding-bottom: clamp(56px, 8vw, 112px);
   }
 
+  /* La page Contact affiche déjà l'adresse en grand. */
+  :global(body[data-page='contact']) .cta {
+    display: none;
+  }
+
   .mail {
     display: inline-flex;
     align-items: baseline;

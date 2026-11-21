@@ -6,8 +6,8 @@ import ExternalLink from '~/components/ui/ExternalLink.astro';
 import NowList from '~/components/blocks/NowList.astro';
 import { t, pageTitle } from '~/i18n/ui';
 import { otherLang, path, type Lang } from '~/i18n/routes';
-import { getPlaces, getProfile, pick } from '~/lib/content';
-import { formatCoord, formatUpdated } from '~/lib/format';
+import { getProfile, pick } from '~/lib/content';
+import { formatUpdated } from '~/lib/format';
 import { personJsonLd } from '~/lib/seo';
 import portrait from '~/assets/images/portrait-matthias.jpg';
 
@@ -17,8 +17,6 @@ interface Props {
 
 const { lang } = Astro.props;
 const profile = await getProfile();
-const places = await getPlaces();
-const vesoul = places.get('vesoul');
 ---
 
 <Base lang={lang} page="about" title={pageTitle(lang, 'about')} description={t(lang, 'desc.about')} alternate={path(otherLang(lang), 'about')} jsonLd={personJsonLd(lang, profile)}>
@@ -32,10 +30,7 @@ const vesoul = places.get('vesoul');
           <span class="corner corner--tl" aria-hidden="true"></span>
           <span class="corner corner--br" aria-hidden="true"></span>
         </div>
-        <figcaption class="label">
-          {profile.name}
-          {vesoul && <span aria-hidden="true"> · {formatCoord(vesoul.lat, vesoul.lon)}</span>}
-        </figcaption>
+        <figcaption class="label">{profile.name} · {pick(lang, profile.role)}</figcaption>
       </figure>
 
       <div class="bio">
@@ -148,10 +143,10 @@ const vesoul = places.get('vesoul');
   }
 
   .bio-lead {
-    font-size: clamp(1.375rem, 1.05rem + 1.3vw, 2.125rem);
-    font-stretch: 108%;
-    font-weight: 500;
-    line-height: 1.3;
+    font-size: clamp(1.25rem, 1.02rem + 0.85vw, 1.75rem);
+    font-stretch: 104%;
+    font-weight: 450;
+    line-height: 1.38;
     letter-spacing: -0.01em;
     text-wrap: pretty;
   }
