@@ -1,11 +1,16 @@
 ---
+/**
+ * Parcours en trois parties : expérience, formation, engagements & sport.
+ * Dans chaque partie, du plus récent au plus ancien ; les étapes en cours d'abord.
+ */
 import Base from '~/layouts/Base.astro';
 import PageHeader from '~/components/ui/PageHeader.astro';
 import ExternalLink from '~/components/ui/ExternalLink.astro';
+import Icon from '~/components/ui/Icon.astro';
 import Todo from '~/components/ui/Todo.astro';
 import { t, pageTitle, type UIKey } from '~/i18n/ui';
-import { otherLang, path, type Lang } from '~/i18n/routes';
-import { getJourney, getPlaces, pick } from '~/lib/content';
+import { anchor, otherLang, path, type Lang } from '~/i18n/routes';
+import { JOURNEY_SECTIONS, getJourney, getPlaces, journeySection, pick, type JourneySection } from '~/lib/content';
 import { formatCoord, formatPeriod } from '~/lib/format';
 
 interface Props {
@@ -15,281 +20,173 @@ interface Props {
 const { lang } = Astro.props;
 const entries = await getJourney();
 const places = await getPlaces();
-const TYPES = ['work', 'education', 'international', 'engagement', 'sport'] as const;
-const counts = Object.fromEntries(TYPES.map((ty) => [ty, entries.filter((e) => e.data.type === ty).length]));
+const SECTION_IDS: Record<JourneySection, Record<Lang, string>> = {
+  experience: { fr: 'experience', en: 'experience' },
+  education: { fr: 'formation', en: 'education' },
+  engagement: { fr: 'engagements', en: 'commitments' },
+};
+const sections = (Object.keys(JOURNEY_SECTIONS) as JourneySection[]).map((key) => ({
+  key,
+  id: SECTION_IDS[key][lang],
+  title: t(lang, `journey.section.${key}` as UIKey),
+  items: entries.filter((e) => journeySection(e) === key),
+}));
 
-// Regroupement par année de début (les entrées en cours restent dans leur année).
-const years = [...new Set(entries.map((e) => e.data.start.slice(0, 4)))].sort((a, b) => b.localeCompare(a));
-const byYear = years.map((y) => ({ year: y, items: entries.filter((e) => e.data.start.startsWith(y)) }));
+/** Liens internes complémentaires (le schéma n'accepte que des URL externes dans links). */
+const more: Record<string, { href: string; label: string }> = {
+  erasmus: { href: `${path(lang, 'beyond')}#${anchor(lang, 'voyages')}`, label: t(lang, 'journey.erasmus.more') },
+};
+const countLabel = (n: number) => `${n} ${t(lang, n > 1 ? 'journey.count.many' : 'journey.count.one')}`;
 ---
 
 <Base lang={lang} page="journey" title={pageTitle(lang, 'journey')} description={t(lang, 'desc.journey')} alternate={path(otherLang(lang), 'journey')}>
-  <PageHeader index={3} title={pageTitle(lang, 'journey')} lead={t(lang, 'page.journey.lead')} seed="journey" />
+  <PageHeader page="journey" title={pageTitle(lang, 'journey')} lead={t(lang, 'page.journey.lead')} seed="journey">
+    <nav class="section-nav" aria-label={t(lang, 'journey.sections')}>
+      <ul role="list">
+        {
+          sections.map((s) => (
+            <li>
+              <a href={`#${s.id}`}>
+                {s.title}
+                <span class="label">{countLabel(s.items.length)}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </PageHeader>
 
-  <section class="journey" data-journey data-label-one={lang === 'fr' ? 'étape affichée' : 'step shown'} data-label-many={lang === 'fr' ? 'étapes affichées' : 'steps shown'}>
-    <div class="wrap">
-      <div class="toolbar" data-requires-js>
-        <div class="filters" role="group" aria-label={t(lang, 'journey.filter')}>
-          <button type="button" class="filter" aria-pressed="true" data-filter="all">
-            {t(lang, 'journey.all')} <span class="count">{entries.length}</span>
-          </button>
-          {
-            TYPES.map((ty) => (
-              <button type="button" class="filter" aria-pressed="false" data-filter={ty}>
-                <span class:list={['swatch', `swatch--${ty}`]} aria-hidden="true" />
-                {t(lang, `type.${ty}` as UIKey)} <span class="count">{counts[ty]}</span>
-              </button>
-            ))
-          }
-        </div>
-        <p class="label" role="status" aria-live="polite" data-filter-status></p>
-      </div>
-
-      <div class="layout">
-        <nav class="rail" aria-label={t(lang, 'journey.years')}>
-          <ol role="list">
-            {
-              years.map((y) => (
-                <li>
-                  <a href={`#y${y}`} data-year-link={y}>
-                    {y}
-                  </a>
-                </li>
-              ))
-            }
-          </ol>
-        </nav>
-
-        <div class="track" data-track>
-          <span class="spine" aria-hidden="true"><span class="spine-fill" data-spine></span></span>
-          {
-            byYear.map(({ year, items }) => (
-              <section class="year" id={`y${year}`} data-year={year} aria-labelledby={`yt${year}`}>
-                <h2 class="year-title" id={`yt${year}`}>
-                  {year}
-                </h2>
-                <ol class="entries" role="list">
-                  {items.map((e) => {
-                    const place = e.data.place ? places.get(e.data.place) : undefined;
-                    return (
-                      <li class:list={['entry', `entry--${e.data.type}`]} id={e.id} data-type={e.data.type} data-reveal>
-                        <span class="node" aria-hidden="true" />
-                        <div class="entry-head">
-                          <p class="label when">
-                            {e.data.current && <span class="dot dot--live" aria-hidden="true" />}
-                            {formatPeriod(lang, e.data)}
-                            <span class="kind">· {t(lang, `type.${e.data.type}` as UIKey)}</span>
-                          </p>
-                          <h3 class="entry-title">{pick(lang, e.data.title)}</h3>
-                          <p class="org">
-                            {e.data.org}
-                            {place && <span class="place"> · {pick(lang, place.name)}</span>}
-                          </p>
-                        </div>
-                        <div class="entry-body">
-                          <p>{pick(lang, e.data.description)}</p>
-                          {e.data.points && (
-                            <ul class="points" role="list">
-                              {e.data.points.map((pt) => (
-                                <li>{pick(lang, pt)}</li>
-                              ))}
-                            </ul>
+  <div class="journey">
+    {
+      sections.map((s) => (
+        <section class="jsec" id={s.id} aria-labelledby={`${s.id}-title`}>
+          <div class="wrap">
+            <header class="row-head jsec-head">
+              <h2 class="h2" id={`${s.id}-title`}>
+                {s.title}
+              </h2>
+              <p class="label">{countLabel(s.items.length)}</p>
+            </header>
+            <ol class="entries" role="list">
+              {s.items.map((e) => {
+                const place = e.data.place ? places.get(e.data.place) : undefined;
+                const extra = more[e.id];
+                return (
+                  <li class="entry" id={e.id} data-current={e.data.current || undefined} style={`--tc: var(--c-type-${e.data.type})`} data-reveal>
+                    <span class="node" aria-hidden="true" />
+                    <p class="when label">
+                      {e.data.current && <span class="dot dot--live" aria-hidden="true" />}
+                      {formatPeriod(lang, e.data)}
+                    </p>
+                    <div class="entry-head">
+                      <h3 class="entry-title">{pick(lang, e.data.title)}</h3>
+                      <p class="org">
+                        {e.data.org}
+                        {place && <span class="place"> · {pick(lang, place.name)}</span>}
+                      </p>
+                      <p class="kind label">{t(lang, `type.${e.data.type}` as UIKey)}</p>
+                    </div>
+                    <div class="entry-body">
+                      <p>{pick(lang, e.data.description)}</p>
+                      {e.data.points && (
+                        <ul class="points" role="list">
+                          {e.data.points.map((pt) => (
+                            <li>{pick(lang, pt)}</li>
+                          ))}
+                        </ul>
+                      )}
+                      {e.data.tags.length > 0 && (
+                        <ul class="tags" role="list">
+                          {e.data.tags.map((tg) => (
+                            <li>{pick(lang, tg)}</li>
+                          ))}
+                        </ul>
+                      )}
+                      {(e.data.links.length > 0 || extra) && (
+                        <p class="links">
+                          {extra && (
+                            <a class="link" href={extra.href}>
+                              {extra.label}
+                              <span class="arrow">
+                                <Icon name="arrow" />
+                              </span>
+                            </a>
                           )}
-                          {e.data.tags.length > 0 && (
-                            <ul class="tags" role="list">
-                              {e.data.tags.map((tg) => (
-                                <li>{pick(lang, tg)}</li>
-                              ))}
-                            </ul>
-                          )}
-                          {e.data.links.length > 0 && (
-                            <p class="links">
-                              {e.data.links.map((l) => (
-                                <ExternalLink lang={lang} href={l.href}>
-                                  {pick(lang, l.label)}
-                                </ExternalLink>
-                              ))}
-                            </p>
-                          )}
-                          {place && (
-                            <p class="coord label" aria-hidden="true">
-                              {formatCoord(place.lat, place.lon)}
-                            </p>
-                          )}
-                          <Todo text={e.data.todo} />
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ol>
-              </section>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-  </section>
+                          {e.data.links.map((l) => (
+                            <ExternalLink lang={lang} href={l.href}>
+                              {pick(lang, l.label)}
+                            </ExternalLink>
+                          ))}
+                        </p>
+                      )}
+                      {place && (
+                        <p class="coord label" aria-hidden="true">
+                          {formatCoord(place.lat, place.lon)}
+                        </p>
+                      )}
+                      <Todo text={e.data.todo} />
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        </section>
+      ))
+    }
+  </div>
 </Base>
 
 <style>
+  /* ---------- parties */
   .journey {
-    --t-work: var(--c-accent);
-    --t-education: var(--c-accent-2);
-    --t-international: #e8edf2;
-    --t-engagement: #f2c94c;
-    --t-sport: #ff8a65;
-    padding-block: clamp(40px, 6vw, 72px) var(--space-section);
+    padding-bottom: var(--space-section);
   }
 
-  .toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--s-4);
-    margin-bottom: var(--s-8);
+  .jsec {
+    padding-top: clamp(56px, 7vw, 104px);
   }
 
-  .swatch {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--sw);
+  .jsec-head {
+    margin-bottom: var(--s-6);
   }
 
-  .swatch--work {
-    --sw: var(--t-work);
-  }
-  .swatch--education {
-    --sw: var(--t-education);
-  }
-  .swatch--international {
-    --sw: var(--t-international);
-  }
-  .swatch--engagement {
-    --sw: var(--t-engagement);
-  }
-  .swatch--sport {
-    --sw: var(--t-sport);
-  }
-
-  .filter[aria-pressed='true'] .swatch {
-    background: var(--c-accent-ink);
-  }
-
-  .layout {
-    display: grid;
-    grid-template-columns: 120px minmax(0, 1fr);
-    gap: var(--s-6);
-  }
-
-  /* ---------- repères d'années */
-  .rail {
-    align-self: start;
-    position: sticky;
-    top: calc(var(--header-h) + 32px);
-  }
-
-  .rail ol {
-    display: grid;
-    gap: 2px;
-  }
-
-  .rail a {
-    display: block;
-    padding: 6px 0;
-    font-family: var(--f-mono);
-    font-size: var(--fs-mono-l);
-    font-stretch: 87.5%;
-    color: var(--c-text-3);
-    text-decoration: none;
-    transition:
-      color var(--dur-1) var(--ease-out),
-      padding var(--dur-2) var(--ease-out);
-  }
-
-  .rail a:hover {
-    color: var(--c-text);
-  }
-
-  .rail a[aria-current='true'] {
-    color: var(--c-accent);
-    padding-left: 12px;
-    box-shadow: inset 2px 0 0 var(--c-accent);
-  }
-
-  /* ---------- piste */
-  .track {
-    position: relative;
-    padding-left: 40px;
-  }
-
-  .spine {
-    position: absolute;
-    left: 7px;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: var(--c-line);
-  }
-
-  .spine-fill {
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 100%;
-    background: var(--c-accent-2);
-    transform-origin: top;
-    transform: scaleY(var(--progress, 1));
-  }
-
-  .year + .year {
-    margin-top: var(--s-8);
-  }
-
-  .year[hidden] {
-    display: none;
-  }
-
-  .year-title {
-    position: relative;
-    margin-bottom: var(--s-5);
-    font-size: clamp(2.5rem, 1.6rem + 3.6vw, 5rem);
-    font-stretch: 125%;
-    font-weight: 760;
-    letter-spacing: -0.04em;
-    line-height: 1;
-    color: transparent;
-    -webkit-text-stroke: 1px var(--c-text-3);
-    scroll-margin-top: calc(var(--header-h) + 24px);
-  }
-
+  /* ---------- étapes */
   .entries {
-    display: grid;
-    gap: 0;
+    position: relative;
+    padding-left: 32px;
+  }
+
+  /* Ligne du parcours : l'un des rares dégradés identitaires. */
+  .entries::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: var(--s-6);
+    bottom: var(--s-6);
+    width: 1px;
+    background: var(--grad-brand-v);
+    opacity: 0.8;
   }
 
   .entry {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-columns: 150px minmax(0, 5fr) minmax(0, 7fr);
     gap: var(--s-3) var(--s-6);
     padding: var(--s-6) 0;
     border-top: 1px solid var(--c-line);
-    scroll-margin-top: calc(var(--header-h) + 24px);
-  }
-
-  .entry[hidden] {
-    display: none;
   }
 
   .entry:target {
-    background: linear-gradient(90deg, var(--c-surface), transparent 80%);
+    background: var(--c-surface);
   }
 
   .node {
     position: absolute;
-    left: -38px;
-    top: calc(var(--s-6) + 6px);
+    left: -32px;
+    top: calc(var(--s-6) + 5px);
     width: 11px;
     height: 11px;
     background: var(--c-bg);
@@ -297,38 +194,24 @@ const byYear = years.map((y) => ({ year: y, items: entries.filter((e) => e.data.
     border-radius: 50%;
   }
 
-  .entry--work {
-    --tc: var(--t-work);
-  }
-  .entry--education {
-    --tc: var(--t-education);
-  }
-  .entry--international {
-    --tc: var(--t-international);
-  }
-  .entry--engagement {
-    --tc: var(--t-engagement);
-  }
-  .entry--sport {
-    --tc: var(--t-sport);
-  }
-
-  .entry-head {
-    display: grid;
-    gap: 8px;
-    align-content: start;
+  .entry[data-current] .node {
+    background: var(--tc);
   }
 
   .when {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    align-content: start;
     gap: 8px;
+    padding-top: 6px;
     color: var(--c-text-2);
   }
 
-  .kind {
-    color: var(--tc);
+  .entry-head {
+    display: grid;
+    gap: 8px;
+    align-content: start;
   }
 
   .entry-title {
@@ -340,12 +223,16 @@ const byYear = years.map((y) => ({ year: y, items: entries.filter((e) => e.data.
   }
 
   .org {
-    color: var(--c-text-2);
+    color: var(--c-text);
     font-size: var(--fs-small);
   }
 
   .place {
-    color: var(--c-text-3);
+    color: var(--c-text-2);
+  }
+
+  .kind {
+    color: var(--tc);
   }
 
   .entry-body {
@@ -365,6 +252,7 @@ const byYear = years.map((y) => ({ year: y, items: entries.filter((e) => e.data.
     position: relative;
     padding-left: 20px;
     font-size: var(--fs-small);
+    color: var(--c-text);
   }
 
   .points li::before {
@@ -390,95 +278,40 @@ const byYear = years.map((y) => ({ year: y, items: entries.filter((e) => e.data.
 
   @media (max-width: 1099px) {
     .entry {
-      grid-template-columns: 1fr;
+      grid-template-columns: 130px minmax(0, 1fr);
+    }
+
+    .entry-body {
+      grid-column: 2;
     }
   }
 
   @media (max-width: 760px) {
-    .layout {
-      grid-template-columns: 1fr;
+    .entries {
+      padding-left: 26px;
     }
 
-    .rail {
-      display: none;
-    }
-
-    .track {
-      padding-left: 28px;
-    }
-
-    .spine {
-      left: 5px;
+    .entry {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--s-3);
     }
 
     .node {
-      left: -28px;
+      left: -26px;
+    }
+
+    .entry-head {
+      order: 1;
+    }
+
+    .when {
+      order: 2;
+      padding-top: 0;
+    }
+
+    .entry-body {
+      order: 3;
+      grid-column: auto;
     }
   }
 </style>
-
-<script>
-  import { isMotionReduced } from '~/scripts/preferences';
-
-  const root = document.querySelector<HTMLElement>('[data-journey]');
-  if (root) {
-    /* ---------- filtres par type */
-    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-filter]')];
-    const entries = [...root.querySelectorAll<HTMLElement>('.entry')];
-    const years = [...root.querySelectorAll<HTMLElement>('[data-year]')];
-    const status = root.querySelector<HTMLElement>('[data-filter-status]');
-    const apply = (filter: string) => {
-      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
-      let shown = 0;
-      entries.forEach((el) => {
-        const match = filter === 'all' || el.dataset.type === filter;
-        el.hidden = !match;
-        if (match) {
-          shown++;
-          el.classList.add('is-in');
-        }
-      });
-      years.forEach((y) => (y.hidden = !y.querySelector('.entry:not([hidden])')));
-      root.querySelectorAll<HTMLElement>('[data-year-link]').forEach((a) => {
-        const section = root.querySelector<HTMLElement>(`[data-year="${a.dataset.yearLink}"]`);
-        a.parentElement!.hidden = !!section?.hidden;
-      });
-      if (status) status.textContent = `${shown} ${shown > 1 ? root.dataset.labelMany : root.dataset.labelOne}`;
-      progress();
-    };
-    buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.filter ?? 'all')));
-
-    /* ---------- progression de la ligne + année courante */
-    const track = root.querySelector<HTMLElement>('[data-track]')!;
-    const fill = root.querySelector<HTMLElement>('[data-spine]')!;
-    const links = [...root.querySelectorAll<HTMLAnchorElement>('[data-year-link]')];
-    let ticking = false;
-    function progress() {
-      ticking = false;
-      if (isMotionReduced()) {
-        fill.style.setProperty('--progress', '1');
-      } else {
-        const rect = track.getBoundingClientRect();
-        const ratio = (window.innerHeight * 0.6 - rect.top) / rect.height;
-        fill.style.setProperty('--progress', String(Math.max(0, Math.min(1, ratio))));
-      }
-      let current = years.find((y) => !y.hidden)?.dataset.year;
-      for (const y of years) {
-        if (!y.hidden && y.getBoundingClientRect().top < window.innerHeight * 0.4) current = y.dataset.year;
-      }
-      links.forEach((a) => a.setAttribute('aria-current', String(a.dataset.yearLink === current)));
-    }
-    window.addEventListener(
-      'scroll',
-      () => {
-        if (!ticking) {
-          ticking = true;
-          requestAnimationFrame(progress);
-        }
-      },
-      { passive: true },
-    );
-    window.addEventListener('resize', progress);
-    progress();
-  }
-</script>

@@ -1,5 +1,6 @@
 ---
 /** Lien sortant : nouvel onglet, rel sûr, mention pour les lecteurs d'écran. */
+import Icon from './Icon.astro';
 import { t } from '~/i18n/ui';
 import type { Lang } from '~/i18n/routes';
 
@@ -21,8 +22,8 @@ const isExternal = /^https?:/.test(href);
     <a class:list={[!plain && 'link', className]} href={href} target="_blank" rel="noopener" hreflang={hreflang}>
       <slot />
       {!plain && (
-        <span class="arrow arrow--ext" aria-hidden="true">
-          ↗
+        <span class="arrow arrow--ext">
+          <Icon name="ext" />
         </span>
       )}
       <span class="sr-only"> {t(lang, 'external')}</span>
@@ -31,8 +32,8 @@ const isExternal = /^https?:/.test(href);
     <a class:list={[!plain && 'link', className]} href={href}>
       <slot />
       {!plain && (
-        <span class="arrow" aria-hidden="true">
-          →
+        <span class="arrow">
+          <Icon name="arrow" />
         </span>
       )}
     </a>

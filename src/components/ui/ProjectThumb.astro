@@ -1,0 +1,55 @@
+---
+/**
+ * Vignette d'un projet, toujours vraie : capture réelle si elle existe, sinon photo réelle (galerie),
+ * sinon le relief généré à partir de l'identifiant. Jamais de fausse capture.
+ * Décorative (alt vide) : le titre du projet est porté par le lien qui l'entoure.
+ */
+import { Image } from 'astro:assets';
+import { getProfile, projectShot, type Project } from '~/lib/content';
+
+interface Props {
+  project: Project;
+  /** Attribut sizes de l'image responsive. */
+  sizes?: string;
+  eager?: boolean;
+}
+
+const { project, sizes = '(max-width: 760px) 100vw, 480px', eager = false } = Astro.props;
+const shot = projectShot(project);
+const photo = !shot && project.data.visual === 'gallery' ? (await getProfile()).photography.shots[0] : undefined;
+const kind = shot ? 'shot' : photo ? 'photo' : 'cover';
+---
+
+<span class="thumb" data-kind={kind}>
+  {
+    shot ? (
+      <Image src={shot} alt="" widths={[480, 960]} sizes={sizes} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    ) : photo ? (
+      <img src={photo.src} alt="" width="800" height="534" loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    ) : (
+      <img src={`/covers/${project.id}.svg`} alt="" width="800" height="500" loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    )
+  }
+</span>
+
+<style>
+  .thumb {
+    display: block;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--c-bg-deep);
+    border: 1px solid var(--c-line);
+  }
+
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform var(--dur-3) var(--ease-out);
+  }
+
+  .thumb[data-kind='photo'] img {
+    object-position: center;
+  }
+</style>

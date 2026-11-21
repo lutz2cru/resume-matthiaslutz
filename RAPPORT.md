@@ -1,6 +1,7 @@
 # Rapport de refonte — TULZ
 
 21 novembre 2026 · fusionné dans `main` et **publié sur tulz.fr le 21/11/2026** (GitHub Actions).
+Passe de finition du même jour (palette violette, projets, parcours) : voir la section 8 — **pas encore publiée**.
 
 ## 1. Ce qui a changé
 
@@ -99,5 +100,60 @@ Il reste à faire :
 Pistes pour plus tard :
 
 - Sous-domaines de tulz.fr pour Photomatt'on et Caisse Noire.
-- Captures réelles des applications.
+- Captures réelles des applications : faites pour Caisse Noire, The Wall et Révisions Java (section 8) ; à compléter pour Photomatt'on quand ses vrais albums seront en ligne.
 - Un PDF du CV hébergé sur le site.
+
+## 8. Passe de finition — palette, projets, parcours (21/11/2026)
+
+Branche `finition/palette-violet`, sauvegarde préalable : tag local `sauvegarde/tulz-avant-finition-2026-11-21`. **Rien n'est publié** : le déploiement se fera au push sur `main`.
+
+### Graphisme
+
+- **Nouvelle palette** (`src/styles/tokens.css`) : fond bleu nuit `#0D1020`, surfaces `#191D32` / `#222740`, violet `#8B5CF6` pour l'identité, bleu `#60A5FA` pour la navigation et les détails techniques, cyan `#67E8F9` pour les signaux. Les composants n'utilisent que des rôles (`--c-brand`, `--c-accent`, `--c-action`, `--c-tech`, `--c-signal`…) ; plus aucune couleur écrite en dur, sauf exceptions documentées dans `DESIGN_SYSTEM.md`.
+- **Dégradé violet → bleu** limité à trois éléments : filet du lien actif, ligne du parcours, sommet du relief (canvas et couvertures SVG).
+- Wordmark `TULZ.` avec un point violet ; bouton principal violet (texte blanc 4,9:1) ; focus, sélection de texte, curseur de saisie et barres de défilement aux couleurs du site.
+- **Icônes SVG** (`Icon.astro`) à la place des caractères ↗ → ✓ ↑.
+- Suppression des surtitres et numéros au-dessus des titres de section, des barres colorées de 3 px, du flou décoratif de la légende, du filtre gris sur les photos.
+- Nom de l'accueil plafonné à 6rem ; titres de page légèrement réduits sur petit écran.
+
+### Ergonomie et navigation
+
+- **Accueil** : nom, rôle en violet, puis trois repères (alternance à l'ARNia BFC, UTBM en FISA, hors du code), deux boutons (projets, parcours). Quatre projets choisis avec leur vrai visuel. Hors-code dans l'ordre Photographie, Handball, Erasmus.
+- **Parcours** : trois parties (Expérience, Formation, Engagements & sport) avec sommaire, colonne de dates, ligne en dégradé, type d'étape en couleur. Les filtres et le rail d'années disparaissent (plus de JavaScript sur cette page).
+- **Hors-code** : sommaire, ordre Photographie → Handball → Erasmus & voyages, constellation en fin de page.
+- Fil d'Ariane sur les fiches projet ; sommaires de page partagés (`.section-nav`) ; zones tactiles de 44 px.
+
+### Projets
+
+- **Statut visible partout** : en ligne, en cours, terminé, expérimental, archivé (pastille colorée + libellé).
+- **Vignettes vraies** (`ProjectThumb`) : capture réelle, sinon photo réelle, sinon relief généré. L'aperçu qui suivait le curseur est remplacé par ces vignettes, visibles aussi sur mobile.
+- **Fiche projet** : statut et liens en tête, capture datée, illustration légendée « Illustration · données fictives », fiche latérale (année, contexte, équipe, domaines, outils, liens).
+- **Captures réelles** du 21/11/2026 : Caisse Noire (page d'accueil publique, sans compte), The Wall, Révisions Java. Photomatt'on n'a pas été capturé : le site n'affiche en ce moment que des albums de démonstration.
+- The Wall rejoint les projets choisis de l'accueil.
+
+### Contenu
+
+- Erasmus : « Six mois à Cracovie » remplacé par « Un semestre à Cracovie » (les dates du parcours, févr. → juin 2026, font 5 mois) ; le compteur « 6 mois » n'est plus affiché ; TODO ajouté.
+- Le texte Erasmus du parcours ne répète plus les chiffres de voyage (ils restent dans Hors-code).
+- TODO ajouté sur Photomatt'on (albums de démonstration) et sur le statut du projet entrepôt BD70.
+
+### Tests
+
+| Test | Résultat |
+|---|---|
+| `npm run verify` (YAML, `astro check`, build, liens internes) | 0 erreur ; 31 pages ; 1 414 liens internes, 0 cassé |
+| Liens externes (curl, 23 adresses) | Tous en 200 sauf LinkedIn (999, anti-robot) et le site de vocabulaire (toujours sans réponse) |
+| Débordement horizontal à 320, 375, 768 et 1024 px | Aucun, sur toutes les pages FR/EN contrôlées (3 cas corrigés : titre long, terminal, URL de source) |
+| Contrôle visuel 1440 px et 375 px | Accueil, projets, fiches, parcours, compétences, hors-code |
+| Clavier | Lien d'évitement en premier, focus violet 2 px visible |
+| Lighthouse mobile (11 pages, build de production) | Performance 93–100, accessibilité 100, bonnes pratiques 100, SEO 100 |
+| Comparaison avec la version précédente | Une régression de TBT (~400 ms) introduite pendant la passe a été trouvée et corrigée : le relief est de nouveau chargé tout de suite, mais ne s'anime qu'à la première interaction ; l'animation du nom n'anime plus `font-stretch` |
+
+### À confirmer
+
+1. **Durée de l'Erasmus** : 6 mois ou un semestre (févr. → juin 2026) ?
+2. **Service civique** : dates qui chevauchent l'Erasmus (TODO existant).
+3. **Photomatt'on** : remettre en ligne les vrais albums, ou changer la mention « Dernier album ».
+4. **Site de vocabulaire** : en panne ou abandonné ? À retirer si besoin.
+5. **Statut** de la gestion d'entrepôt BD70 et des projets du carnet sans statut.
+6. Les TODO de la section 6 restent valables (rôles en équipe, Caisse Noire, Crunch Time, ville Stellantis, photo de handball).

@@ -12,4 +12,10 @@ stack: [javascript, html-css, github-pages]
 links:
   demo: https://lutz2cru.github.io/revisions-java-pr70/
   code: https://github.com/lutz2cru/revisions-java-pr70
+shot:
+  file: java-revisions.png
+  date: "2026-11-21"
+  alt:
+    fr: "Page d'accueil des révisions Java : choix des TP, des quatre niveaux, et tableau de progression par TP."
+    en: "The Java revision home page: lab picker, the four levels, and a progress table per lab."
 sources: ["github.com/lutz2cru/revisions-java-pr70"]

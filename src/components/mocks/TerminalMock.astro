@@ -25,9 +25,9 @@ const rows = [
     width: 100%;
     max-width: 620px;
     margin-inline: auto;
-    background: #07090c;
+    background: var(--c-bg-deep);
     border: 1px solid var(--c-line);
-    box-shadow: 0 30px 80px rgb(0 0 0 / 0.4);
+    box-shadow: var(--shadow-2);
   }
 
   .bar {
@@ -68,20 +68,20 @@ const rows = [
   }
 
   .b {
-    color: var(--c-accent-2);
+    color: var(--c-tech);
   }
 
   .g {
-    color: var(--c-accent);
+    color: var(--c-signal);
   }
 
   .y {
-    color: #f2c94c;
+    color: var(--c-accent);
   }
 
   .head {
-    color: var(--c-accent-ink);
-    background: var(--c-accent-2);
+    color: var(--c-bg);
+    background: var(--c-tech);
   }
 
   .row {
@@ -90,8 +90,8 @@ const rows = [
   }
 
   .row:first-of-type {
-    color: var(--c-accent-ink);
-    background: var(--c-accent);
+    color: var(--c-action-ink);
+    background: var(--c-action);
   }
 
   :global(html.motion-ok) .row {
@@ -106,8 +106,8 @@ const rows = [
   @keyframes sel-first {
     0%,
     19.99% {
-      color: var(--c-accent-ink);
-      background: var(--c-accent);
+      color: var(--c-action-ink);
+      background: var(--c-action);
     }
     20%,
     100% {
@@ -135,8 +135,8 @@ const rows = [
   @keyframes sel-2 {
     20%,
     39.99% {
-      color: var(--c-accent-ink);
-      background: var(--c-accent);
+      color: var(--c-action-ink);
+      background: var(--c-action);
     }
     0%,
     19.99%,
@@ -150,8 +150,8 @@ const rows = [
   @keyframes sel-3 {
     40%,
     59.99% {
-      color: var(--c-accent-ink);
-      background: var(--c-accent);
+      color: var(--c-action-ink);
+      background: var(--c-action);
     }
     0%,
     39.99%,

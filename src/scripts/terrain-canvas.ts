@@ -12,6 +12,21 @@ const CONFIG: Record<Variant, { cell: number; levels: number; scale: number; alp
   band: { cell: 16, levels: 9, scale: 0.0032, alpha: 0.7, bump: 0.5, radius: 120, speed: 0.00003 },
 };
 
+/**
+ * Le relief est d'abord dessiné une fois, immobile ; il ne s'anime qu'à la première interaction
+ * (souris, défilement, clavier, toucher). La page reste ainsi légère au chargement.
+ */
+let awake = false;
+const sleepers = new Set<() => void>();
+const WAKE_EVENTS = ['pointermove', 'pointerdown', 'keydown', 'wheel', 'scroll', 'touchstart'] as const;
+function wake() {
+  if (awake) return;
+  awake = true;
+  WAKE_EVENTS.forEach((ev) => removeEventListener(ev, wake));
+  sleepers.forEach((cb) => cb());
+}
+WAKE_EVENTS.forEach((ev) => addEventListener(ev, wake, { passive: true }));
+
 function cssColor(name: string, fallback: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 }
@@ -40,7 +55,7 @@ class Terrain {
   private last = 0;
   private pointer = { x: 0, y: 0, tx: 0, ty: 0, amp: 0, target: 0 };
   private readout: HTMLElement | null;
-  private colors = { line: '', index: '', accent: '' };
+  private colors = { line: '', index: '', brand: '', tech: '' };
 
   constructor(
     private root: HTMLElement,
@@ -56,11 +71,12 @@ class Terrain {
     this.noise = createNoise3D(seed);
     this.time = (seed % 1000) / 10;
     this.readout = document.querySelector<HTMLElement>(`[data-terrain-readout="${root.id}"]`);
-    const text = cssColor('--c-text', '#e8edf2');
+    const text = cssColor('--c-text', '#f1f5f9');
     this.colors = {
       line: withAlpha(text, 0.085 * this.cfg.alpha),
       index: withAlpha(text, 0.2 * this.cfg.alpha),
-      accent: cssColor('--c-accent', '#b6f36a'),
+      brand: cssColor('--c-brand', '#8b5cf6'),
+      tech: cssColor('--c-tech', '#60a5fa'),
     };
 
     new ResizeObserver(() => this.resize()).observe(root);
@@ -70,6 +86,7 @@ class Terrain {
     }).observe(root);
     document.addEventListener('visibilitychange', () => this.update());
     onMotionChange(() => this.update());
+    sleepers.add(() => this.update());
 
     window.addEventListener('pointermove', (e) => this.onPointer(e), { passive: true });
     // Le terrain ignore les pointeurs (pointer-events: none) : on écoute la sortie de la fenêtre.
@@ -112,7 +129,7 @@ class Terrain {
   }
 
   private update() {
-    const shouldRun = this.visible && !document.hidden && !isMotionReduced();
+    const shouldRun = awake && this.visible && !document.hidden && !isMotionReduced();
     if (shouldRun && !this.running) {
       this.running = true;
       this.last = performance.now();
@@ -156,6 +173,10 @@ class Terrain {
     const count = this.cfg.levels;
     const step = (max - min) / (count + 1);
     const segs: number[] = [];
+    // Courbe du sommet : dégradé identitaire violet → bleu, le seul élément coloré du relief.
+    const summit = ctx.createLinearGradient(0, 0, this.width, this.height);
+    summit.addColorStop(0, this.colors.brand);
+    summit.addColorStop(1, this.colors.tech);
 
     for (let k = 1; k <= count; k++) {
       const level = min + step * k;
@@ -164,7 +185,7 @@ class Terrain {
       if (!segs.length) continue;
       const isTop = k === count;
       const isIndex = k % 4 === 0;
-      ctx.strokeStyle = isTop ? this.colors.accent : isIndex ? this.colors.index : this.colors.line;
+      ctx.strokeStyle = isTop ? summit : isIndex ? this.colors.index : this.colors.line;
       ctx.lineWidth = isTop ? 1.4 : isIndex ? 1.15 : 1;
       ctx.beginPath();
       for (let s = 0; s < segs.length; s += 4) {

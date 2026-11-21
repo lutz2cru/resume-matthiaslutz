@@ -20,7 +20,7 @@ const profile = await getProfile();
 ---
 
 <Base lang={lang} page="about" title={pageTitle(lang, 'about')} description={t(lang, 'desc.about')} alternate={path(otherLang(lang), 'about')} jsonLd={personJsonLd(lang, profile)}>
-  <PageHeader index={1} title={pageTitle(lang, 'about')} lead={t(lang, 'page.about.lead')} seed="about" />
+  <PageHeader page="about" title={pageTitle(lang, 'about')} lead={t(lang, 'page.about.lead')} seed="about" />
 
   <section class="section intro">
     <div class="wrap grid">

@@ -28,6 +28,17 @@ main:
       en: I like building simple, reliable, well-documented tools for people I know — an app for a team's fine kitty, a bot that watches local petrol stations, a page that gathers my class's revision sheets.
     - fr: Le week-end, je suis dans les cages en Nationale 3 au CS Vesoul, le club qui m'a formé, ou au bord du terrain avec un appareil photo.
       en: At weekends I'm in goal in Nationale 3 for CS Vesoul, the club that trained me, or pitchside with a camera.
+  # Accueil : l'essentiel sous le nom (entreprise, formation, hors du code). Uniquement des faits déjà publiés.
+  highlights:
+    - label: { fr: "En alternance", en: "Work-study" }
+      value: { fr: "ARNia BFC, Dijon", en: "ARNia BFC, Dijon" }
+      detail: { fr: "Data & IA, au service des collectivités de Bourgogne-Franche-Comté", en: "Data & AI, serving local authorities in Bourgogne-Franche-Comté" }
+    - label: { fr: "Formation", en: "Studies" }
+      value: { fr: "UTBM, cycle ingénieur en informatique", en: "UTBM, computer science engineering" }
+      detail: { fr: "Par apprentissage (FISA), 2026 → 2029", en: "Work-study programme (FISA), 2026 → 2029" }
+    - label: { fr: "Hors du code", en: "Beyond code" }
+      value: { fr: "Gardien de but en Nationale 3", en: "Goalkeeper in Nationale 3" }
+      detail: { fr: "Photographe de sport · Erasmus à Cracovie", en: "Sports photographer · Erasmus in Krakow" }
   now:
     - label: { fr: "Travail", en: "Work" }
       text:
@@ -104,10 +115,11 @@ main:
         alt: { fr: "Rugby U19 : un joueur de Vesoul au premier plan", en: "U19 rugby: a Vesoul player in the foreground" }
       - src: https://loepgmjzdftjlvfvpdfa.supabase.co/storage/v1/object/public/media/albums/9db5dcfe-141f-49f9-8c03-b38096ba4879/6dcf7128-a3a5-4e95-b8a7-58d4c13426d5-thumb.webp
         alt: { fr: "Rugby U19 : une action au sol près de la ligne", en: "U19 rugby: a ruck near the line" }
+    todo: "Le 21/11/2026, Photomatt'on n'affiche que des « albums de démonstration » : l'album RCV – Tavaux (10/10/2026) n'y est plus listé, même si ses photos se chargent. Vérifier l'album et la mention « Dernier album »."
   erasmus:
     lead:
-      fr: Six mois à Cracovie, à l'AGH University of Krakow — et autant d'occasions d'explorer l'Europe centrale, les pays baltes et la Scandinavie.
-      en: Six months in Krakow at AGH University — and plenty of chances to explore Central Europe, the Baltics and Scandinavia.
+      fr: Un semestre à Cracovie, à l'AGH University of Krakow — et autant d'occasions d'explorer l'Europe centrale, les pays baltes et la Scandinavie.
+      en: A semester in Krakow at AGH University — and plenty of chances to explore Central Europe, the Baltics and Scandinavia.
     text:
       fr: "Suivre des cours en anglais, s'organiser seul dans un nouveau pays, voyager avec un budget étudiant : une expérience qui m'a rendu plus autonome et plus à l'aise dans un contexte international."
       en: Taking courses in English, getting organised alone in a new country, travelling on a student budget — an experience that made me more independent and at ease in international settings.
@@ -115,3 +127,5 @@ main:
     cities: 14
     countries: 11
     period: { fr: "Cracovie, camp de base — févr. à juin 2026", en: "Krakow as base camp — Feb to Jun 2026" }
+    # « months » n'est plus affiché : 6 mois (texte de mai 2026) ne colle pas avec févr. → juin 2026 (5 mois).
+    todo: "Confirmer la durée de l'Erasmus : « 6 mois » (texte de mai 2026) ou févr. → juin 2026 (5 mois) ? Le site dit « un semestre » en attendant." 

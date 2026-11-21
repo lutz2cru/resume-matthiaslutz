@@ -43,8 +43,8 @@
   org: AGH University of Krakow
   place: krakow
   description:
-    fr: Semestre d'études à l'étranger, cours en anglais et vie en autonomie dans un environnement international. Quatorze villes et onze pays visités depuis Cracovie.
-    en: A study semester abroad, with courses taught in English and independent living in an international environment. Fourteen cities and eleven countries visited from Krakow.
+    fr: Semestre d'études à l'AGH University of Krakow, avec des cours en anglais et une vie en autonomie dans un environnement international.
+    en: A study semester at AGH University of Krakow, with courses taught in English and independent living in an international environment.
   links:
     - label: { fr: "Carnet de voyage Polarsteps", en: "Polarsteps travel log" }
       href: https://www.polarsteps.com/lutz2cru

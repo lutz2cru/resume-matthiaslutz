@@ -5,6 +5,8 @@ import Terrain from '~/components/ui/Terrain.astro';
 import NowList from '~/components/blocks/NowList.astro';
 import GoalFrame from '~/components/blocks/GoalFrame.astro';
 import ExternalLink from '~/components/ui/ExternalLink.astro';
+import ProjectThumb from '~/components/ui/ProjectThumb.astro';
+import Icon from '~/components/ui/Icon.astro';
 import { t, pageTitle, type UIKey } from '~/i18n/ui';
 import { TERRITORIES, anchor, otherLang, path, projectPath, type Lang } from '~/i18n/routes';
 import { getCases, getJourney, getPlaces, getProfile, getProjects, getSkills, pick } from '~/lib/content';
@@ -21,16 +23,18 @@ const other = otherLang(lang);
 const profile = await getProfile();
 const projects = await getProjects();
 const cases = await getCases();
-const featured = cases.filter((p) => p.data.featured).slice(0, 3);
-const journey = (await getJourney()).filter((j) => j.data.type !== 'sport').slice(0, 4);
+const featured = cases.filter((p) => p.data.featured).slice(0, 4);
+const fullJourney = await getJourney();
+const journey = fullJourney.filter((j) => j.data.type !== 'sport').slice(0, 4);
 const skills = await getSkills();
+const skillLabel = new Map(skills.map((s) => [s.id, s.data.label[lang]]));
 const places = await getPlaces();
 const dijon = places.get('dijon');
 
 const counts: Record<string, string> = {
   about: t(lang, 'territory.about'),
   projects: `${projects.length} ${t(lang, 'territory.projects')}`,
-  journey: `${(await getJourney()).length} ${t(lang, 'territory.journey')}`,
+  journey: `${fullJourney.length} ${t(lang, 'territory.journey')}`,
   skills: `${skills.length} ${t(lang, 'territory.skills')}`,
   beyond: t(lang, 'territory.beyond'),
   contact: t(lang, 'territory.contact'),
@@ -42,22 +46,36 @@ const firstShot = profile.photography.shots[0]!;
   <section class="hero" aria-labelledby="hero-title">
     <Terrain id="terrain-hero" variant="hero" seed="tulz-home" />
     <div class="wrap hero-grid">
-      <div class="hero-top">
-        <p class="label label--strong"><span class="dot dot--live" aria-hidden="true"></span> TULZ — {t(lang, 'home.kicker')}</p>
-        <p class="label coords" aria-hidden="true">
-          {dijon && <span>{formatCoord(dijon.lat, dijon.lon)} · {pick(lang, dijon.name)}</span>}
-          <span class="readout" data-terrain-readout="terrain-hero">x 000 · y 000 · z 000</span>
-        </p>
-      </div>
+      <p class="label coords" aria-hidden="true">
+        {dijon && <span>{formatCoord(dijon.lat, dijon.lon)} · {pick(lang, dijon.name)}</span>}
+        <span class="readout" data-terrain-readout="terrain-hero">x 000 · y 000 · z 000</span>
+      </p>
 
       <div class="hero-main">
         <h1 id="hero-title" class="hero-name">
           <span class="line">Matthias</span>
           <span class="line">Lutz</span>
         </h1>
-        <p class="hero-deck">{pick(lang, profile.tagline)}</p>
+        <p class="hero-role">{pick(lang, profile.role)}</p>
+        <dl class="highlights">
+          {
+            profile.highlights.map((h) => (
+              <div>
+                <dt class="label">{pick(lang, h.label)}</dt>
+                <dd>
+                  <span class="hl-value">{pick(lang, h.value)}</span>
+                  {h.detail && <span class="hl-detail">{pick(lang, h.detail)}</span>}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
         <div class="hero-cta">
-          <a class="btn" href={path(lang, 'projects')}>{t(lang, 'home.explore')} <span aria-hidden="true">→</span></a>
+          <a class="btn" href={path(lang, 'projects')}>
+            {t(lang, 'home.explore')}
+            <Icon name="arrow" />
+          </a>
+          <a class="btn btn--ghost" href={path(lang, 'journey')}>{t(lang, 'home.fullJourney')}</a>
           <span class="hint label" data-requires-js>
             {t(lang, 'home.palette')}
             <button type="button" class="kbd-btn" data-palette-open aria-haspopup="dialog" aria-controls="palette">
@@ -68,7 +86,7 @@ const firstShot = profile.photography.shots[0]!;
       </div>
 
       <nav class="legend" aria-labelledby="legend-title">
-        <p id="legend-title" class="label">{t(lang, 'home.legend')}</p>
+        <h2 id="legend-title" class="label">{t(lang, 'home.legend')}</h2>
         <ol role="list">
           {
             TERRITORIES.map((key, i) => (
@@ -77,7 +95,9 @@ const firstShot = profile.photography.shots[0]!;
                   <span class="idx" aria-hidden="true">{pad2(i + 1)}</span>
                   <span class="nm">{pageTitle(lang, key)}</span>
                   <span class="meta">{counts[key]}</span>
-                  <span class="go" aria-hidden="true">→</span>
+                  <span class="go">
+                    <Icon name="arrow" />
+                  </span>
                 </a>
               </li>
             ))
@@ -101,34 +121,32 @@ const firstShot = profile.photography.shots[0]!;
     <div class="wrap">
       <header class="row-head" data-reveal>
         <h2 id="selected-title" class="h2">{t(lang, 'home.selected')}</h2>
-        <a class="link" href={path(lang, 'projects')}>{t(lang, 'home.allProjects')} ({projects.length}) <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="link" href={path(lang, 'projects')}>
+          {t(lang, 'home.allProjects')} ({projects.length})
+          <span class="arrow"><Icon name="arrow" /></span>
+        </a>
       </header>
-      <ol class="featured" role="list">
+      <ul class="featured" role="list">
         {
-          featured.map((p, i) => (
+          featured.map((p) => (
             <li class="feat" data-reveal>
-              <a class="feat-cover" href={projectPath(lang, p.id)} tabindex="-1" aria-hidden="true">
-                <img src={`/covers/${p.id}.svg`} alt="" width="800" height="500" loading="lazy" decoding="async" />
+              <a class="feat-thumb" href={projectPath(lang, p.id)} tabindex="-1" aria-hidden="true">
+                <ProjectThumb project={p} sizes="(max-width: 760px) 100vw, 50vw" />
               </a>
               <div class="feat-body">
-                <p class="label">
-                  <span class="idx">{pad2(i + 1)}</span> · {p.data.domains.map((d) => t(lang, `domain.${d}` as UIKey)).join(' · ')}
-                  {p.data.year && <> · {p.data.year}</>}
-                </p>
                 <h3 class="feat-title">
                   <a href={projectPath(lang, p.id)} style={`view-transition-name: project-${p.id}`}>
                     {pick(lang, p.data.title)}
                   </a>
                 </h3>
+                {p.data.status && <span class={`pstatus pstatus--${p.data.status}`}>{t(lang, `status.${p.data.status}` as UIKey)}</span>}
                 <p class="feat-summary">{pick(lang, p.data.summary)}</p>
-                <a class="link" href={projectPath(lang, p.id)} aria-label={`${t(lang, 'projects.see')} : ${pick(lang, p.data.title)}`}>
-                  {t(lang, 'projects.see')} <span class="arrow" aria-hidden="true">→</span>
-                </a>
+                <p class="feat-stack">{[...p.data.stack.map((id) => skillLabel.get(id) ?? id), ...p.data.extra].slice(0, 4).join(' · ')}</p>
               </div>
             </li>
           ))
         }
-      </ol>
+      </ul>
     </div>
   </section>
 
@@ -136,23 +154,27 @@ const firstShot = profile.photography.shots[0]!;
     <div class="wrap">
       <header class="row-head" data-reveal>
         <h2 id="journey-title" class="h2">{t(lang, 'home.journey')}</h2>
-        <a class="link" href={path(lang, 'journey')}>{t(lang, 'home.fullJourney')} <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="link" href={path(lang, 'journey')}>
+          {t(lang, 'home.fullJourney')}
+          <span class="arrow"><Icon name="arrow" /></span>
+        </a>
       </header>
       <ol class="steps" role="list" data-reveal-group>
         {
           journey.map((j) => {
             const place = j.data.place ? places.get(j.data.place) : undefined;
             return (
-              <li class="step" data-reveal>
-                <p class="label">
-                  {j.data.current && <span class="dot" aria-hidden="true" />} {formatPeriod(lang, j.data)}
-                </p>
+              <li class="step" data-reveal style={`--type: var(--c-type-${j.data.type})`}>
                 <h3 class="step-title">
                   <a href={`${path(lang, 'journey')}#${j.id}`}>{pick(lang, j.data.title)}</a>
                 </h3>
                 <p class="step-org">
                   {j.data.org}
                   {place && <span> · {pick(lang, place.name)}</span>}
+                </p>
+                <p class="label step-date">
+                  {j.data.current && <span class="dot" aria-hidden="true" />}
+                  {formatPeriod(lang, j.data)}
                 </p>
               </li>
             );
@@ -166,28 +188,52 @@ const firstShot = profile.photography.shots[0]!;
     <div class="wrap">
       <header class="row-head" data-reveal>
         <h2 id="beyond-title" class="h2">{t(lang, 'home.beyond')}</h2>
-        <a class="link" href={path(lang, 'beyond')}>{pageTitle(lang, 'beyond')} <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="link" href={path(lang, 'beyond')}>
+          {pageTitle(lang, 'beyond')}
+          <span class="arrow"><Icon name="arrow" /></span>
+        </a>
       </header>
       <div class="beyond" data-reveal-group>
-        <article class="b-item" data-reveal>
-          <GoalFrame compact>
-            <p class="goal-quote">N3</p>
-          </GoalFrame>
-          <h3 class="h3"><a href={`${path(lang, 'beyond')}#${anchor(lang, 'handball')}`}>{t(lang, 'beyond.handball')}</a></h3>
-          <p class="b-text">{pick(lang, profile.handball.quote)}</p>
-        </article>
         <article class="b-item" data-reveal>
           <div class="b-media">
             <img src={firstShot.src} alt={pick(lang, firstShot.alt)} width="800" height="534" loading="lazy" decoding="async" />
           </div>
-          <h3 class="h3"><a href={`${path(lang, 'beyond')}#${anchor(lang, 'photographie')}`}>{t(lang, 'beyond.photo')}</a></h3>
+          <h3 class="h3">
+            <a href={`${path(lang, 'beyond')}#${anchor(lang, 'photographie')}`}>
+              {t(lang, 'beyond.photo')}
+              <Icon name="arrow" />
+            </a>
+          </h3>
           <p class="b-text">{pick(lang, profile.photography.album)} — {pick(lang, profile.photography.albumMeta)}</p>
         </article>
         <article class="b-item" data-reveal>
+          <GoalFrame compact>
+            <p class="goal-quote">N3</p>
+          </GoalFrame>
+          <h3 class="h3">
+            <a href={`${path(lang, 'beyond')}#${anchor(lang, 'handball')}`}>
+              {t(lang, 'beyond.handball')}
+              <Icon name="arrow" />
+            </a>
+          </h3>
+          <p class="b-text">{pick(lang, profile.handball.quote)}</p>
+        </article>
+        <article class="b-item" data-reveal>
           <div class="b-media">
-            <Image src={nyhavn} alt={lang === 'fr' ? 'Les façades colorées et les bateaux du port de Nyhavn, à Copenhague' : 'The colourful façades and boats of Nyhavn harbour, Copenhagen'} widths={[480, 800]} sizes="(min-width: 900px) 30vw, 90vw" loading="lazy" />
+            <Image
+              src={nyhavn}
+              alt={lang === 'fr' ? 'Les façades colorées et les bateaux du port de Nyhavn, à Copenhague' : 'The colourful façades and boats of Nyhavn harbour, Copenhagen'}
+              widths={[480, 800]}
+              sizes="(min-width: 900px) 30vw, 90vw"
+              loading="lazy"
+            />
           </div>
-          <h3 class="h3"><a href={`${path(lang, 'beyond')}#${anchor(lang, 'voyages')}`}>{t(lang, 'beyond.travel')}</a></h3>
+          <h3 class="h3">
+            <a href={`${path(lang, 'beyond')}#${anchor(lang, 'voyages')}`}>
+              {t(lang, 'beyond.travel')}
+              <Icon name="arrow" />
+            </a>
+          </h3>
           <p class="b-text">{pick(lang, profile.erasmus.period)}</p>
         </article>
       </div>
@@ -213,29 +259,18 @@ const firstShot = profile.photography.shots[0]!;
   .hero-grid {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
     grid-template-rows: auto 1fr;
-    gap: var(--s-7) var(--s-8);
+    gap: var(--s-6) var(--s-8);
     padding-top: var(--s-5);
     padding-bottom: clamp(32px, 5vw, 64px);
   }
 
-  .hero-top {
+  .coords {
     grid-column: 1 / -1;
     display: flex;
-    justify-content: space-between;
-    gap: var(--s-4);
     flex-wrap: wrap;
-  }
-
-  .hero-top .label {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .coords {
-    gap: 18px !important;
+    gap: 6px 18px;
   }
 
   .readout {
@@ -250,11 +285,11 @@ const firstShot = profile.photography.shots[0]!;
   }
 
   .hero-name {
-    font-size: clamp(3.5rem, 0.6rem + 10.2vw, 12rem);
+    font-size: var(--fs-display);
     font-stretch: 125%;
     font-weight: 780;
     letter-spacing: -0.045em;
-    line-height: 0.84;
+    line-height: 0.86;
     margin-left: -0.04em;
   }
 
@@ -270,56 +305,95 @@ const firstShot = profile.photography.shots[0]!;
     animation-delay: 90ms;
   }
 
+  /* Opacité et translation seulement : animer font-stretch relancerait la mise en page à chaque image. */
   @keyframes rise {
     from {
       opacity: 0;
       transform: translateY(0.25em);
-      font-stretch: 90%;
     }
   }
 
-  .hero-deck {
-    max-width: 40ch;
+  .hero-role {
     font-size: var(--fs-lead);
-    line-height: 1.4;
+    font-stretch: 110%;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--c-accent);
+  }
+
+  .highlights {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 920px;
+    border-top: 1px solid var(--c-line);
+  }
+
+  .highlights > div {
+    display: grid;
+    align-content: start;
+    gap: 6px;
+    padding: var(--s-4) var(--s-5) 0 0;
+  }
+
+  .highlights > div + div {
+    padding-left: var(--s-5);
+    border-left: 1px solid var(--c-line-soft);
+  }
+
+  .highlights dd {
+    display: grid;
+    gap: 4px;
+  }
+
+  .hl-value {
+    font-weight: 600;
+    font-stretch: 106%;
+    line-height: 1.3;
+    color: var(--c-text);
+  }
+
+  .hl-detail {
+    font-size: var(--fs-small);
+    line-height: 1.45;
     color: var(--c-text-2);
-    text-wrap: pretty;
   }
 
   .hero-cta {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--s-4) var(--s-5);
+    gap: var(--s-3) var(--s-4);
+    margin-top: var(--s-2);
   }
 
   .hint {
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    margin-left: var(--s-2);
   }
 
   .kbd-btn {
     display: inline-flex;
+    align-items: center;
     gap: 3px;
+    min-height: var(--tap);
   }
 
   .kbd-btn:hover .kbd {
-    color: var(--c-accent);
-    border-color: var(--c-accent);
+    color: var(--c-tech);
+    border-color: var(--c-tech);
   }
 
   .legend {
     align-self: end;
     padding: var(--s-5);
-    background: rgb(11 14 18 / 0.72);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    background: var(--c-overlay);
     border: 1px solid var(--c-line);
   }
 
   .legend ol {
-    margin: var(--s-4) 0 0;
+    margin: var(--s-3) 0 0;
     padding: 0;
     list-style: none;
   }
@@ -343,6 +417,7 @@ const firstShot = profile.photography.shots[0]!;
     font-size: var(--fs-mono);
     color: var(--c-text-3);
     padding-top: 4px;
+    transition: color var(--dur-1) var(--ease-out);
   }
 
   .legend .nm {
@@ -376,7 +451,7 @@ const firstShot = profile.photography.shots[0]!;
   }
 
   .legend a:hover .idx {
-    color: var(--c-accent);
+    color: var(--c-tech);
   }
 
   .legend a:hover .go {
@@ -397,61 +472,43 @@ const firstShot = profile.photography.shots[0]!;
     gap: var(--s-4);
   }
 
-  .row-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-    gap: var(--s-5);
-    flex-wrap: wrap;
-    margin-bottom: clamp(40px, 6vw, 80px);
-  }
-
   /* ---------- projets choisis */
   .featured {
     display: grid;
-    gap: clamp(48px, 7vw, 96px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(40px, 5vw, 72px) var(--s-6);
   }
 
   .feat {
     display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: var(--s-6) var(--s-7);
-    align-items: center;
+    align-content: start;
+    gap: var(--s-5);
   }
 
-  .feat:nth-child(even) .feat-cover {
-    order: 2;
-  }
-
-  .feat-cover {
+  .feat-thumb {
     display: block;
-    overflow: hidden;
-    border: 1px solid var(--c-line);
   }
 
-  .feat-cover img {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    transition: transform 1.2s var(--ease-out);
+  .feat-thumb :global(.thumb) {
+    transition: border-color var(--dur-1) var(--ease-out);
   }
 
-  .feat:hover .feat-cover img {
-    transform: scale(1.035);
+  .feat:hover .feat-thumb :global(.thumb) {
+    border-color: var(--c-accent);
+  }
+
+  .feat:hover .feat-thumb :global(img) {
+    transform: scale(1.03);
   }
 
   .feat-body {
     display: grid;
-    gap: var(--s-4);
+    gap: var(--s-3);
     justify-items: start;
   }
 
-  .feat-body .idx {
-    color: var(--c-accent);
-  }
-
   .feat-title {
-    font-size: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+    font-size: clamp(1.625rem, 1.2rem + 1.6vw, 2.5rem);
     font-stretch: 120%;
     font-weight: 700;
     letter-spacing: -0.03em;
@@ -469,7 +526,16 @@ const firstShot = profile.photography.shots[0]!;
 
   .feat-summary {
     color: var(--c-text-2);
-    max-width: 44ch;
+    max-width: 52ch;
+  }
+
+  .feat-stack {
+    font-family: var(--f-mono);
+    font-size: var(--fs-mono);
+    font-stretch: 87.5%;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--c-tech);
   }
 
   /* ---------- parcours */
@@ -480,12 +546,12 @@ const firstShot = profile.photography.shots[0]!;
   }
 
   .step {
+    position: relative;
     display: grid;
     align-content: start;
-    gap: var(--s-3);
+    gap: var(--s-2);
     padding-top: var(--s-4);
     border-top: 1px solid var(--c-line);
-    position: relative;
   }
 
   .step::before {
@@ -495,13 +561,7 @@ const firstShot = profile.photography.shots[0]!;
     left: 0;
     width: 7px;
     height: 7px;
-    background: var(--c-text-3);
-  }
-
-  .step .label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    background: var(--type, var(--c-text-3));
   }
 
   .step-title {
@@ -521,7 +581,14 @@ const firstShot = profile.photography.shots[0]!;
 
   .step-org {
     font-size: var(--fs-small);
-    color: var(--c-text-3);
+    color: var(--c-text-2);
+  }
+
+  .step-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: var(--s-1);
   }
 
   /* ---------- hors-code */
@@ -538,16 +605,27 @@ const firstShot = profile.photography.shots[0]!;
   }
 
   .b-item h3 a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
     text-decoration: none;
+  }
+
+  .b-item h3 :global(.icon) {
+    font-size: 0.75em;
+    color: var(--c-text-3);
+    transition:
+      transform var(--dur-2) var(--ease-out),
+      color var(--dur-1) var(--ease-out);
   }
 
   .b-item h3 a:hover {
     color: var(--c-accent);
   }
 
-  .b-item h3 a::after {
-    content: ' →';
-    color: var(--c-text-3);
+  .b-item h3 a:hover :global(.icon) {
+    color: var(--c-accent);
+    transform: translateX(3px);
   }
 
   .b-media {
@@ -560,15 +638,11 @@ const firstShot = profile.photography.shots[0]!;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: grayscale(0.25) contrast(1.02);
-    transition:
-      transform 1.2s var(--ease-out),
-      filter var(--dur-3) var(--ease-out);
+    transition: transform 1.2s var(--ease-out);
   }
 
   .b-item:hover .b-media :global(img) {
     transform: scale(1.04);
-    filter: none;
   }
 
   .goal-quote {
@@ -587,7 +661,8 @@ const firstShot = profile.photography.shots[0]!;
 
   .beyond-foot {
     display: flex;
-    gap: var(--s-5);
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-5);
     margin-top: var(--s-7);
   }
 
@@ -618,24 +693,38 @@ const firstShot = profile.photography.shots[0]!;
     }
 
     .hero-grid {
-      gap: var(--s-6);
+      gap: var(--s-5);
       padding-top: var(--s-4);
     }
 
     .hero-main {
-      padding-top: clamp(64px, 18vh, 160px);
+      padding-top: clamp(24px, 6vh, 64px);
     }
 
     .readout {
       display: none;
     }
 
-    .feat {
+    .highlights {
       grid-template-columns: 1fr;
     }
 
-    .feat:nth-child(even) .feat-cover {
-      order: 0;
+    .highlights > div,
+    .highlights > div + div {
+      padding: var(--s-3) 0;
+      border-left: 0;
+    }
+
+    .highlights > div + div {
+      border-top: 1px solid var(--c-line-soft);
+    }
+
+    .hint {
+      display: none;
+    }
+
+    .featured {
+      grid-template-columns: 1fr;
     }
 
     .beyond {

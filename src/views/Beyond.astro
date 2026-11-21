@@ -4,6 +4,7 @@ import Base from '~/layouts/Base.astro';
 import PageHeader from '~/components/ui/PageHeader.astro';
 import ExternalLink from '~/components/ui/ExternalLink.astro';
 import Todo from '~/components/ui/Todo.astro';
+import Icon from '~/components/ui/Icon.astro';
 import Constellation from '~/components/blocks/Constellation.astro';
 import ErasmusMap from '~/components/blocks/ErasmusMap.astro';
 import GoalFrame from '~/components/blocks/GoalFrame.astro';
@@ -26,18 +27,53 @@ const [lead, ...rest] = ph.shots;
 ---
 
 <Base lang={lang} page="beyond" title={pageTitle(lang, 'beyond')} description={t(lang, 'desc.beyond')} alternate={path(otherLang(lang), 'beyond')}>
-  <PageHeader index={5} title={pageTitle(lang, 'beyond')} lead={t(lang, 'page.beyond.lead')} seed="beyond">
-    <nav class="jump" aria-label={pageTitle(lang, 'beyond')}>
-      <a href={`#${anchor(lang, 'handball')}`}>{t(lang, 'beyond.handball')}</a>
-      <a href={`#${anchor(lang, 'photographie')}`}>{t(lang, 'beyond.photo')}</a>
-      <a href={`#${anchor(lang, 'voyages')}`}>{t(lang, 'beyond.travel')}</a>
+  <PageHeader page="beyond" title={pageTitle(lang, 'beyond')} lead={t(lang, 'page.beyond.lead')} seed="beyond">
+    <nav class="section-nav" aria-label={t(lang, 'beyond.sections')}>
+      <ul role="list">
+        <li><a href={`#${anchor(lang, 'photographie')}`}>{t(lang, 'beyond.photo')}</a></li>
+        <li><a href={`#${anchor(lang, 'handball')}`}>{t(lang, 'beyond.handball')}</a></li>
+        <li><a href={`#${anchor(lang, 'voyages')}`}>{t(lang, 'beyond.travel')}</a></li>
+      </ul>
     </nav>
   </PageHeader>
 
-  <section class="section" aria-labelledby="const-title">
+  <!-- Photographie -->
+  <section class="section" id={anchor(lang, 'photographie')} aria-labelledby="ph-title">
     <div class="wrap">
-      <h2 id="const-title" class="h2 sec-title" data-reveal>{t(lang, 'beyond.constellation')}</h2>
-      <Constellation lang={lang} />
+      <header class="sec-head" data-reveal>
+        <h2 id="ph-title" class="h2">{t(lang, 'beyond.photo')}</h2>
+      </header>
+      <div class="ph-intro" data-reveal>
+        <p class="lead">{pick(lang, ph.lead)}</p>
+        <a class="btn" href={profile.links.photomatton} target="_blank" rel="noopener">
+          {t(lang, 'beyond.galleries')}
+          <Icon name="ext" />
+          <span class="sr-only"> {t(lang, 'external')}</span>
+        </a>
+      </div>
+      <figure class="gallery" data-reveal>
+        <ul class="shots" role="list">
+          {
+            lead && (
+              <li class="shot shot--lead">
+                <img src={lead.src} alt={pick(lang, lead.alt)} width="800" height="534" loading="lazy" decoding="async" />
+              </li>
+            )
+          }
+          {
+            rest.map((s) => (
+              <li class="shot">
+                <img src={s.src} alt={pick(lang, s.alt)} width="800" height="534" loading="lazy" decoding="async" />
+              </li>
+            ))
+          }
+        </ul>
+        <figcaption class="cap">
+          <span class="label label--strong">{pick(lang, ph.album)}</span>
+          <span class="label">{pick(lang, ph.albumMeta)}</span>
+        </figcaption>
+      </figure>
+      <Todo text={ph.todo} />
     </div>
   </section>
 
@@ -45,7 +81,6 @@ const [lead, ...rest] = ph.shots;
   <section class="section" id={anchor(lang, 'handball')} aria-labelledby="hb-title">
     <div class="wrap">
       <header class="sec-head" data-reveal>
-        <span class="label">01</span>
         <h2 id="hb-title" class="h2">{t(lang, 'beyond.handball')}</h2>
       </header>
       <div class="hb">
@@ -72,49 +107,10 @@ const [lead, ...rest] = ph.shots;
     </div>
   </section>
 
-  <!-- Photographie -->
-  <section class="section" id={anchor(lang, 'photographie')} aria-labelledby="ph-title">
-    <div class="wrap">
-      <header class="sec-head" data-reveal>
-        <span class="label">02</span>
-        <h2 id="ph-title" class="h2">{t(lang, 'beyond.photo')}</h2>
-      </header>
-      <div class="ph-intro" data-reveal>
-        <p class="lead">{pick(lang, ph.lead)}</p>
-        <a class="btn" href={profile.links.photomatton} target="_blank" rel="noopener">
-          {t(lang, 'beyond.galleries')} <span aria-hidden="true">↗</span><span class="sr-only"> {t(lang, 'external')}</span>
-        </a>
-      </div>
-      <figure class="gallery" data-reveal>
-        <ul class="shots" role="list">
-          {
-            lead && (
-              <li class="shot shot--lead">
-                <img src={lead.src} alt={pick(lang, lead.alt)} width="800" height="534" loading="lazy" decoding="async" />
-              </li>
-            )
-          }
-          {
-            rest.map((s) => (
-              <li class="shot">
-                <img src={s.src} alt={pick(lang, s.alt)} width="800" height="534" loading="lazy" decoding="async" />
-              </li>
-            ))
-          }
-        </ul>
-        <figcaption class="cap">
-          <span class="label label--strong">{pick(lang, ph.album)}</span>
-          <span class="label">{pick(lang, ph.albumMeta)}</span>
-        </figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <!-- Voyages -->
+  <!-- Erasmus & voyages -->
   <section class="section" id={anchor(lang, 'voyages')} aria-labelledby="tr-title">
     <div class="wrap">
       <header class="sec-head" data-reveal>
-        <span class="label">03</span>
         <h2 id="tr-title" class="h2">{t(lang, 'beyond.travel')}</h2>
       </header>
       <div class="tr-top" data-reveal>
@@ -122,9 +118,9 @@ const [lead, ...rest] = ph.shots;
           <p class="lead">{pick(lang, er.lead)}</p>
           <p class="prose">{pick(lang, er.text)}</p>
           <ExternalLink lang={lang} href={profile.links.polarsteps}>{t(lang, 'beyond.polarsteps')}</ExternalLink>
+          <Todo text={er.todo} />
         </div>
         <ul class="stats" role="list">
-          <li><b>{er.months}</b><span class="label">{t(lang, 'beyond.months')}</span></li>
           <li><b>{er.cities}</b><span class="label">{t(lang, 'beyond.cities')}</span></li>
           <li><b>{er.countries}</b><span class="label">{t(lang, 'beyond.countries')}</span></li>
         </ul>
@@ -146,45 +142,19 @@ const [lead, ...rest] = ph.shots;
       </div>
     </div>
   </section>
+  <section class="section" aria-labelledby="const-title">
+    <div class="wrap">
+      <h2 id="const-title" class="h2 sec-title" data-reveal>{t(lang, 'beyond.constellation')}</h2>
+      <Constellation lang={lang} />
+    </div>
+  </section>
+
 </Base>
 
 <style>
-  .jump {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: var(--s-3);
-  }
-
-  .jump a {
-    padding: 8px 12px;
-    font-size: var(--fs-small);
-    font-weight: 500;
-    color: var(--c-text-2);
-    text-decoration: none;
-    border: 1px solid var(--c-line);
-    transition:
-      color var(--dur-1) var(--ease-out),
-      border-color var(--dur-1) var(--ease-out);
-  }
-
-  .jump a:hover {
-    color: var(--c-accent);
-    border-color: var(--c-accent);
-  }
-
-  .sec-title {
-    margin-bottom: clamp(32px, 5vw, 64px);
-  }
-
+  .sec-title,
   .sec-head {
-    display: grid;
-    gap: var(--s-3);
     margin-bottom: clamp(32px, 5vw, 64px);
-  }
-
-  .sec-head .label {
-    color: var(--c-accent);
   }
 
   /* handball */
@@ -288,7 +258,7 @@ const [lead, ...rest] = ph.shots;
 
   .stats {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     border-top: 1px solid var(--c-line);
   }
 
@@ -299,6 +269,7 @@ const [lead, ...rest] = ph.shots;
   }
 
   .stats b {
+    color: var(--c-text);
     font-size: clamp(3rem, 2rem + 4vw, 5.5rem);
     font-stretch: 125%;
     font-weight: 760;

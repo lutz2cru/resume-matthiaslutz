@@ -16,6 +16,12 @@ extra: [Vercel]
 links:
   demo: https://caisse-noire-mu.vercel.app/
 visual: phone
+shot:
+  file: caisse-noire.png
+  date: "2026-11-21"
+  alt:
+    fr: "Page d'accueil de Caisse Noire : logo, les trois fonctions (classement, tribunal, caisse) et le formulaire de connexion."
+    en: "Caisse Noire's home page: logo, the three features (leaderboard, court, kitty) and the sign-in form."
 sections:
   - title: { fr: "Fonctionnalités", en: "Features" }
     points:

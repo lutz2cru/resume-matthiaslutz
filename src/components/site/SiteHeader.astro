@@ -3,6 +3,7 @@ import { t, pageTitle } from '~/i18n/ui';
 import { TERRITORIES, otherLang, path, type Lang, type PageKey } from '~/i18n/routes';
 import { getProfile } from '~/lib/content';
 import { pad2 } from '~/lib/format';
+import Icon from '~/components/ui/Icon.astro';
 
 interface Props {
   lang: Lang;
@@ -44,7 +45,7 @@ const isActive = (key: PageKey) => current === key || (key === 'projects' && cur
       </a>
       <button class="palette-btn" type="button" data-palette-open data-requires-js aria-haspopup="dialog" aria-controls="palette">
         <span class="sr-only">{t(lang, 'palette.open')}</span>
-        <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="7" cy="7" r="4.6" fill="none" stroke="currentColor" stroke-width="1.5"></circle><path d="m10.4 10.4 3.6 3.6" stroke="currentColor" stroke-width="1.5"></path></svg>
+        <Icon name="search" />
         <span class="keys" aria-hidden="true"><span class="kbd" data-kbd-mod>Ctrl</span><span class="kbd">K</span></span>
       </button>
       <details class="menu" data-menu>
@@ -93,7 +94,7 @@ const isActive = (key: PageKey) => current === key || (key === 'projects' && cur
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: rgb(16 19 25 / 0.82);
+    background: var(--c-header);
     backdrop-filter: blur(14px) saturate(1.2);
     -webkit-backdrop-filter: blur(14px) saturate(1.2);
   }
@@ -125,6 +126,11 @@ const isActive = (key: PageKey) => current === key || (key === 'projects' && cur
 
   .brand:hover .brand-mark {
     color: var(--c-accent);
+  }
+
+  .brand-mark::after {
+    content: '.';
+    color: var(--c-brand);
   }
 
   .brand-name {
@@ -173,6 +179,10 @@ const isActive = (key: PageKey) => current === key || (key === 'projects' && cur
     font-stretch: 112%;
   }
 
+  .nav a:hover .idx {
+    color: var(--c-tech);
+  }
+
   .nav a[aria-current='page'] {
     color: var(--c-text);
   }
@@ -188,7 +198,7 @@ const isActive = (key: PageKey) => current === key || (key === 'projects' && cur
     right: 10px;
     bottom: -13px;
     height: 2px;
-    background: var(--c-accent);
+    background: var(--grad-brand);
   }
 
   .tools {
@@ -218,8 +228,13 @@ const isActive = (key: PageKey) => current === key || (key === 'projects' && cur
 
   .lang:hover,
   .palette-btn:hover {
-    color: var(--c-accent);
-    border-color: var(--c-accent);
+    color: var(--c-tech);
+    border-color: var(--c-tech);
+    background: var(--c-tech-tint);
+  }
+
+  .palette-btn .icon {
+    font-size: 15px;
   }
 
   .keys {
@@ -242,11 +257,17 @@ const isActive = (key: PageKey) => current === key || (key === 'projects' && cur
   .menu summary {
     display: grid;
     place-items: center;
-    width: 44px;
-    height: 44px;
+    width: var(--tap);
+    height: var(--tap);
     list-style: none;
     cursor: pointer;
     border: 1px solid var(--c-line);
+    transition: border-color var(--dur-1) var(--ease-out);
+  }
+
+  .menu summary:hover,
+  .menu[open] summary {
+    border-color: var(--c-tech);
   }
 
   .menu summary::-webkit-details-marker {
@@ -322,6 +343,10 @@ const isActive = (key: PageKey) => current === key || (key === 'projects' && cur
     transform: translateY(-0.9em);
   }
 
+  .menu-list a[aria-current='page'] {
+    color: var(--c-accent-strong);
+  }
+
   .menu-list a[aria-current='page'] .idx {
     color: var(--c-accent);
   }
@@ -364,14 +389,16 @@ const isActive = (key: PageKey) => current === key || (key === 'projects' && cur
     }
 
     .palette-btn {
-      width: 44px;
-      height: 44px;
+      width: var(--tap);
+      height: var(--tap);
       justify-content: center;
       padding: 0;
     }
 
     .lang {
-      height: 44px;
+      height: var(--tap);
+      min-width: var(--tap);
+      justify-content: center;
     }
   }
 </style>

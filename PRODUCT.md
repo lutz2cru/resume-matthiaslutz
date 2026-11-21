@@ -30,8 +30,10 @@ Les projets techniques (du C/Linux à l'ESP32 puis à React/Supabase) appuient c
 
 - Site Astro statique (voir `ARCHITECTURE.md`) : le contenu vit dans `src/content/*.yaml`, FR et EN côte à côte. Build : `npm run build` ; aperçu : `npm run dev`.
 - Domaine personnalisé `tulz.fr` via `public/CNAME`, déployé par GitHub Actions (`.github/workflows/deploy.yml`).
-- Six territoires numérotés après l'accueil : À propos, Projets (liste + fiches), Parcours, Compétences, Hors-code (handball, photo, voyages), Contact. Navigation par une barre fixe et une palette de commandes (Ctrl/⌘ K).
+- Six territoires numérotés après l'accueil, dans l'ordre de ce qu'un recruteur cherche : Parcours (Expérience, Formation, Engagements & sport), Projets (liste + fiches), Compétences, Hors-code (Photographie, Handball, Erasmus & voyages), À propos, Contact. Navigation par une barre fixe, un menu mobile et une palette de commandes (Ctrl/⌘ K), au clavier comme à la souris.
+- L'accueil montre d'emblée : nom, rôle (apprenti ingénieur Data & IA), entreprise (ARNia BFC), formation (UTBM, FISA) et centres d'intérêt (handball N3, photo, Erasmus).
 - **Parti pris visuel (brief du 21 nov. 2026, remplace celui du 10 nov.)** : TULZ, « Personal Digital Universe » — minimalisme sombre, typographie expressive, le site traité comme une carte topographique personnelle. Voir `DESIGN_SYSTEM.md`.
+- **Palette (passe de finition du 21 nov. 2026)** : bleu nuit, violet électrique (identité), bleu (navigation, technique), cyan (signaux). Remplace l'accent citron. Sobre : pas de néon, pas de dégradé hors de trois éléments graphiques.
 - Données structurées schema.org `Person` sur l'accueil et À propos.
 
 ## Capabilities and Constraints
@@ -46,6 +48,7 @@ Les projets techniques (du C/Linux à l'ESP32 puis à React/Supabase) appuient c
 - Projets avec liens réels : Caisse Noire (projet phare, PWA React/Supabase), gestionnaire de processus Linux en C (LP25), Photomatt'on, SP-Bot, Matchs du week-end CSV70, station météo ESP32, NAS TrueNAS, système expert automobile (LO21).
 - Rapports de stage / de service civique accessibles depuis la section Expérience.
 - Carnet de voyage Polarsteps pour l'Erasmus.
+- Captures réelles (21/11/2026) de Caisse Noire (page d'accueil publique), The Wall et Révisions Java, dans `src/assets/images/projects/`. Les autres projets gardent une illustration étiquetée ou leur relief généré.
 - Absents : pas de témoignages, pas de recommandations, pas de chiffres d'usage des projets. Ne pas en inventer.
 
 ## Product Principles

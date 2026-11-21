@@ -45,7 +45,7 @@ const fullTitle = page === 'home' ? `${profile.name} — TULZ` : `${title} — $
     <meta name="description" content={description} />
     <meta name="author" content={profile.name} />
     <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#101319" />
+    <meta name="theme-color" content="#0d1020" />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     {
       !noindex && (
@@ -110,8 +110,8 @@ const fullTitle = page === 'home' ? `${profile.name} — TULZ` : `${title} — $
     z-index: var(--z-skip);
     padding: 12px 16px;
     font-weight: 600;
-    color: var(--c-accent-ink);
-    background: var(--c-accent);
+    color: var(--c-action-ink);
+    background: var(--c-action);
     text-decoration: none;
     transform: translateY(-160%);
     transition: transform var(--dur-1) var(--ease-out);

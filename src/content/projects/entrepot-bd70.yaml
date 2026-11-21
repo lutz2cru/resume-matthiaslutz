@@ -29,4 +29,4 @@ sections:
       fr: Des scripts ajoutent plusieurs années d'historique, jusqu'à 5 millions de mouvements, et mesurent les performances à chaque palier dans un rapport comparatif.
       en: Scripts add several years of history, up to 5 million movements, and measure performance at each step in a comparison report.
 sources: ["github.com/lutz2cru/site-logistique-BD70"]
-todo: Préciser si le projet est fait seul ou en équipe.
+todo: Préciser si le projet est fait seul ou en équipe, et son statut (terminé ?).

@@ -4,6 +4,7 @@ import { TERRITORIES, otherLang, path, type Lang } from '~/i18n/routes';
 import { getProfile, pick } from '~/lib/content';
 import { formatUpdated, pad2 } from '~/lib/format';
 import ExternalLink from '~/components/ui/ExternalLink.astro';
+import Icon from '~/components/ui/Icon.astro';
 
 interface Props {
   lang: Lang;
@@ -28,7 +29,7 @@ const elsewhere = [
       <p class="label">{t(lang, 'footer.write')}</p>
       <a class="mail" href={`mailto:${profile.email}`}>
         <span class="mail-text">{profile.email}</span>
-        <span class="mail-arrow" aria-hidden="true">→</span>
+        <span class="mail-arrow"><Icon name="arrow" /></span>
       </a>
     </div>
 
@@ -92,7 +93,7 @@ const elsewhere = [
       <span class="mono">© 2026 {profile.name} · TULZ · tulz.fr</span>
       <span class="mono">{t(lang, 'home.updated')} {formatUpdated(lang, profile.updated)}</span>
       <ExternalLink lang={lang} href={profile.links.repo} plain class="mono">{t(lang, 'footer.source')}</ExternalLink>
-      <a class="mono" href="#main">{t(lang, 'footer.top')} ↑</a>
+      <a class="mono top" href="#main">{t(lang, 'footer.top')} <Icon name="up" /></a>
     </div>
   </div>
 </footer>
@@ -147,6 +148,8 @@ const elsewhere = [
   }
 
   .mail-arrow {
+    display: inline-flex;
+    font-size: 0.6em;
     color: var(--c-accent);
     transition: transform var(--dur-2) var(--ease-out);
   }

@@ -4,7 +4,6 @@ import PageHeader from '~/components/ui/PageHeader.astro';
 import { t, pageTitle, type UIKey } from '~/i18n/ui';
 import { otherLang, path, projectPath, type Lang } from '~/i18n/routes';
 import { getProfile, getSkills, getSkillUsage, pick } from '~/lib/content';
-import { pad2 } from '~/lib/format';
 
 interface Props {
   lang: Lang;
@@ -23,7 +22,7 @@ const href = (p: { id: string; data: { kind: string } }) => (p.data.kind === 'ca
 ---
 
 <Base lang={lang} page="skills" title={pageTitle(lang, 'skills')} description={t(lang, 'desc.skills')} alternate={path(otherLang(lang), 'skills')}>
-  <PageHeader index={4} title={pageTitle(lang, 'skills')} lead={t(lang, 'page.skills.lead')} seed="skills" />
+  <PageHeader page="skills" title={pageTitle(lang, 'skills')} lead={t(lang, 'page.skills.lead')} seed="skills" />
 
   <section class="skills" data-skills>
     <div class="wrap">
@@ -44,7 +43,7 @@ const href = (p: { id: string; data: { kind: string } }) => (p.data.kind === 'ca
       </div>
 
       {
-        GROUPS.map((g, gi) => {
+        GROUPS.map((g) => {
           const rank = { solid: 0, learning: 1, none: 2 } as const;
           const items = skills
             .filter((s) => s.data.group === g)
@@ -52,7 +51,6 @@ const href = (p: { id: string; data: { kind: string } }) => (p.data.kind === 'ca
           return (
             <section class="group" aria-labelledby={`g-${g}`} data-group>
               <header class="group-head">
-                <span class="label">{pad2(gi + 1)}</span>
                 <h2 id={`g-${g}`} class="h3 group-title">
                   {t(lang, `group.${g}` as UIKey)}
                 </h2>
@@ -105,7 +103,6 @@ const href = (p: { id: string; data: { kind: string } }) => (p.data.kind === 'ca
 
       <section class="group" aria-labelledby="g-lang">
         <header class="group-head">
-          <span class="label">{pad2(GROUPS.length + 1)}</span>
           <h2 id="g-lang" class="h3 group-title">{t(lang, 'skills.languages')}</h2>
         </header>
         <ul class="langs" role="list">
@@ -168,9 +165,10 @@ const href = (p: { id: string; data: { kind: string } }) => (p.data.kind === 'ca
     background: var(--c-accent);
   }
 
+  /* À moitié plein : en cours d'apprentissage (bleu = information secondaire). */
   .lv--learning {
-    border: 1.5px solid var(--c-accent-2);
-    background: linear-gradient(90deg, var(--c-accent-2) 50%, transparent 50%);
+    border: 1.5px solid var(--c-tech);
+    background: linear-gradient(90deg, var(--c-tech) 50%, transparent 50%);
   }
 
   .lv--none {
@@ -221,17 +219,17 @@ const href = (p: { id: string; data: { kind: string } }) => (p.data.kind === 'ca
 
   tbody tr {
     border-bottom: 1px solid var(--c-line-soft);
-    scroll-margin-top: calc(var(--header-h) + 24px);
     transition: background-color var(--dur-1) var(--ease-out);
   }
 
   tbody tr:hover {
-    background: rgb(27 34 44 / 0.55);
+    background: color-mix(in srgb, var(--c-surface) 60%, transparent);
   }
 
   tbody tr:target {
     background: var(--c-surface);
-    box-shadow: inset 3px 0 0 var(--c-accent);
+    outline: 1px solid var(--c-accent);
+    outline-offset: -1px;
   }
 
   tbody tr[hidden] {

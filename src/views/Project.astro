@@ -1,15 +1,17 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '~/layouts/Base.astro';
 import PageHeader from '~/components/ui/PageHeader.astro';
 import ExternalLink from '~/components/ui/ExternalLink.astro';
+import Icon from '~/components/ui/Icon.astro';
 import Todo from '~/components/ui/Todo.astro';
 import PhoneMock from '~/components/mocks/PhoneMock.astro';
 import TerminalMock from '~/components/mocks/TerminalMock.astro';
 import Pipeline from '~/components/mocks/Pipeline.astro';
 import { t, pageTitle, type UIKey } from '~/i18n/ui';
 import { otherLang, path, projectPath, type Lang } from '~/i18n/routes';
-import { getCases, getProfile, getSkills, pick, type Project } from '~/lib/content';
-import { pad2 } from '~/lib/format';
+import { getCases, getProfile, getSkills, pick, projectShot, type Project } from '~/lib/content';
+import { formatDay, pad2 } from '~/lib/format';
 
 interface Props {
   lang: Lang;
@@ -27,127 +29,173 @@ const profile = await getProfile();
 const title = pick(lang, p.title);
 const domainLabel = (d: string) => t(lang, `domain.${d}` as UIKey);
 
-const meta = [
+/** Capture réelle (prioritaire) et visuel complémentaire (illustration, schéma, photos). */
+const shot = projectShot(project);
+const extra = p.visual === 'cover' ? undefined : p.visual;
+const showCover = !shot && !extra;
+
+const facts = [
   p.year && { k: t(lang, 'projects.year'), v: p.year },
   p.context && { k: t(lang, 'projects.context'), v: pick(lang, p.context) },
   p.team && { k: t(lang, 'projects.team'), v: pick(lang, p.team) },
-  p.status && { k: t(lang, 'projects.status'), v: t(lang, `status.${p.status}` as UIKey), live: p.status === 'live' },
   { k: t(lang, 'projects.domains'), v: p.domains.map(domainLabel).join(' · ') },
-].filter(Boolean) as { k: string; v: string; live?: boolean }[];
+].filter(Boolean) as { k: string; v: string }[];
 ---
 
 <Base lang={lang} page={null} title={title} description={pick(lang, p.summary)} alternate={projectPath(otherLang(lang), project.id)}>
-  <PageHeader eyebrow={`${pageTitle(lang, 'projects')} / ${pad2(index + 1)} — ${pad2(cases.length)}`} title={title} lead={pick(lang, p.intro ?? p.summary)} seed={`project-${project.id}`} vtName={`project-${project.id}`}>
-    <dl class="meta">
+  <PageHeader
+    crumb={{
+      href: path(lang, 'projects'),
+      label: t(lang, 'projects.back'),
+      navLabel: t(lang, 'nav.breadcrumb'),
+      position: `${pad2(index + 1)} / ${pad2(cases.length)}`,
+    }}
+    title={title}
+    lead={pick(lang, p.intro ?? p.summary)}
+    seed={`project-${project.id}`}
+    vtName={`project-${project.id}`}
+  >
+    <div class="head-row">
+      {p.status && <span class={`pstatus pstatus--${p.status}`}>{t(lang, `status.${p.status}` as UIKey)}</span>}
       {
-        meta.map((m) => (
-          <div>
-            <dt class="label">{m.k}</dt>
-            <dd>
-              {m.live && <span class="dot dot--live" aria-hidden="true" />} {m.v}
-            </dd>
+        (p.links.demo || p.links.code) && (
+          <div class="actions">
+            {p.links.demo && (
+              <a class="btn" href={p.links.demo} target="_blank" rel="noopener">
+                {t(lang, 'projects.demo')}
+                <Icon name="ext" />
+                <span class="sr-only"> {t(lang, 'external')}</span>
+              </a>
+            )}
+            {p.links.code && (
+              <a class="btn btn--ghost" href={p.links.code} target="_blank" rel="noopener">
+                {t(lang, 'projects.code')}
+                <Icon name="ext" />
+                <span class="sr-only"> {t(lang, 'external')}</span>
+              </a>
+            )}
           </div>
-        ))
+        )
       }
-    </dl>
-    {
-      (p.links.demo || p.links.code) && (
-        <div class="actions">
-          {p.links.demo && (
-            <a class="btn" href={p.links.demo} target="_blank" rel="noopener">
-              {t(lang, 'projects.demo')} <span aria-hidden="true">↗</span>
-              <span class="sr-only"> {t(lang, 'external')}</span>
-            </a>
-          )}
-          {p.links.code && (
-            <a class="btn btn--ghost" href={p.links.code} target="_blank" rel="noopener">
-              {t(lang, 'projects.code')} <span aria-hidden="true">↗</span>
-              <span class="sr-only"> {t(lang, 'external')}</span>
-            </a>
-          )}
-        </div>
-      )
-    }
+    </div>
   </PageHeader>
 
   <section class="visual" aria-label={t(lang, 'projects.illustration')}>
-    <div class="wrap">
-      <figure class="stage" data-reveal>
-        {p.visual === 'phone' && <PhoneMock />}
-        {p.visual === 'terminal' && <TerminalMock />}
-        {p.visual === 'pipeline' && <Pipeline lang={lang} />}
-        {
-          p.visual === 'gallery' && (
-            <ul class="shots" role="list">
-              {profile.photography.shots.map((s) => (
-                <li>
-                  <img src={s.src} alt={pick(lang, s.alt)} width="800" height="534" loading="lazy" decoding="async" />
-                </li>
-              ))}
-            </ul>
-          )
-        }
-        {p.visual === 'cover' && <img class="cover" src={`/covers/${project.id}.svg`} alt="" width="800" height="500" />}
-        <figcaption class="label">
-          {
-            p.visual === 'cover'
-              ? lang === 'fr'
-                ? `Relief généré à partir de l’identifiant « ${project.id} »`
-                : `Terrain generated from the id “${project.id}”`
-              : p.visual === 'gallery'
-                ? `${pick(lang, profile.photography.album)} · ${pick(lang, profile.photography.albumMeta)}`
-                : p.visual === 'pipeline'
-                  ? lang === 'fr'
-                    ? 'Schéma d’après le README du dépôt'
-                    : 'Diagram based on the repository README'
-                  : t(lang, 'projects.illustration.note')
-          }
-        </figcaption>
-      </figure>
+    <div class="wrap visual-grid" data-layout={shot && extra ? 'pair' : 'single'}>
+      {
+        shot && p.shot && (
+          <figure class="shot" data-reveal>
+            <div class="frame">
+              <Image src={shot} alt={pick(lang, p.shot.alt)} widths={[640, 1080, shot.width]} sizes="(max-width: 900px) 100vw, 1040px" loading="eager" fetchpriority="high" />
+            </div>
+            <figcaption class="label">
+              {t(lang, 'visual.shot')} · {formatDay(lang, p.shot.date)}
+            </figcaption>
+          </figure>
+        )
+      }
+      {
+        extra && (
+          <figure class="stage" data-reveal data-kind={extra}>
+            <div class="stage-body">
+              {extra === 'phone' && <PhoneMock />}
+              {extra === 'terminal' && <TerminalMock />}
+              {extra === 'pipeline' && <Pipeline lang={lang} />}
+              {extra === 'gallery' && (
+                <ul class="photos" role="list">
+                  {profile.photography.shots.map((s) => (
+                    <li>
+                      <img src={s.src} alt={pick(lang, s.alt)} width="800" height="534" loading="lazy" decoding="async" />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <figcaption>
+              {(extra === 'phone' || extra === 'terminal') && <span class="flag">{t(lang, 'visual.mock')}</span>}
+              {extra === 'pipeline' && <span class="label">{t(lang, 'visual.diagram')}</span>}
+              {extra === 'gallery' && (
+                <span class="label">
+                  {t(lang, 'visual.photos')} · {pick(lang, profile.photography.album)} · {pick(lang, profile.photography.albumMeta)}
+                </span>
+              )}
+            </figcaption>
+          </figure>
+        )
+      }
+      {
+        showCover && (
+          <figure class="stage" data-reveal>
+            <div class="stage-body">
+              <img class="cover" src={`/covers/${project.id}.svg`} alt="" width="800" height="500" />
+            </div>
+            <figcaption class="label">{t(lang, 'visual.cover')}</figcaption>
+          </figure>
+        )
+      }
     </div>
   </section>
 
   <section class="body">
     <div class="wrap body-grid">
-      <aside class="side">
-        <h2 class="label">{t(lang, 'projects.stack')}</h2>
-        <ul class="tags" role="list">
+      <aside class="side" aria-labelledby="factsheet">
+        <h2 id="factsheet" class="label">{t(lang, 'projects.factsheet')}</h2>
+        <dl class="facts">
           {
-            p.stack.map((id) => (
-              <li>
-                <a class="tag" href={`${path(lang, 'skills')}#skill-${id}`}>
-                  {skills.get(id)?.label[lang] ?? id}
-                </a>
-              </li>
+            facts.map((f) => (
+              <div>
+                <dt class="label">{f.k}</dt>
+                <dd>{f.v}</dd>
+              </div>
             ))
           }
-          {p.extra.map((x) => <li>{x}</li>)}
-        </ul>
-        {
-          p.links.other.length > 0 && (
-            <ul class="other" role="list">
-              {p.links.other.map((l) => (
-                <li>
-                  <ExternalLink lang={lang} href={l.href}>
-                    {pick(lang, l.label)}
-                  </ExternalLink>
-                </li>
-              ))}
-            </ul>
-          )
-        }
+          {
+            p.stack.length + p.extra.length > 0 && (
+              <div>
+                <dt class="label">{t(lang, 'projects.stack')}</dt>
+                <dd>
+                  <ul class="tags" role="list">
+                    {p.stack.map((id) => (
+                      <li>
+                        <a class="tag" href={`${path(lang, 'skills')}#skill-${id}`}>
+                          {skills.get(id)?.label[lang] ?? id}
+                        </a>
+                      </li>
+                    ))}
+                    {p.extra.map((x) => (
+                      <li>{x}</li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+            )
+          }
+          {
+            p.links.other.length > 0 && (
+              <div>
+                <dt class="label">{t(lang, 'projects.links')}</dt>
+                <dd>
+                  <ul class="other" role="list">
+                    {p.links.other.map((l) => (
+                      <li>
+                        <ExternalLink lang={lang} href={l.href}>
+                          {pick(lang, l.label)}
+                        </ExternalLink>
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+            )
+          }
+        </dl>
       </aside>
 
       <div class="content">
         {
-          p.sections.map((s, i) => (
+          p.sections.map((s) => (
             <section class="block" data-reveal>
-              <h2 class="h3">
-                <span class="bi" aria-hidden="true">
-                  {pad2(i + 1)}
-                </span>
-                {pick(lang, s.title)}
-              </h2>
+              <h2 class="h3">{pick(lang, s.title)}</h2>
               {s.body && <p class="prose">{pick(lang, s.body)}</p>}
               {s.points && (
                 <ul class="points" role="list">
@@ -174,58 +222,85 @@ const meta = [
   <nav class="pn" aria-label={pageTitle(lang, 'projects')}>
     <div class="wrap pn-grid">
       <a class="pn-link" href={projectPath(lang, prev.id)} data-nav-prev rel="prev">
-        <span class="label">← {t(lang, 'projects.prev')}</span>
+        <span class="label"><Icon name="back" /> {t(lang, 'projects.prev')}</span>
         <span class="pn-title">{pick(lang, prev.data.title)}</span>
       </a>
       <a class="pn-link pn-next" href={projectPath(lang, next.id)} data-nav-next rel="next">
-        <span class="label">{t(lang, 'projects.next')} →</span>
+        <span class="label">{t(lang, 'projects.next')} <Icon name="arrow" /></span>
         <span class="pn-title">{pick(lang, next.data.title)}</span>
       </a>
     </div>
     <div class="wrap pn-foot">
-      <a class="link" href={path(lang, 'projects')}><span class="arrow" aria-hidden="true">←</span> {t(lang, 'projects.back')}</a>
+      <a class="link" href={path(lang, 'projects')}>
+        <span class="arrow arrow--back"><Icon name="back" /></span>
+        {t(lang, 'projects.back')}
+      </a>
       <span class="label" data-requires-js>{t(lang, 'projects.keys')}</span>
     </div>
   </nav>
 </Base>
 
 <style>
-  .meta {
+  .head-row {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--s-5) var(--s-7);
-    margin-top: var(--s-5);
-    padding-top: var(--s-5);
-    border-top: 1px solid var(--c-line);
-  }
-
-  .meta div {
-    display: grid;
-    gap: 4px;
-  }
-
-  .meta dd {
-    display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: var(--fs-small);
+    gap: var(--s-4) var(--s-5);
+    margin-top: var(--s-2);
   }
 
   .actions {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: var(--s-3);
   }
 
+  /* ---------- visuels */
   .visual {
     padding-top: clamp(40px, 6vw, 88px);
   }
 
-  .stage {
+  .visual-grid {
     display: grid;
-    gap: var(--s-4);
-    padding: clamp(24px, 5vw, 72px);
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-5);
+  }
+
+  .visual-grid > * {
+    min-width: 0;
+  }
+
+  .visual-grid[data-layout='pair'] {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  figure {
+    display: grid;
+    gap: var(--s-3);
+    align-content: start;
+  }
+
+  .frame {
+    border: 1px solid var(--c-line);
+    background: var(--c-bg-deep);
+    box-shadow: var(--shadow-2);
+  }
+
+  .frame img {
+    width: 100%;
+    height: auto;
+  }
+
+  .stage {
+    grid-template-rows: 1fr auto;
+  }
+
+  .stage-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+    padding: clamp(24px, 5vw, 64px);
     background:
       linear-gradient(var(--c-line-soft) 1px, transparent 1px) -1px -1px / 32px 32px,
       linear-gradient(90deg, var(--c-line-soft) 1px, transparent 1px) -1px -1px / 32px 32px,
@@ -233,8 +308,12 @@ const meta = [
     border: 1px solid var(--c-line);
   }
 
-  .stage figcaption {
-    text-align: center;
+  [data-layout='pair'] .stage-body {
+    padding: clamp(20px, 3vw, 36px);
+  }
+
+  .stage[data-kind='gallery'] .stage-body {
+    padding: 6px;
   }
 
   .cover {
@@ -244,25 +323,40 @@ const meta = [
     border: 1px solid var(--c-line);
   }
 
-  .shots {
+  .photos {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 6px;
   }
 
-  .shots img {
+  .photos img {
     width: 100%;
     aspect-ratio: 3 / 2;
     object-fit: cover;
   }
 
+  .flag {
+    display: inline-flex;
+    width: fit-content;
+    padding: 5px 10px;
+    font-family: var(--f-mono);
+    font-size: var(--fs-mono);
+    font-stretch: 87.5%;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--c-text);
+    border: 1px dashed var(--c-text-3);
+    border-radius: var(--r-pill);
+  }
+
+  /* ---------- corps */
   .body {
     padding-block: clamp(56px, 8vw, 120px);
   }
 
   .body-grid {
     display: grid;
-    grid-template-columns: minmax(200px, 3fr) minmax(0, 8fr);
+    grid-template-columns: minmax(220px, 3fr) minmax(0, 8fr);
     gap: var(--s-7) var(--s-8);
   }
 
@@ -272,16 +366,34 @@ const meta = [
     top: calc(var(--header-h) + 32px);
     display: grid;
     gap: var(--s-4);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--c-line);
+  }
+
+  .facts {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .facts > div {
+    display: grid;
+    gap: 6px;
+  }
+
+  .facts dd {
+    font-size: var(--fs-small);
+    color: var(--c-text);
+    overflow-wrap: anywhere;
   }
 
   .other {
     display: grid;
     gap: 8px;
-    font-size: var(--fs-small);
   }
 
   .content {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: clamp(40px, 5vw, 64px);
     max-width: 760px;
   }
@@ -291,22 +403,8 @@ const meta = [
     gap: var(--s-4);
   }
 
-  .block h2 {
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-  }
-
-  .bi {
-    font-family: var(--f-mono);
-    font-size: var(--fs-mono);
-    font-weight: 450;
-    color: var(--c-accent);
-  }
-
   .points {
     display: grid;
-    gap: 0;
     border-top: 1px solid var(--c-line);
   }
 
@@ -321,16 +419,18 @@ const meta = [
     content: '';
     position: absolute;
     left: 2px;
-    top: 1.35em;
+    top: 1.45em;
     width: 12px;
     height: 1px;
-    background: var(--c-accent-2);
+    background: var(--c-tech);
   }
 
   .sources {
     text-transform: none;
+    overflow-wrap: anywhere;
   }
 
+  /* ---------- projet précédent / suivant */
   .pn {
     border-top: 1px solid var(--c-line-soft);
     padding-bottom: var(--s-7);
@@ -345,12 +445,21 @@ const meta = [
     display: grid;
     gap: 10px;
     padding: clamp(32px, 5vw, 64px) 0;
+    padding-right: var(--s-5);
     text-decoration: none;
+  }
+
+  .pn-link .label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   }
 
   .pn-next {
     text-align: right;
     justify-items: end;
+    padding-right: 0;
+    padding-left: var(--s-5);
     border-left: 1px solid var(--c-line-soft);
   }
 
@@ -370,14 +479,6 @@ const meta = [
     font-stretch: 125%;
   }
 
-  .pn-link:first-child {
-    padding-right: var(--s-5);
-  }
-
-  .pn-next {
-    padding-left: var(--s-5);
-  }
-
   .pn-foot {
     display: flex;
     justify-content: space-between;
@@ -388,15 +489,16 @@ const meta = [
   }
 
   @media (max-width: 900px) {
+    .visual-grid[data-layout='pair'],
     .body-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .side {
       position: static;
     }
 
-    .shots {
+    .photos {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
@@ -404,6 +506,10 @@ const meta = [
   @media (max-width: 560px) {
     .pn-grid {
       grid-template-columns: 1fr;
+    }
+
+    .pn-link {
+      padding-right: 0;
     }
 
     .pn-next {

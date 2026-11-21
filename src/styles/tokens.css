@@ -1,27 +1,82 @@
-/* TULZ — jetons de design. Voir DESIGN_SYSTEM.md. */
+/* TULZ — jetons de design. Voir DESIGN_SYSTEM.md. Aucune couleur ne doit être écrite en dur dans un composant. */
 :root {
   color-scheme: dark;
 
-  /* Couleurs */
-  --c-bg: #101319;
-  --c-bg-deep: #0b0e12;
-  --c-surface: #1b222c;
-  --c-surface-2: #232b37;
-  --c-line: #2a323d;
-  --c-line-soft: #1c232c;
-  --c-text: #e8edf2;
-  --c-text-2: #a9b3bf;
-  --c-text-3: #7c8794;
-  --c-accent: #b6f36a;
-  --c-accent-ink: #101319;
-  --c-accent-2: #65d9cb;
-  --c-todo: #f2c94c;
+  /* ---------- palette brute (ne pas utiliser directement dans les composants) */
+  --p-night-900: #090b17;
+  --p-night-800: #0d1020;
+  --p-night-700: #141830;
+  --p-night-600: #191d32;
+  --p-night-500: #222740;
+  --p-night-400: #2e3454;
+  --p-night-300: #3a4166;
+  --p-violet-500: #8b5cf6;
+  --p-violet-600: #7655ee;
+  --p-violet-700: #6a48e0;
+  --p-violet-400: #a78bfa;
+  --p-violet-300: #c4b5fd;
+  --p-blue-400: #60a5fa;
+  --p-cyan-300: #67e8f9;
+  --p-orchid-300: #f0abfc;
+  --p-white: #ffffff;
+
+  /* ---------- surfaces */
+  --c-bg: var(--p-night-800); /* fond principal */
+  --c-bg-deep: var(--p-night-900); /* pied de page, voiles, fonds de scène */
+  --c-surface: var(--p-night-600); /* blocs mis en avant, champs */
+  --c-surface-2: var(--p-night-500); /* survol des surfaces */
+  --c-line: var(--p-night-400); /* filets, bordures */
+  --c-line-soft: var(--p-night-700); /* grille de fond, séparateurs discrets */
+  --c-line-strong: var(--p-night-300); /* bordures de contrôles */
+
+  /* ---------- texte */
+  --c-text: #f1f5f9; /* 17,2:1 sur le fond */
+  --c-text-2: #a6b0c3; /* 8,7:1 */
+  --c-text-3: #8590a8; /* 5,9:1 sur le fond, 4,6:1 sur --c-surface-2 */
+
+  /* ---------- rôles de couleur
+     Violet : identité, état actif, interactions importantes.
+     Bleu : navigation, détails techniques, informations secondaires.
+     Cyan : indicateurs, petits détails, animations. */
+  --c-brand: var(--p-violet-500); /* aplats, tracés, grands éléments (pas de petit texte) */
+  --c-accent: var(--p-violet-400); /* texte et filets identitaires : actif, survol important (6,9:1) */
+  --c-accent-strong: var(--p-violet-300); /* texte accentué sur surface */
+  --c-action: var(--p-violet-600); /* fond des boutons principaux (texte blanc 4,9:1) */
+  --c-action-hover: var(--p-violet-700); /* survol des boutons principaux (5,6:1) */
+  --c-action-ink: var(--p-white);
+  --c-tech: var(--p-blue-400); /* navigation, index, métadonnées techniques (7,4:1) */
+  --c-signal: var(--p-cyan-300); /* pastilles d'état, progression, petits repères (13:1) */
+  --c-alert: #fb7185; /* alerte (rupture dans le schéma SP-Bot) */
+  --c-todo: #f2c94c; /* repères TODO, développement seulement */
+
+  /* Voiles et teintes dérivées (toujours calculées depuis la palette). */
+  --c-brand-tint: color-mix(in srgb, var(--p-violet-500) 14%, transparent);
+  --c-tech-tint: color-mix(in srgb, var(--p-blue-400) 12%, transparent);
+  --c-signal-tint: color-mix(in srgb, var(--p-cyan-300) 12%, transparent);
+  --c-overlay: color-mix(in srgb, var(--p-night-900) 88%, transparent);
+  --c-header: color-mix(in srgb, var(--p-night-800) 84%, transparent);
+  --c-grid-dot: color-mix(in srgb, var(--c-text) 8%, transparent);
+
+  /* Dégradé identitaire : réservé à quelques éléments graphiques (filet actif, ligne du parcours, sommet du relief). */
+  --grad-brand: linear-gradient(100deg, var(--p-violet-500), var(--p-blue-400));
+  --grad-brand-v: linear-gradient(180deg, var(--p-violet-500), var(--p-blue-400) 70%, var(--p-cyan-300));
+
+  /* Types d'étapes du parcours */
+  --c-type-work: var(--p-violet-400);
+  --c-type-education: var(--p-blue-400);
+  --c-type-international: var(--p-cyan-300);
+  --c-type-engagement: var(--p-orchid-300);
+  --c-type-sport: var(--c-text-2);
+
+  /* Profondeur */
+  --shadow-1: 0 10px 30px -12px rgb(3 4 12 / 0.6);
+  --shadow-2: 0 30px 80px -24px rgb(3 4 12 / 0.75);
 
   /* Polices */
   --f-sans: 'Archivo Variable', 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --f-mono: 'Martian Mono Variable', 'Martian Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
-  /* Échelle typographique */
+  /* Échelle typographique (affichage plafonné à 6rem) */
   --fs-mono: 0.6875rem;
   --fs-mono-l: 0.75rem;
   --fs-small: 0.9375rem;
@@ -29,9 +84,13 @@
   --fs-lead: clamp(1.25rem, 1.08rem + 0.75vw, 1.625rem);
   --fs-h3: clamp(1.25rem, 1.15rem + 0.45vw, 1.5rem);
   --fs-h2: clamp(2rem, 1.45rem + 2.4vw, 3.5rem);
-  --fs-h1: clamp(2.75rem, 1.6rem + 5.2vw, 6.5rem);
-  --fs-mega: clamp(4.25rem, 1.2rem + 13.5vw, 15rem);
-  --measure: 62ch;
+  --fs-h1: clamp(2.25rem, 1.4rem + 4.4vw, 5.5rem); /* 36 px à 320 px : « Gestionnaire » tient sur une ligne */
+  --fs-display: clamp(3.25rem, 1.4rem + 7.2vw, 6rem);
+  --measure: 66ch;
+
+  /* Rayons : angles droits partout, sauf pastilles et badges. */
+  --r-0: 0;
+  --r-pill: 999px;
 
   /* Espacements */
   --s-1: 4px;
@@ -45,9 +104,10 @@
   --s-9: 96px;
   --s-10: 128px;
   --gutter: clamp(16px, 4vw, 48px);
-  --space-section: clamp(88px, 12vw, 176px);
+  --space-section: clamp(80px, 10vw, 152px);
   --wrap: 1440px;
   --header-h: 64px;
+  --tap: 44px;
 
   /* Mouvement */
   --ease-out: cubic-bezier(0.2, 0.7, 0.1, 1);
@@ -56,7 +116,7 @@
   --dur-2: 320ms;
   --dur-3: 700ms;
 
-  /* Profondeur */
+  /* Profondeur (z) */
   --z-header: 50;
   --z-menu: 60;
   --z-palette: 80;

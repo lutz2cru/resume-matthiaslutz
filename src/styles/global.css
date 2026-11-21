@@ -13,6 +13,8 @@ html {
   text-size-adjust: 100%;
   scroll-padding-top: calc(var(--header-h) + 24px);
   background: var(--c-bg);
+  scrollbar-color: var(--c-line-strong) var(--c-bg-deep);
+  accent-color: var(--c-brand);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -34,6 +36,7 @@ body {
   font-stretch: 100%;
   line-height: 1.6;
   font-weight: 400;
+  caret-color: var(--c-accent);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -99,8 +102,8 @@ input {
 }
 
 ::selection {
-  background: var(--c-accent);
-  color: var(--c-accent-ink);
+  background: color-mix(in srgb, var(--c-brand) 55%, transparent);
+  color: var(--c-text);
 }
 
 :focus-visible {
@@ -117,8 +120,27 @@ code {
   font-size: 0.86em;
   font-stretch: 87.5%;
   padding: 0.1em 0.35em;
+  color: var(--c-accent-strong);
   background: var(--c-surface);
   border: 1px solid var(--c-line);
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--c-bg-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--c-line-strong);
+  border: 3px solid var(--c-bg-deep);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--c-text-3);
 }
 
 /* ------------------------------------------------------------------ typographie */
@@ -132,6 +154,7 @@ code {
   line-height: 1.5;
   text-transform: uppercase;
   color: var(--c-text-3);
+  font-variant-numeric: tabular-nums;
 }
 
 .label--strong {
@@ -150,8 +173,10 @@ code {
   font-stretch: 122%;
   font-weight: 720;
   letter-spacing: -0.032em;
-  line-height: 0.95;
+  line-height: 0.98;
   text-wrap: balance;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .h2 {
@@ -159,7 +184,7 @@ code {
   font-stretch: 118%;
   font-weight: 680;
   letter-spacing: -0.025em;
-  line-height: 1;
+  line-height: 1.02;
   text-wrap: balance;
 }
 
@@ -175,7 +200,7 @@ code {
   font-size: var(--fs-lead);
   line-height: 1.4;
   color: var(--c-text-2);
-  max-width: 44ch;
+  max-width: 46ch;
   text-wrap: pretty;
 }
 
@@ -230,15 +255,69 @@ code {
 
 /* Grille de points : repli sans JavaScript pour le terrain, et texture discrète. */
 .dotgrid {
-  background-image: radial-gradient(circle at 1px 1px, rgb(232 237 242 / 0.09) 1px, transparent 0);
+  background-image: radial-gradient(circle at 1px 1px, var(--c-grid-dot) 1px, transparent 0);
   background-size: 24px 24px;
+}
+
+/* En-tête de section : titre à gauche, lien à droite. */
+.row-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: var(--s-4) var(--s-5);
+  flex-wrap: wrap;
+  margin-bottom: clamp(32px, 5vw, 64px);
+}
+
+/* Sommaire d'une page longue (parcours, hors-code) : liens vers ses parties. */
+.section-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: var(--s-2);
+}
+
+.section-nav a {
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  min-height: var(--tap);
+  padding: 8px 16px;
+  font-weight: 600;
+  font-stretch: 108%;
+  text-decoration: none;
+  border: 1px solid var(--c-line-strong);
+  background: var(--c-overlay);
+  transition:
+    border-color var(--dur-1) var(--ease-out),
+    background-color var(--dur-1) var(--ease-out);
+}
+
+.section-nav a:hover {
+  border-color: var(--c-tech);
+  background: var(--c-tech-tint);
+}
+
+.section-nav .label {
+  font-weight: 400;
+}
+
+/* ------------------------------------------------------------------ icônes */
+.icon {
+  display: inline-block;
+  flex: none;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  stroke: currentColor;
+  fill: none;
 }
 
 /* ------------------------------------------------------------------ éléments d'interface */
 .link {
   display: inline-flex;
-  align-items: baseline;
-  gap: 0.45em;
+  align-items: center;
+  gap: 0.4em;
   color: var(--c-text);
   text-decoration: none;
   background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
@@ -253,7 +332,7 @@ code {
 }
 
 .link .arrow {
-  display: inline-block;
+  display: inline-flex;
   transition: transform var(--dur-2) var(--ease-out);
 }
 
@@ -265,10 +344,14 @@ code {
   transform: translate(2px, -2px);
 }
 
+.link:hover .arrow--back {
+  transform: translateX(-3px);
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.6em;
+  gap: 0.55em;
   min-height: 48px;
   padding: 0 22px;
   font-family: var(--f-sans);
@@ -277,30 +360,51 @@ code {
   font-weight: 600;
   letter-spacing: 0.005em;
   text-decoration: none;
-  color: var(--c-accent-ink);
-  background: var(--c-accent);
-  border: 1px solid var(--c-accent);
+  color: var(--c-action-ink);
+  background: var(--c-action);
+  border: 1px solid var(--c-action);
+  box-shadow: var(--shadow-1);
   transition:
     background-color var(--dur-1) var(--ease-out),
     color var(--dur-1) var(--ease-out),
-    border-color var(--dur-1) var(--ease-out);
+    border-color var(--dur-1) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out);
 }
 
 .btn:hover {
-  background: var(--c-text);
-  border-color: var(--c-text);
+  background: var(--c-action-hover);
+  border-color: var(--c-action-hover);
+  box-shadow: 0 14px 34px -14px color-mix(in srgb, var(--c-brand) 70%, transparent);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn .icon {
+  transition: transform var(--dur-2) var(--ease-out);
+}
+
+.btn:hover .icon--arrow {
+  transform: translateX(3px);
+}
+
+.btn:hover .icon--ext {
+  transform: translate(2px, -2px);
 }
 
 .btn--ghost {
   color: var(--c-text);
   background: transparent;
-  border-color: var(--c-line);
+  border-color: var(--c-line-strong);
+  box-shadow: none;
 }
 
 .btn--ghost:hover {
-  color: var(--c-accent-ink);
-  background: var(--c-accent);
+  color: var(--c-accent-strong);
+  background: var(--c-brand-tint);
   border-color: var(--c-accent);
+  box-shadow: none;
 }
 
 .kbd {
@@ -340,43 +444,101 @@ code {
   white-space: nowrap;
 }
 
+.tags li:has(> a.tag) {
+  padding: 0;
+  border: 0;
+}
+
 a.tag {
+  display: inline-block;
   text-decoration: none;
   transition:
     color var(--dur-1) var(--ease-out),
-    border-color var(--dur-1) var(--ease-out);
+    border-color var(--dur-1) var(--ease-out),
+    background-color var(--dur-1) var(--ease-out);
 }
 
 a.tag:hover {
-  color: var(--c-accent);
-  border-color: var(--c-accent);
+  color: var(--c-tech);
+  border-color: var(--c-tech);
+  background: var(--c-tech-tint);
 }
 
 .dot {
   display: inline-block;
   width: 7px;
   height: 7px;
-  border-radius: 50%;
-  background: var(--c-accent);
+  border-radius: var(--r-pill);
+  background: var(--c-signal);
   flex: none;
 }
 
 .dot--live {
-  box-shadow: 0 0 0 0 rgb(182 243 106 / 0.5);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--c-signal) 50%, transparent);
   animation: pulse 2.4s var(--ease-out) infinite;
 }
 
 @keyframes pulse {
   0% {
-    box-shadow: 0 0 0 0 rgb(182 243 106 / 0.45);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--c-signal) 45%, transparent);
   }
   70%,
   100% {
-    box-shadow: 0 0 0 8px rgb(182 243 106 / 0);
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--c-signal) 0%, transparent);
   }
 }
 
-/* Filtres (projets, parcours, compétences) */
+/* Statut d'un projet : la couleur et le libellé disent la même chose. */
+.pstatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  padding: 5px 10px 5px 8px;
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono);
+  font-stretch: 87.5%;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--st, var(--c-text-2));
+  background: color-mix(in srgb, var(--st, var(--c-text-2)) 11%, transparent);
+  border: 1px solid color-mix(in srgb, var(--st, var(--c-text-2)) 32%, transparent);
+  border-radius: var(--r-pill);
+}
+
+.pstatus::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: currentColor;
+}
+
+.pstatus--live {
+  --st: var(--c-signal);
+}
+
+.pstatus--ongoing {
+  --st: var(--c-accent);
+}
+
+.pstatus--done {
+  --st: var(--c-tech);
+}
+
+.pstatus--archived,
+.pstatus--experimental {
+  --st: var(--c-text-2);
+}
+
+.pstatus--experimental::before {
+  background: transparent;
+  border: 1px solid currentColor;
+}
+
+/* Filtres (projets, compétences) */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -387,7 +549,7 @@ a.tag:hover {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  min-height: 40px;
+  min-height: var(--tap);
   padding: 0 14px;
   font-size: var(--fs-small);
   font-stretch: 105%;
@@ -402,20 +564,25 @@ a.tag:hover {
 
 .filter:hover {
   color: var(--c-text);
-  border-color: var(--c-text-3);
+  border-color: var(--c-line-strong);
+  background: var(--c-surface);
 }
 
 .filter[aria-pressed='true'] {
-  color: var(--c-accent-ink);
-  background: var(--c-accent);
-  border-color: var(--c-accent);
+  color: var(--c-action-ink);
+  background: var(--c-action);
+  border-color: var(--c-action);
 }
 
 .filter .count {
   font-family: var(--f-mono);
   font-size: var(--fs-mono);
   font-stretch: 87.5%;
-  opacity: 0.75;
+  color: var(--c-text-2);
+}
+
+.filter[aria-pressed='true'] .count {
+  color: inherit;
 }
 
 /* Les filtres n'existent qu'avec JavaScript. */
@@ -434,7 +601,7 @@ html:not(.js) [data-requires-js] {
   font-size: var(--fs-mono);
   font-stretch: 87.5%;
   line-height: 1.5;
-  color: #101319;
+  color: var(--p-night-800);
   background: var(--c-todo);
 }
 

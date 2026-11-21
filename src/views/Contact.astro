@@ -1,4 +1,5 @@
 ---
+import Icon from '~/components/ui/Icon.astro';
 import Base from '~/layouts/Base.astro';
 import PageHeader from '~/components/ui/PageHeader.astro';
 import { t, pageTitle } from '~/i18n/ui';
@@ -21,7 +22,7 @@ const channels = [
 ---
 
 <Base lang={lang} page="contact" title={pageTitle(lang, 'contact')} description={t(lang, 'desc.contact')} alternate={path(otherLang(lang), 'contact')}>
-  <PageHeader index={6} title={pageTitle(lang, 'contact')} lead={t(lang, 'page.contact.lead')} seed="contact" />
+  <PageHeader page="contact" title={pageTitle(lang, 'contact')} lead={t(lang, 'page.contact.lead')} seed="contact" />
 
   <section class="section">
     <div class="wrap">
@@ -29,9 +30,11 @@ const channels = [
         <p class="label">{t(lang, 'contact.title')}</p>
         <a class="mail" href={`mailto:${profile.email}`}>{profile.email}</a>
         <div class="row">
-          <a class="btn" href={`mailto:${profile.email}`}>{lang === 'fr' ? 'Écrire un e-mail' : 'Write an email'} <span aria-hidden="true">→</span></a>
+          <a class="btn" href={`mailto:${profile.email}`}><Icon name="mail" />
+            {lang === 'fr' ? 'Écrire un e-mail' : 'Write an email'}
+          </a>
           <button type="button" class="btn btn--ghost copy" data-copy={profile.email} data-copied={t(lang, 'contact.copied')} data-requires-js>
-            <span class="c-idle">{t(lang, 'contact.copy')}</span><span class="c-done" aria-hidden="true">✓</span>
+            <span class="c-idle">{t(lang, 'contact.copy')}</span><span class="c-done"><Icon name="check" /></span>
           </button>
           <span class="label" role="status" aria-live="polite" data-copy-status></span>
         </div>
@@ -47,7 +50,7 @@ const channels = [
                 <a href={c.href} target="_blank" rel="noopener">
                   <span class="ch">{c.k}</span>
                   <span class="handle">{c.v}</span>
-                  <span class="go" aria-hidden="true">↗</span>
+                  <span class="go"><Icon name="ext" /></span>
                   <span class="sr-only"> {t(lang, 'external')}</span>
                 </a>
               </li>
@@ -96,7 +99,8 @@ const channels = [
   }
 
   .copy:global(.is-done) .c-done {
-    display: inline;
+    display: inline-flex;
+    color: var(--c-signal);
   }
 
   .note {

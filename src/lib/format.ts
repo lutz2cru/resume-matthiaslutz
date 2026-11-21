@@ -34,6 +34,14 @@ export function pad2(n: number): string {
   return String(n).padStart(2, '0');
 }
 
+/** « 2026-11-21 » → « 21 nov. 2026 ». */
+export function formatDay(lang: Lang, iso: string): string {
+  const [year, month, day] = iso.split('-');
+  if (!day || !month) return formatMonth(lang, iso);
+  const d = String(Number(day));
+  return lang === 'fr' ? `${d} ${MONTHS.fr[Number(month) - 1]} ${year}` : `${d} ${MONTHS.en[Number(month) - 1]} ${year}`;
+}
+
 /** « 2026-11 » → « nov. 2026 ». */
 export function formatUpdated(lang: Lang, iso: string): string {
   return formatMonth(lang, iso);

@@ -17,8 +17,16 @@ export const PAGES = {
 
 export type PageKey = keyof typeof PAGES;
 
-/** Les six territoires, dans l'ordre de la navigation. */
-export const TERRITORIES = ['about', 'projects', 'journey', 'skills', 'beyond', 'contact'] as const satisfies readonly PageKey[];
+/**
+ * Les six territoires, dans l'ordre de la navigation : d'abord ce qu'un recruteur cherche
+ * (parcours, projets, compétences), puis la personne (hors-code, à propos), puis le contact.
+ */
+export const TERRITORIES = ['journey', 'projects', 'skills', 'beyond', 'about', 'contact'] as const satisfies readonly PageKey[];
+
+/** Rang d'un territoire dans la navigation (1 à 6). */
+export function territoryIndex(page: PageKey): number {
+  return (TERRITORIES as readonly PageKey[]).indexOf(page) + 1;
+}
 
 export function path(lang: Lang, page: PageKey): string {
   return PAGES[page][lang];

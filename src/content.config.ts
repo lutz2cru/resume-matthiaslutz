@@ -35,7 +35,8 @@ const projects = defineCollection({
     year: z.string().optional(),
     context: l10n.optional(),
     team: l10n.optional(),
-    status: z.enum(['live', 'done', 'ongoing', 'archived']).optional(),
+    /** live : en ligne ; ongoing : en cours ; done : terminé ; experimental : essai ; archived : arrêté. Absent = non précisé. */
+    status: z.enum(['live', 'ongoing', 'done', 'experimental', 'archived']).optional(),
     /** Identifiants de compétences (skills.yaml). */
     stack: z.array(z.string()).default([]),
     /** Outils cités mais absents de skills.yaml (ex. ntfy, /proc). */
@@ -49,6 +50,18 @@ const projects = defineCollection({
       .default({ other: [] }),
     /** Illustration spécifique (composant), sinon la couverture générée. */
     visual: z.enum(['phone', 'terminal', 'pipeline', 'gallery', 'cover']).default('cover'),
+    /**
+     * Capture réelle de l'application en ligne (fichier dans src/assets/images/projects/).
+     * Jamais de fausse capture : seulement ce que l'application affiche vraiment.
+     */
+    shot: z
+      .object({
+        file: z.string(),
+        alt: l10n,
+        /** Date de la capture (AAAA-MM-JJ). */
+        date: z.string(),
+      })
+      .optional(),
     sections: z
       .array(
         z.object({
@@ -137,6 +150,8 @@ const profile = defineCollection({
       repo: z.url(),
     }),
     bio: z.array(l10n),
+    /** Repères affichés sous le nom sur l'accueil : l'essentiel en quelques secondes. */
+    highlights: z.array(z.object({ label: l10n, value: l10n, detail: l10n.optional() })),
     now: z.array(z.object({ label: l10n, text: l10n })),
     facts: z.array(z.object({ label: l10n, value: l10n })),
     languages: z.array(z.object({ label: l10n, level: l10n })),
@@ -156,6 +171,7 @@ const profile = defineCollection({
       album: l10n,
       albumMeta: l10n,
       shots: z.array(z.object({ src: z.url(), alt: l10n })),
+      todo,
     }),
     erasmus: z.object({
       lead: l10n,
@@ -164,6 +180,7 @@ const profile = defineCollection({
       cities: z.number(),
       countries: z.number(),
       period: l10n,
+      todo,
     }),
   }),
 });

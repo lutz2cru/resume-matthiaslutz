@@ -299,15 +299,21 @@ export interface CoverOptions {
   height?: number;
   cell?: number;
   levels?: number;
-  colors?: { bg: string; line: string; index: string; accent: string; grid: string };
+  colors?: Partial<typeof DEFAULT_COLORS>;
 }
 
+/**
+ * Couleurs des couvertures. Générées au build en SVG autonome (servi comme image) :
+ * pas d'accès aux variables CSS, donc valeurs reprises de src/styles/tokens.css.
+ */
 const DEFAULT_COLORS = {
-  bg: '#141920',
-  line: 'rgba(232,237,242,0.20)',
-  index: 'rgba(232,237,242,0.42)',
-  accent: '#B6F36A',
-  grid: 'rgba(232,237,242,0.06)',
+  bg: '#0d1020', // --c-bg
+  line: 'rgba(241,245,249,0.16)', // --c-text à 16 %
+  index: 'rgba(241,245,249,0.36)', // --c-text à 36 %
+  summitFrom: '#8b5cf6', // --c-brand
+  summitTo: '#60a5fa', // --c-tech
+  peak: '#67e8f9', // --c-signal
+  grid: 'rgba(241,245,249,0.05)',
 };
 
 const r1 = (v: number) => Math.round(v * 10) / 10;
@@ -323,7 +329,7 @@ function linesToPath(lines: number[][], cell: number): string {
 }
 
 /**
- * Relief propre à une graine (identifiant de projet) : courbes, courbes maîtresses, sommet en citron.
+ * Relief propre à une graine (identifiant de projet) : courbes, courbes maîtresses, sommet en dégradé violet → bleu.
  */
 export function renderCoverSVG(seed: string, options: CoverOptions = {}): string {
   const { width = 800, height = 500, cell = 10, levels = 11 } = options;
@@ -360,14 +366,15 @@ export function renderCoverSVG(seed: string, options: CoverOptions = {}): string
 
   return [
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" preserveAspectRatio="xMidYMid slice">`,
+    `<defs><linearGradient id="summit" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${colors.summitFrom}"/><stop offset="1" stop-color="${colors.summitTo}"/></linearGradient></defs>`,
     `<rect width="${width}" height="${height}" fill="${colors.bg}"/>`,
     `<path d="${grid}" stroke="${colors.grid}" stroke-width="1" fill="none"/>`,
     `<g fill="none" stroke-linecap="round" stroke-linejoin="round">`,
     `<path d="${minor}" stroke="${colors.line}" stroke-width="1"/>`,
     `<path d="${major}" stroke="${colors.index}" stroke-width="1.6"/>`,
-    `<path d="${top}" stroke="${colors.accent}" stroke-width="1.8"/>`,
+    `<path d="${top}" stroke="url(#summit)" stroke-width="1.8"/>`,
     `</g>`,
-    `<g stroke="${colors.accent}" stroke-width="1.5" fill="none">`,
+    `<g stroke="${colors.peak}" stroke-width="1.5" fill="none">`,
     `<circle cx="${peakX}" cy="${peakY}" r="5"/>`,
     `<path d="M${peakX - 14} ${peakY}h8M${peakX + 6} ${peakY}h8M${peakX} ${peakY - 14}v8M${peakX} ${peakY + 6}v8"/>`,
     `</g>`,

@@ -1,6 +1,7 @@
 # Source : README du dépôt lutz2cru/thewall.
 order: 6
 kind: case
+featured: true
 title: { fr: "The Wall", en: "The Wall" }
 summary:
   fr: Toutes les pages de révision de ma promo réunies sur une page, administrée sans serveur par des commits.
@@ -17,6 +18,12 @@ extra: [API GitHub]
 links:
   demo: https://lutz2cru.github.io/thewall/
   code: https://github.com/lutz2cru/thewall
+shot:
+  file: the-wall.png
+  date: "2026-11-21"
+  alt:
+    fr: "Page d'accueil de The Wall : titre, nombre d'UV et de pages, date de mise à jour, champ de recherche et première UV."
+    en: "The Wall's home page: title, number of courses and pages, last update, search field and the first course."
 sections:
   - title: { fr: "Côté lecteur", en: "For readers" }
     points:
