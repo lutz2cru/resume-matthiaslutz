@@ -1,0 +1,368 @@
+---
+import { t, pageTitle } from '~/i18n/ui';
+import { TERRITORIES, otherLang, path, type Lang, type PageKey } from '~/i18n/routes';
+import { getProfile } from '~/lib/content';
+import { pad2 } from '~/lib/format';
+
+interface Props {
+  lang: Lang;
+  current: PageKey | null;
+  alternate: string;
+}
+
+const { lang, current, alternate } = Astro.props;
+const other = otherLang(lang);
+const profile = await getProfile();
+const isActive = (key: PageKey) => current === key || (key === 'projects' && current === null && Astro.url.pathname.startsWith(path(lang, 'projects')));
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href={path(lang, 'home')} aria-current={current === 'home' ? 'page' : undefined}>
+      <span class="brand-mark" aria-hidden="true">TULZ</span>
+      <span class="brand-name">{profile.name}<span class="sr-only"> — {t(lang, 'page.home')}</span></span>
+    </a>
+
+    <nav class="nav" aria-label={t(lang, 'nav.label')}>
+      <ol role="list">
+        {
+          TERRITORIES.map((key, i) => (
+            <li>
+              <a href={path(lang, key)} aria-current={isActive(key) ? 'page' : undefined}>
+                <span class="idx" aria-hidden="true">{pad2(i + 1)}</span>
+                <span class="nm">{pageTitle(lang, key)}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <div class="tools">
+      <a class="lang" href={alternate} hreflang={other} lang={other}>
+        {other.toUpperCase()}<span class="sr-only"> — {t(lang, 'lang.switch')}</span>
+      </a>
+      <button class="palette-btn" type="button" data-palette-open data-requires-js aria-haspopup="dialog" aria-controls="palette">
+        <span class="sr-only">{t(lang, 'palette.open')}</span>
+        <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="7" cy="7" r="4.6" fill="none" stroke="currentColor" stroke-width="1.5"></circle><path d="m10.4 10.4 3.6 3.6" stroke="currentColor" stroke-width="1.5"></path></svg>
+        <span class="keys" aria-hidden="true"><span class="kbd" data-kbd-mod>Ctrl</span><span class="kbd">K</span></span>
+      </button>
+      <details class="menu" data-menu>
+        <summary>
+          <span class="sr-only">{t(lang, 'nav.menu')}</span>
+          <span class="burger" aria-hidden="true"><i></i><i></i></span>
+        </summary>
+        <div class="menu-panel">
+          <nav aria-label={t(lang, 'nav.label')}>
+            <ol role="list" class="menu-list">
+              {
+                TERRITORIES.map((key, i) => (
+                  <li style={`--i:${i}`}>
+                    <a href={path(lang, key)} aria-current={isActive(key) ? 'page' : undefined}>
+                      <span class="idx" aria-hidden="true">{pad2(i + 1)}</span>
+                      <span class="nm">{pageTitle(lang, key)}</span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ol>
+          </nav>
+          <div class="menu-foot">
+            <a class="link" href={`mailto:${profile.email}`}>{profile.email}</a>
+            <a class="link" href={alternate} hreflang={other} lang={other}>{t(lang, 'lang.switch')}</a>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    view-transition-name: site-header;
+    background: rgb(16 19 25 / 0.82);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border-bottom: 1px solid var(--c-line-soft);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: var(--s-5);
+    height: var(--header-h);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 12px;
+    text-decoration: none;
+    margin-right: auto;
+    white-space: nowrap;
+  }
+
+  .brand-mark {
+    font-size: 1.125rem;
+    font-stretch: 125%;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--c-text);
+    transition: color var(--dur-1) var(--ease-out);
+  }
+
+  .brand:hover .brand-mark {
+    color: var(--c-accent);
+  }
+
+  .brand-name {
+    font-family: var(--f-mono);
+    font-size: var(--fs-mono);
+    font-stretch: 87.5%;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--c-text-3);
+  }
+
+  .nav ol {
+    display: flex;
+    gap: 2px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav a {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 8px 10px;
+    font-size: 0.875rem;
+    font-stretch: 100%;
+    font-weight: 500;
+    color: var(--c-text-2);
+    text-decoration: none;
+    transition:
+      color var(--dur-1) var(--ease-out),
+      font-stretch var(--dur-2) var(--ease-out);
+  }
+
+  .nav .idx {
+    font-family: var(--f-mono);
+    font-size: 0.625rem;
+    font-stretch: 87.5%;
+    color: var(--c-text-3);
+    transition: color var(--dur-1) var(--ease-out);
+  }
+
+  .nav a:hover {
+    color: var(--c-text);
+    font-stretch: 112%;
+  }
+
+  .nav a[aria-current='page'] {
+    color: var(--c-text);
+  }
+
+  .nav a[aria-current='page'] .idx {
+    color: var(--c-accent);
+  }
+
+  .nav a[aria-current='page']::after {
+    content: '';
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: -13px;
+    height: 2px;
+    background: var(--c-accent);
+  }
+
+  .tools {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .lang,
+  .palette-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+    padding: 0 10px;
+    font-family: var(--f-mono);
+    font-size: var(--fs-mono);
+    font-stretch: 87.5%;
+    letter-spacing: 0.04em;
+    color: var(--c-text-2);
+    text-decoration: none;
+    border: 1px solid var(--c-line);
+    transition:
+      color var(--dur-1) var(--ease-out),
+      border-color var(--dur-1) var(--ease-out);
+  }
+
+  .lang:hover,
+  .palette-btn:hover {
+    color: var(--c-accent);
+    border-color: var(--c-accent);
+  }
+
+  .keys {
+    display: inline-flex;
+    gap: 3px;
+  }
+
+  .keys .kbd {
+    height: 1.6em;
+    min-width: 1.6em;
+    border: 0;
+    background: var(--c-surface);
+  }
+
+  /* ---------- menu mobile */
+  .menu {
+    display: none;
+  }
+
+  .menu summary {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    list-style: none;
+    cursor: pointer;
+    border: 1px solid var(--c-line);
+  }
+
+  .menu summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .burger {
+    display: grid;
+    gap: 6px;
+    width: 18px;
+  }
+
+  .burger i {
+    display: block;
+    height: 1.5px;
+    background: var(--c-text);
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+
+  .menu[open] .burger i:first-child {
+    transform: translateY(3.75px) rotate(45deg);
+  }
+
+  .menu[open] .burger i:last-child {
+    transform: translateY(-3.75px) rotate(-45deg);
+  }
+
+  .menu-panel {
+    position: fixed;
+    inset: var(--header-h) 0 0 0;
+    z-index: var(--z-menu);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--s-7);
+    padding: var(--s-7) var(--gutter) var(--s-6);
+    overflow-y: auto;
+    background: var(--c-bg-deep);
+  }
+
+  .menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--c-line);
+  }
+
+  .menu-list li {
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  .menu-list a {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 14px 0;
+    text-decoration: none;
+    font-size: clamp(1.75rem, 8vw, 2.75rem);
+    font-stretch: 122%;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--c-text);
+  }
+
+  .menu-list .idx {
+    font-family: var(--f-mono);
+    font-size: var(--fs-mono);
+    font-stretch: 87.5%;
+    font-weight: 450;
+    letter-spacing: 0.04em;
+    color: var(--c-text-3);
+    transform: translateY(-0.9em);
+  }
+
+  .menu-list a[aria-current='page'] .idx {
+    color: var(--c-accent);
+  }
+
+  .menu-foot {
+    display: grid;
+    gap: 14px;
+    justify-items: start;
+  }
+
+  :global(html.motion-ok) .menu[open] .menu-list li {
+    animation: menu-in var(--dur-3) var(--ease-out) both;
+    animation-delay: calc(var(--i) * 45ms);
+  }
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+
+  @media (max-width: 1099px) {
+    .nav {
+      display: none;
+    }
+
+    .menu {
+      display: block;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .brand-name {
+      display: none;
+    }
+
+    .keys {
+      display: none;
+    }
+
+    .palette-btn {
+      width: 44px;
+      height: 44px;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .lang {
+      height: 44px;
+    }
+  }
+</style>

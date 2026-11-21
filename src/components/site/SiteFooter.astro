@@ -1,0 +1,251 @@
+---
+import { t, pageTitle } from '~/i18n/ui';
+import { TERRITORIES, otherLang, path, type Lang } from '~/i18n/routes';
+import { getProfile, pick } from '~/lib/content';
+import { formatUpdated, pad2 } from '~/lib/format';
+import ExternalLink from '~/components/ui/ExternalLink.astro';
+
+interface Props {
+  lang: Lang;
+  alternate: string;
+}
+
+const { lang, alternate } = Astro.props;
+const other = otherLang(lang);
+const profile = await getProfile();
+const elsewhere = [
+  { label: 'LinkedIn', href: profile.links.linkedin },
+  { label: 'GitHub', href: profile.links.github },
+  { label: lang === 'fr' ? 'CV' : 'Résumé', href: pick(lang, profile.links.cv) },
+  { label: "Photomatt'on", href: profile.links.photomatton },
+  { label: 'Polarsteps', href: profile.links.polarsteps },
+];
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cta">
+      <p class="label">{t(lang, 'footer.write')}</p>
+      <a class="mail" href={`mailto:${profile.email}`}>
+        <span class="mail-text">{profile.email}</span>
+        <span class="mail-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="cols">
+      <nav aria-label={t(lang, 'footer.territories')}>
+        <h2 class="label">{t(lang, 'footer.territories')}</h2>
+        <ol role="list">
+          {
+            TERRITORIES.map((key, i) => (
+              <li>
+                <a href={path(lang, key)}>
+                  <span class="idx" aria-hidden="true">{pad2(i + 1)}</span> {pageTitle(lang, key)}
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+
+      <div>
+        <h2 class="label">{t(lang, 'footer.elsewhere')}</h2>
+        <ul role="list">
+          {
+            elsewhere.map((l) => (
+              <li>
+                <ExternalLink lang={lang} href={l.href} plain>
+                  {l.label}
+                </ExternalLink>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="label">{t(lang, 'footer.settings')}</h2>
+        <ul role="list">
+          <li>
+            <a href={alternate} hreflang={other} lang={other}>{t(lang, 'lang.switch')}</a>
+          </li>
+          <li data-requires-js>
+            <button type="button" class="motion" data-motion-toggle aria-pressed="true">
+              {t(lang, 'footer.motion')} :
+              <span class="state" data-on>{t(lang, 'footer.motion.on')}</span><span class="state" data-off>{t(lang, 'footer.motion.off')}</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div data-requires-js>
+        <h2 class="label">{t(lang, 'footer.shortcuts')}</h2>
+        <ul role="list" class="shortcuts">
+          <li><span class="kbd" data-kbd-mod>Ctrl</span><span class="kbd">K</span> {t(lang, 'footer.shortcut.palette')}</li>
+          <li><span class="kbd">/</span> {t(lang, 'footer.shortcut.slash')}</li>
+          <li><span class="kbd">←</span><span class="kbd">→</span> {lang === 'fr' ? 'projets' : 'projects'}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="base">
+      <span class="mono">© 2026 {profile.name} · TULZ · tulz.fr</span>
+      <span class="mono">{t(lang, 'home.updated')} {formatUpdated(lang, profile.updated)}</span>
+      <ExternalLink lang={lang} href={profile.links.repo} plain class="mono">{t(lang, 'footer.source')}</ExternalLink>
+      <a class="mono" href="#main">{t(lang, 'footer.top')} ↑</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: auto;
+    padding-top: clamp(72px, 10vw, 140px);
+    padding-bottom: var(--s-6);
+    background: var(--c-bg-deep);
+    border-top: 1px solid var(--c-line-soft);
+  }
+
+  .cta {
+    display: grid;
+    gap: var(--s-4);
+    padding-bottom: clamp(56px, 8vw, 112px);
+  }
+
+  .mail {
+    display: inline-flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.3em;
+    width: fit-content;
+    max-width: 100%;
+    font-size: clamp(1.75rem, 0.9rem + 4.6vw, 5.5rem);
+    font-stretch: 122%;
+    font-weight: 720;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    text-decoration: none;
+    color: var(--c-text);
+    overflow-wrap: anywhere;
+  }
+
+  .mail-text {
+    background: linear-gradient(var(--c-accent), var(--c-accent)) 0 100% / 0 3px no-repeat;
+    transition:
+      background-size var(--dur-3) var(--ease-out),
+      color var(--dur-2) var(--ease-out);
+    padding-bottom: 0.06em;
+  }
+
+  .mail:hover .mail-text {
+    background-size: 100% 3px;
+  }
+
+  .mail-arrow {
+    color: var(--c-accent);
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+
+  .mail:hover .mail-arrow {
+    transform: translateX(0.12em);
+  }
+
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-6);
+    padding-block: var(--s-7);
+    border-top: 1px solid var(--c-line);
+  }
+
+  .cols ul,
+  .cols ol {
+    list-style: none;
+    margin: var(--s-4) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+
+  .cols a,
+  .cols :global(a),
+  .motion {
+    font-size: var(--fs-small);
+    color: var(--c-text-2);
+    text-decoration: none;
+    transition: color var(--dur-1) var(--ease-out);
+  }
+
+  .cols a:hover,
+  .cols :global(a:hover),
+  .motion:hover {
+    color: var(--c-accent);
+  }
+
+  .idx {
+    font-family: var(--f-mono);
+    font-size: 0.625rem;
+    color: var(--c-text-3);
+    margin-right: 4px;
+  }
+
+  .motion {
+    text-align: left;
+  }
+
+  .motion[aria-pressed='true'] [data-off],
+  .motion[aria-pressed='false'] [data-on] {
+    display: none;
+  }
+
+  .state {
+    color: var(--c-text);
+  }
+
+  .shortcuts li {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--fs-small);
+    color: var(--c-text-2);
+  }
+
+  .shortcuts .kbd:last-of-type {
+    margin-right: 6px;
+  }
+
+  .base {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    align-items: baseline;
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--c-line);
+  }
+
+  .base > :first-child {
+    margin-right: auto;
+  }
+
+  .base a,
+  .base :global(a) {
+    text-decoration: none;
+  }
+
+  .base a:hover,
+  .base :global(a:hover) {
+    color: var(--c-accent);
+  }
+
+  @media (max-width: 900px) {
+    .cols {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 480px) {
+    .cols {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

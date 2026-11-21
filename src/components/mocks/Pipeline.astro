@@ -1,0 +1,243 @@
+---
+/** Chaîne de SP-Bot, d'après le README du dépôt. */
+import type { Lang } from '~/i18n/routes';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const steps =
+  lang === 'fr'
+    ? [
+        { k: 'GitHub Actions', v: 'toutes les 5 min' },
+        { k: 'Lecture', v: '13 stations · SP95, E10' },
+        { k: 'Comparaison', v: 'avec l’état précédent' },
+        { k: 'Recoupement', v: '2ᵉ source officielle' },
+        { k: 'ntfy', v: 'alerte push, file d’attente' },
+      ]
+    : [
+        { k: 'GitHub Actions', v: 'every 5 min' },
+        { k: 'Fetch', v: '13 stations · SP95, E10' },
+        { k: 'Compare', v: 'with the previous state' },
+        { k: 'Cross-check', v: '2nd official source' },
+        { k: 'ntfy', v: 'push alert, queued' },
+      ];
+const outcomes =
+  lang === 'fr'
+    ? [
+        { c: 'up', t: 'Réapprovisionnement', d: 'prix + liens Maps / Waze' },
+        { c: 'down', t: 'Rupture', d: 'dès que la station tombe à sec' },
+        { c: 'idle', t: 'Rien ne change', d: 'aucun message' },
+      ]
+    : [
+        { c: 'up', t: 'Restock', d: 'price + Maps / Waze links' },
+        { c: 'down', t: 'Shortage', d: 'as soon as a station runs dry' },
+        { c: 'idle', t: 'Nothing changes', d: 'no message' },
+      ];
+---
+
+<figure class="pipe">
+  <ol class="steps" role="list">
+    {
+      steps.map((s, i) => (
+        <li style={`--i:${i}`}>
+          <span class="n">{String(i + 1).padStart(2, '0')}</span>
+          <b>{s.k}</b>
+          <span class="v">{s.v}</span>
+        </li>
+      ))
+    }
+  </ol>
+  <ul class="out" role="list">
+    {
+      outcomes.map((o) => (
+        <li class={o.c}>
+          <span class="sig" aria-hidden="true" />
+          <b>{o.t}</b>
+          <span>{o.d}</span>
+        </li>
+      ))
+    }
+  </ul>
+</figure>
+
+<style>
+  .pipe {
+    display: grid;
+    gap: var(--s-5);
+    padding: clamp(20px, 3vw, 36px);
+    border: 1px solid var(--c-line);
+    background: var(--c-bg-deep);
+  }
+
+  .steps {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .steps::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 15px;
+    height: 1px;
+    background: var(--c-line);
+  }
+
+  .steps::after {
+    content: '';
+    position: absolute;
+    top: 13px;
+    left: 0;
+    width: 40px;
+    height: 5px;
+    background: linear-gradient(90deg, transparent, var(--c-accent-2));
+    opacity: 0;
+  }
+
+  :global(html.motion-ok) .steps::after {
+    animation: travel 4.5s var(--ease-in-out) infinite;
+  }
+
+  @keyframes travel {
+    0% {
+      left: 0;
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      left: calc(100% - 40px);
+      opacity: 0;
+    }
+  }
+
+  .steps li {
+    position: relative;
+    display: grid;
+    gap: 6px;
+    align-content: start;
+  }
+
+  .n {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    font-family: var(--f-mono);
+    font-size: var(--fs-mono);
+    color: var(--c-text-2);
+    background: var(--c-bg-deep);
+    border: 1px solid var(--c-line);
+  }
+
+  .steps li:last-child .n {
+    color: var(--c-accent-ink);
+    background: var(--c-accent);
+    border-color: var(--c-accent);
+  }
+
+  .steps b {
+    font-stretch: 108%;
+    font-weight: 620;
+    font-size: var(--fs-small);
+    margin-top: 6px;
+  }
+
+  .v {
+    font-size: 0.8125rem;
+    color: var(--c-text-3);
+  }
+
+  .out {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    padding-top: var(--s-5);
+    border-top: 1px dashed var(--c-line);
+  }
+
+  .out li {
+    display: grid;
+    grid-template-columns: 10px 1fr;
+    column-gap: 10px;
+    font-size: 0.8125rem;
+    color: var(--c-text-3);
+  }
+
+  .out b {
+    color: var(--c-text);
+    font-weight: 600;
+  }
+
+  .out span:last-child {
+    grid-column: 2;
+  }
+
+  .sig {
+    grid-row: span 2;
+    width: 10px;
+    height: 10px;
+    margin-top: 5px;
+    border-radius: 50%;
+  }
+
+  .up .sig {
+    background: var(--c-accent);
+  }
+
+  .down .sig {
+    background: #ff6b5a;
+  }
+
+  .idle .sig {
+    border: 1px solid var(--c-text-3);
+  }
+
+  @media (max-width: 760px) {
+    .steps {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .steps::before {
+      left: 15px;
+      right: auto;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      height: auto;
+    }
+
+    .steps::after {
+      display: none;
+    }
+
+    .steps li {
+      grid-template-columns: 32px 1fr;
+      column-gap: 14px;
+    }
+
+    .steps li .n {
+      grid-row: span 2;
+    }
+
+    .steps b {
+      margin-top: 4px;
+    }
+
+    .out {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

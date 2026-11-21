@@ -1,0 +1,103 @@
+---
+/** En-tête de page : index du territoire, titre, chapeau, bandeau génératif. */
+import Terrain from './Terrain.astro';
+import { pad2 } from '~/lib/format';
+
+interface Props {
+  index?: number;
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  seed: string;
+  /** Nom de transition de vue (titre partagé liste → fiche). */
+  vtName?: string;
+}
+
+const { index, eyebrow, title, lead, seed, vtName } = Astro.props;
+---
+
+<header class="page-head">
+  <Terrain id={`terrain-${seed}`} variant="band" seed={seed} />
+  <div class="wrap inner">
+    <p class="eyebrow label">
+      {index !== undefined && <span class="idx">{pad2(index)}</span>}
+      <span>{eyebrow ?? 'TULZ'}</span>
+    </p>
+    <h1 class="h1 title" style={vtName ? `view-transition-name: ${vtName}` : undefined}>{title}</h1>
+    {lead && <p class="lead">{lead}</p>}
+    <slot />
+  </div>
+  <span class="mark mark--tl" aria-hidden="true"></span>
+  <span class="mark mark--tr" aria-hidden="true"></span>
+</header>
+
+<style>
+  .page-head {
+    position: relative;
+    isolation: isolate;
+    padding-top: clamp(72px, 11vw, 160px);
+    padding-bottom: clamp(56px, 7vw, 104px);
+    border-bottom: 1px solid var(--c-line-soft);
+    overflow: hidden;
+  }
+
+  .inner {
+    position: relative;
+    display: grid;
+    gap: var(--s-5);
+  }
+
+  .eyebrow {
+    display: flex;
+    gap: 12px;
+  }
+
+  .idx {
+    color: var(--c-accent);
+  }
+
+  .title {
+    max-width: 16ch;
+  }
+
+  .lead {
+    max-width: 48ch;
+  }
+
+  .mark {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    top: 24px;
+    pointer-events: none;
+  }
+
+  .mark::before,
+  .mark::after {
+    content: '';
+    position: absolute;
+    background: var(--c-text-3);
+  }
+
+  .mark::before {
+    left: 6px;
+    top: 0;
+    width: 1px;
+    height: 14px;
+  }
+
+  .mark::after {
+    top: 6px;
+    left: 0;
+    width: 14px;
+    height: 1px;
+  }
+
+  .mark--tl {
+    left: calc(var(--gutter) - 7px);
+  }
+
+  .mark--tr {
+    right: calc(var(--gutter) - 7px);
+  }
+</style>

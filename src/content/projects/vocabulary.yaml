@@ -1,0 +1,12 @@
+# Source : anciennes versions du portfolio, site en ligne.
+order: 13
+kind: note
+title: { fr: "Site de vocabulaire collaboratif", en: "Collaborative vocabulary site" }
+summary:
+  fr: Un site de vocabulaire collaboratif en PHP et SQL.
+  en: A collaborative vocabulary site in PHP and SQL.
+domains: [web]
+stack: [php, sql]
+links:
+  demo: https://matthiasvocable03.page.gd/?i=1
+sources: ["tulz.fr (versions 2025-2026)"]

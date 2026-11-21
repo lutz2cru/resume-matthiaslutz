@@ -1,0 +1,452 @@
+---
+/**
+ * Constellation : centres d'intérêt et réalisations réelles qui les relient (src/content/interests.yaml).
+ * SVG rendu au build ; le script ajoute la mise en évidence au survol / focus et la version mobile transposée.
+ */
+import { t } from '~/i18n/ui';
+import { resolveHref, type Lang } from '~/i18n/routes';
+import { getInterests, pick } from '~/lib/content';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const all = await getInterests();
+const interests = all.filter((n) => n.data.kind === 'interest');
+const items = all.filter((n) => n.data.kind === 'item');
+const byId = new Map(all.map((n) => [n.id, n]));
+const edges = items.flatMap((it) => it.data.links.filter((l) => byId.has(l)).map((l) => ({ a: it.id, b: l })));
+const nodes = [...items, ...interests].map((n) => {
+  const { href, external } = resolveHref(lang, n.data.href ?? '#');
+  const neighbours = n.data.kind === 'item' ? n.data.links : items.filter((it) => it.data.links.includes(n.id)).map((it) => it.id);
+  return { id: n.id, kind: n.data.kind, x: n.data.x, y: n.data.y, label: pick(lang, n.data.label), note: pick(lang, n.data.note), href, external, neighbours };
+});
+const pos = (id: string) => byId.get(id)!.data;
+---
+
+<div class="constellation" data-constellation>
+  <div class="sky">
+    <svg viewBox="0 0 1000 620" role="group" aria-labelledby="const-title const-hint" data-sky>
+      <g class="grid" aria-hidden="true">
+        {Array.from({ length: 9 }, (_, i) => <line x1={(i + 1) * 100} y1="0" x2={(i + 1) * 100} y2="620" />)}
+        {Array.from({ length: 5 }, (_, i) => <line x1="0" y1={(i + 1) * 100 + 10} x2="1000" y2={(i + 1) * 100 + 10} />)}
+      </g>
+      <g class="edges" aria-hidden="true">
+        {edges.map((e) => <line class="edge" data-a={e.a} data-b={e.b} x1={pos(e.a).x} y1={pos(e.a).y} x2={pos(e.b).x} y2={pos(e.b).y} pathLength="1" />)}
+      </g>
+      <g class="nodes">
+        {
+          nodes.map((n) => (
+            <a
+              class:list={['node', `node--${n.kind}`]}
+              href={n.href}
+              target={n.external ? '_blank' : undefined}
+              rel={n.external ? 'noopener' : undefined}
+              data-id={n.id}
+              data-x={n.x}
+              data-y={n.y}
+              data-neighbours={n.neighbours.join(' ')}
+              data-note={n.note}
+            >
+              <title>{`${n.label} — ${n.note}`}</title>
+              <g class="pos" transform={`translate(${n.x} ${n.y})`}>
+              {n.kind === 'interest' && <circle class="ring" r="15" />}
+              <circle class="core" r={n.kind === 'interest' ? 6.5 : 4} />
+              <circle class="hit" r={n.kind === 'interest' ? 26 : 18} />
+              <text
+                class="lbl"
+                x={n.kind === 'interest' ? 0 : n.x > 780 ? -12 : 12}
+                y={n.kind === 'interest' ? 38 : 4.5}
+                text-anchor={n.kind === 'interest' ? 'middle' : n.x > 780 ? 'end' : 'start'}
+              >
+                {n.label}
+              </text>
+              </g>
+            </a>
+          ))
+        }
+      </g>
+    </svg>
+  </div>
+
+  <aside class="panel" aria-live="polite" data-panel>
+    <p class="label" id="const-hint">{t(lang, 'beyond.constellation.hint')}</p>
+    <div class="panel-body" data-panel-body>
+      <p class="p-title">{lang === 'fr' ? `${interests.length} centres d’intérêt, ${items.length} points de rencontre` : `${interests.length} interests, ${items.length} meeting points`}</p>
+      <p class="p-note">
+        {
+          lang === 'fr'
+            ? 'Chaque ligne relie quelque chose de réel — un projet, une expérience — aux centres d’intérêt qu’il croise.'
+            : 'Each line ties something real — a project, an experience — to the interests it crosses.'
+        }
+      </p>
+    </div>
+  </aside>
+
+  <details class="plain">
+    <summary class="label">{t(lang, 'beyond.constellation.list')}</summary>
+    <ul class="plain-list" role="list">
+      {
+        interests.map((i) => (
+          <li>
+            <b>{pick(lang, i.data.label)}</b> — {pick(lang, i.data.note)}
+            <ul role="list">
+              {items
+                .filter((it) => it.data.links.includes(i.id))
+                .map((it) => (
+                  <li>
+                    {pick(lang, it.data.label)} : {pick(lang, it.data.note)}
+                  </li>
+                ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </details>
+</div>
+
+<style>
+  .constellation {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(240px, 4fr);
+    gap: var(--s-5) var(--s-6);
+  }
+
+  .sky {
+    border: 1px solid var(--c-line);
+    background: var(--c-bg-deep);
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .grid line {
+    stroke: var(--c-line-soft);
+    stroke-width: 1;
+  }
+
+  .edge {
+    stroke: var(--c-text-3);
+    stroke-width: 1;
+    stroke-opacity: 0.55;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    transition:
+      stroke var(--dur-2) var(--ease-out),
+      stroke-opacity var(--dur-2) var(--ease-out),
+      stroke-width var(--dur-2) var(--ease-out);
+  }
+
+  :global(html.motion-ok) .constellation:not(.is-drawn) .edge {
+    stroke-dashoffset: 1;
+  }
+
+  :global(html.motion-ok) .constellation.is-drawn .edge {
+    transition:
+      stroke-dashoffset 1.4s var(--ease-out),
+      stroke var(--dur-2) var(--ease-out),
+      stroke-opacity var(--dur-2) var(--ease-out);
+  }
+
+  .node {
+    cursor: pointer;
+    outline: none;
+  }
+
+  .hit {
+    fill: transparent;
+  }
+
+  .core {
+    fill: var(--c-text-3);
+    transition: fill var(--dur-1) var(--ease-out);
+  }
+
+  .node--interest .core {
+    fill: var(--c-text);
+  }
+
+  .ring {
+    fill: none;
+    stroke: var(--c-line);
+    stroke-width: 1.5;
+    transition: stroke var(--dur-1) var(--ease-out);
+  }
+
+  .lbl {
+    font-family: var(--f-sans);
+    font-size: 15px;
+    font-stretch: 104%;
+    fill: var(--c-text-2);
+    transition:
+      fill var(--dur-1) var(--ease-out),
+      opacity var(--dur-2) var(--ease-out);
+    paint-order: stroke;
+    stroke: var(--c-bg-deep);
+    stroke-width: 5px;
+    stroke-linejoin: round;
+  }
+
+  .node--interest .lbl {
+    font-size: 17px;
+    font-weight: 650;
+    font-stretch: 116%;
+    fill: var(--c-text);
+  }
+
+  /* état actif */
+  .constellation.is-active .edge {
+    stroke-opacity: 0.12;
+  }
+
+  .constellation.is-active .node:not(.is-on) .lbl {
+    opacity: 0.35;
+  }
+
+  .constellation.is-active .node:not(.is-on) .core {
+    fill: var(--c-line);
+  }
+
+  .edge.is-on {
+    stroke: var(--c-accent-2) !important;
+    stroke-opacity: 1 !important;
+    stroke-width: 1.6;
+  }
+
+  .node.is-on .core {
+    fill: var(--c-accent-2);
+  }
+
+  .node.is-focus .core {
+    fill: var(--c-accent);
+  }
+
+  .node.is-focus .ring {
+    stroke: var(--c-accent);
+  }
+
+  .node.is-on .lbl,
+  .node.is-focus .lbl {
+    fill: var(--c-text);
+  }
+
+  .node:focus-visible .hit {
+    stroke: var(--c-accent);
+    stroke-width: 2;
+  }
+
+  /* panneau */
+  .panel {
+    align-self: start;
+    display: grid;
+    gap: var(--s-4);
+    padding: var(--s-5);
+    border: 1px solid var(--c-line);
+    min-height: 220px;
+  }
+
+  .panel-body {
+    display: grid;
+    gap: var(--s-3);
+  }
+
+  .panel :global(.p-kind) {
+    font-family: var(--f-mono);
+    font-size: var(--fs-mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--c-accent-2);
+  }
+
+  .panel :global(.p-title) {
+    font-size: 1.5rem;
+    font-stretch: 116%;
+    font-weight: 680;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .panel :global(.p-note) {
+    color: var(--c-text-2);
+  }
+
+  .panel :global(.p-links) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .panel :global(.p-links li) {
+    font-family: var(--f-mono);
+    font-size: var(--fs-mono);
+    padding: 6px 8px 5px;
+    border: 1px solid var(--c-line);
+    color: var(--c-text-2);
+  }
+
+  .plain {
+    grid-column: 1 / -1;
+  }
+
+  .plain summary {
+    cursor: pointer;
+    width: fit-content;
+    padding: 6px 0;
+  }
+
+  .plain summary:hover {
+    color: var(--c-accent);
+  }
+
+  .plain-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-5);
+    margin-top: var(--s-4);
+    font-size: var(--fs-small);
+    color: var(--c-text-2);
+  }
+
+  .plain-list ul {
+    margin-top: 6px;
+    display: grid;
+    gap: 4px;
+    color: var(--c-text-3);
+  }
+
+  .plain-list b {
+    color: var(--c-text);
+  }
+
+  @media (max-width: 1099px) {
+    .constellation {
+      grid-template-columns: 1fr;
+    }
+
+    .panel {
+      min-height: 0;
+    }
+
+    .plain-list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .lbl {
+      font-size: 22px;
+    }
+
+    .node--interest .lbl {
+      font-size: 24px;
+    }
+
+    .plain-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-constellation]');
+  if (root) {
+    const svg = root.querySelector<SVGSVGElement>('[data-sky]')!;
+    const nodes = [...root.querySelectorAll<SVGAElement>('.node')];
+    const edges = [...root.querySelectorAll<SVGLineElement>('.edge')];
+    const body = root.querySelector<HTMLElement>('[data-panel-body]')!;
+    const initial = body.innerHTML;
+    const byId = new Map(nodes.map((n) => [n.dataset.id!, n]));
+    const label = (n: SVGAElement) => n.querySelector('.lbl')?.textContent?.trim() ?? '';
+    const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+    let current: string | null = null;
+
+    const activate = (id: string | null) => {
+      if (id === current) return;
+      current = id;
+      root.classList.toggle('is-active', !!id);
+      nodes.forEach((n) => n.classList.remove('is-on', 'is-focus'));
+      edges.forEach((e) => e.classList.remove('is-on'));
+      if (!id) {
+        body.innerHTML = initial;
+        return;
+      }
+      const node = byId.get(id)!;
+      const neighbours = (node.dataset.neighbours ?? '').split(' ').filter(Boolean);
+      node.classList.add('is-focus');
+      neighbours.forEach((nb) => byId.get(nb)?.classList.add('is-on'));
+      edges.forEach((e) => {
+        if (e.dataset.a === id || e.dataset.b === id) e.classList.add('is-on');
+      });
+      const isInterest = node.classList.contains('node--interest');
+      const kind = isInterest ? (document.documentElement.lang === 'fr' ? 'Centre d’intérêt' : 'Interest') : document.documentElement.lang === 'fr' ? 'Point de rencontre' : 'Meeting point';
+      body.innerHTML = `<p class="p-kind">${kind}</p><p class="p-title">${esc(label(node))}</p><p class="p-note">${esc(node.dataset.note ?? '')}</p><ul class="p-links">${neighbours
+        .map((nb) => byId.get(nb))
+        .filter(Boolean)
+        .map((n) => `<li>${esc(label(n!))}</li>`)
+        .join('')}</ul>`;
+    };
+
+    nodes.forEach((n) => {
+      n.addEventListener('pointerenter', () => activate(n.dataset.id!));
+      n.addEventListener('focus', () => activate(n.dataset.id!));
+    });
+    svg.addEventListener('pointerleave', () => activate(null));
+    root.addEventListener('focusout', (e) => {
+      if (!root.contains(e.relatedTarget as Node)) activate(null);
+    });
+
+    /* Version mobile : repère transposé (portrait) pour garder des libellés lisibles. */
+    const mq = matchMedia('(max-width: 640px)');
+    const layout = () => {
+      const portrait = mq.matches;
+      svg.setAttribute('viewBox', portrait ? '0 0 620 1000' : '0 0 1000 620');
+      const at = (n: SVGAElement) => {
+        const x = Number(n.dataset.x);
+        const y = Number(n.dataset.y);
+        return portrait ? { x: y, y: x } : { x, y };
+      };
+      nodes.forEach((n) => {
+        const p = at(n);
+        n.querySelector('.pos')?.setAttribute('transform', `translate(${p.x} ${p.y})`);
+        const text = n.querySelector<SVGTextElement>('.lbl')!;
+        if (!n.classList.contains('node--interest')) {
+          const right = portrait ? p.x < 400 : p.x <= 780;
+          text.setAttribute('x', String(right ? 14 : -14));
+          text.setAttribute('text-anchor', right ? 'start' : 'end');
+        } else {
+          text.setAttribute('y', portrait ? '44' : '38');
+        }
+      });
+      edges.forEach((e) => {
+        const a = at(byId.get(e.dataset.a!)!);
+        const b = at(byId.get(e.dataset.b!)!);
+        e.setAttribute('x1', String(a.x));
+        e.setAttribute('y1', String(a.y));
+        e.setAttribute('x2', String(b.x));
+        e.setAttribute('y2', String(b.y));
+      });
+      root.querySelectorAll<SVGLineElement>('.grid line').forEach((l) => (l.style.display = portrait ? 'none' : ''));
+    };
+    mq.addEventListener('change', layout);
+    layout();
+
+    /* Tracé des liens à l'apparition */
+    new IntersectionObserver(
+      ([entry], io) => {
+        if (entry?.isIntersecting) {
+          root.classList.add('is-drawn');
+          io.disconnect();
+        }
+      },
+      { threshold: 0.25 },
+    ).observe(root);
+  }
+</script>

@@ -1,0 +1,18 @@
+---
+/** Repère « à compléter » : affiché seulement en développement (npm run dev). */
+import { SHOW_TODO } from '~/lib/content';
+
+interface Props {
+  text?: string | undefined;
+}
+
+const { text } = Astro.props;
+---
+
+{
+  SHOW_TODO && text && (
+    <p class="todo">
+      <b>TODO</b> {text}
+    </p>
+  )
+}

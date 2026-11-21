@@ -1,0 +1,40 @@
+---
+/** Lien sortant : nouvel onglet, rel sûr, mention pour les lecteurs d'écran. */
+import { t } from '~/i18n/ui';
+import type { Lang } from '~/i18n/routes';
+
+interface Props {
+  lang: Lang;
+  href: string;
+  /** true : pas de soulignement ni de flèche (le style vient du parent). */
+  plain?: boolean;
+  class?: string;
+  hreflang?: string;
+}
+
+const { lang, href, plain = false, class: className, hreflang } = Astro.props;
+const isExternal = /^https?:/.test(href);
+---
+
+{
+  isExternal ? (
+    <a class:list={[!plain && 'link', className]} href={href} target="_blank" rel="noopener" hreflang={hreflang}>
+      <slot />
+      {!plain && (
+        <span class="arrow arrow--ext" aria-hidden="true">
+          ↗
+        </span>
+      )}
+      <span class="sr-only"> {t(lang, 'external')}</span>
+    </a>
+  ) : (
+    <a class:list={[!plain && 'link', className]} href={href}>
+      <slot />
+      {!plain && (
+        <span class="arrow" aria-hidden="true">
+          →
+        </span>
+      )}
+    </a>
+  )
+}

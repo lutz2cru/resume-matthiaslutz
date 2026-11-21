@@ -1,0 +1,45 @@
+---
+/** Cage de handball (3 m × 2 m) dessinée en CSS : poteaux rayés, filet en grille. */
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+---
+
+<div class:list={['goal', compact && 'goal--compact']}>
+  <div class="net">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .goal {
+    --post: clamp(10px, 1.4vw, 18px);
+    --stripe: calc(var(--post) * 2.2);
+    position: relative;
+    aspect-ratio: 3 / 2;
+    padding: var(--post) var(--post) 0;
+    background:
+      repeating-linear-gradient(90deg, var(--c-text) 0 var(--stripe), var(--c-surface-2) var(--stripe) calc(var(--stripe) * 2)) top / 100% var(--post) no-repeat,
+      repeating-linear-gradient(180deg, var(--c-text) 0 var(--stripe), var(--c-surface-2) var(--stripe) calc(var(--stripe) * 2)) left / var(--post) 100% no-repeat,
+      repeating-linear-gradient(180deg, var(--c-text) 0 var(--stripe), var(--c-surface-2) var(--stripe) calc(var(--stripe) * 2)) right / var(--post) 100% no-repeat;
+  }
+
+  .goal--compact {
+    --post: 8px;
+  }
+
+  .net {
+    position: relative;
+    height: 100%;
+    display: grid;
+    align-items: center;
+    padding: clamp(16px, 4vw, 56px);
+    background-color: var(--c-bg-deep);
+    background-image:
+      linear-gradient(var(--c-line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--c-line-soft) 1px, transparent 1px);
+    background-size: 22px 22px;
+    background-position: -1px -1px;
+  }
+</style>

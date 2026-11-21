@@ -1,0 +1,10 @@
+# Source : anciennes versions du portfolio.
+order: 12
+kind: note
+title: { fr: "Clavier de raccourcis", en: "Shortcut keyboard" }
+summary:
+  fr: Un second clavier transformé en console d'actions rapides pour les outils du quotidien, avec AutoHotkey.
+  en: A spare keyboard turned into a quick-action console for everyday tools, with AutoHotkey.
+domains: [infra]
+stack: [autohotkey]
+sources: ["tulz.fr (versions 2026)"]

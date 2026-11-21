@@ -1,0 +1,78 @@
+/* TULZ — jetons de design. Voir DESIGN_SYSTEM.md. */
+:root {
+  color-scheme: dark;
+
+  /* Couleurs */
+  --c-bg: #101319;
+  --c-bg-deep: #0b0e12;
+  --c-surface: #1b222c;
+  --c-surface-2: #232b37;
+  --c-line: #2a323d;
+  --c-line-soft: #1c232c;
+  --c-text: #e8edf2;
+  --c-text-2: #a9b3bf;
+  --c-text-3: #7c8794;
+  --c-accent: #b6f36a;
+  --c-accent-ink: #101319;
+  --c-accent-2: #65d9cb;
+  --c-todo: #f2c94c;
+
+  /* Polices */
+  --f-sans: 'Archivo Variable', 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --f-mono: 'Martian Mono Variable', 'Martian Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  /* Échelle typographique */
+  --fs-mono: 0.6875rem;
+  --fs-mono-l: 0.75rem;
+  --fs-small: 0.9375rem;
+  --fs-body: 1.0625rem;
+  --fs-lead: clamp(1.25rem, 1.08rem + 0.75vw, 1.625rem);
+  --fs-h3: clamp(1.25rem, 1.15rem + 0.45vw, 1.5rem);
+  --fs-h2: clamp(2rem, 1.45rem + 2.4vw, 3.5rem);
+  --fs-h1: clamp(2.75rem, 1.6rem + 5.2vw, 6.5rem);
+  --fs-mega: clamp(4.25rem, 1.2rem + 13.5vw, 15rem);
+  --measure: 62ch;
+
+  /* Espacements */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --s-10: 128px;
+  --gutter: clamp(16px, 4vw, 48px);
+  --space-section: clamp(88px, 12vw, 176px);
+  --wrap: 1440px;
+  --header-h: 64px;
+
+  /* Mouvement */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.1, 1);
+  --ease-in-out: cubic-bezier(0.6, 0, 0.2, 1);
+  --dur-1: 160ms;
+  --dur-2: 320ms;
+  --dur-3: 700ms;
+
+  /* Profondeur */
+  --z-header: 50;
+  --z-menu: 60;
+  --z-palette: 80;
+  --z-skip: 100;
+}
+
+:root[data-motion='reduced'] {
+  --dur-1: 0ms;
+  --dur-2: 0ms;
+  --dur-3: 0ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) {
+    --dur-1: 0ms;
+    --dur-2: 0ms;
+    --dur-3: 0ms;
+  }
+}

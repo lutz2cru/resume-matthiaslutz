@@ -1,0 +1,417 @@
+---
+import Base from '~/layouts/Base.astro';
+import PageHeader from '~/components/ui/PageHeader.astro';
+import ExternalLink from '~/components/ui/ExternalLink.astro';
+import Todo from '~/components/ui/Todo.astro';
+import PhoneMock from '~/components/mocks/PhoneMock.astro';
+import TerminalMock from '~/components/mocks/TerminalMock.astro';
+import Pipeline from '~/components/mocks/Pipeline.astro';
+import { t, pageTitle, type UIKey } from '~/i18n/ui';
+import { otherLang, path, projectPath, type Lang } from '~/i18n/routes';
+import { getCases, getProfile, getSkills, pick, type Project } from '~/lib/content';
+import { pad2 } from '~/lib/format';
+
+interface Props {
+  lang: Lang;
+  project: Project;
+}
+
+const { lang, project } = Astro.props;
+const p = project.data;
+const cases = await getCases();
+const index = cases.findIndex((c) => c.id === project.id);
+const prev = cases[(index - 1 + cases.length) % cases.length]!;
+const next = cases[(index + 1) % cases.length]!;
+const skills = new Map((await getSkills()).map((s) => [s.id, s.data]));
+const profile = await getProfile();
+const title = pick(lang, p.title);
+const domainLabel = (d: string) => t(lang, `domain.${d}` as UIKey);
+
+const meta = [
+  p.year && { k: t(lang, 'projects.year'), v: p.year },
+  p.context && { k: t(lang, 'projects.context'), v: pick(lang, p.context) },
+  p.team && { k: t(lang, 'projects.team'), v: pick(lang, p.team) },
+  p.status && { k: t(lang, 'projects.status'), v: t(lang, `status.${p.status}` as UIKey), live: p.status === 'live' },
+  { k: t(lang, 'projects.domains'), v: p.domains.map(domainLabel).join(' · ') },
+].filter(Boolean) as { k: string; v: string; live?: boolean }[];
+---
+
+<Base lang={lang} page={null} title={title} description={pick(lang, p.summary)} alternate={projectPath(otherLang(lang), project.id)}>
+  <PageHeader eyebrow={`${pageTitle(lang, 'projects')} / ${pad2(index + 1)} — ${pad2(cases.length)}`} title={title} lead={pick(lang, p.intro ?? p.summary)} seed={`project-${project.id}`} vtName={`project-${project.id}`}>
+    <dl class="meta">
+      {
+        meta.map((m) => (
+          <div>
+            <dt class="label">{m.k}</dt>
+            <dd>
+              {m.live && <span class="dot dot--live" aria-hidden="true" />} {m.v}
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+    {
+      (p.links.demo || p.links.code) && (
+        <div class="actions">
+          {p.links.demo && (
+            <a class="btn" href={p.links.demo} target="_blank" rel="noopener">
+              {t(lang, 'projects.demo')} <span aria-hidden="true">↗</span>
+              <span class="sr-only"> {t(lang, 'external')}</span>
+            </a>
+          )}
+          {p.links.code && (
+            <a class="btn btn--ghost" href={p.links.code} target="_blank" rel="noopener">
+              {t(lang, 'projects.code')} <span aria-hidden="true">↗</span>
+              <span class="sr-only"> {t(lang, 'external')}</span>
+            </a>
+          )}
+        </div>
+      )
+    }
+  </PageHeader>
+
+  <section class="visual" aria-label={t(lang, 'projects.illustration')}>
+    <div class="wrap">
+      <figure class="stage" data-reveal>
+        {p.visual === 'phone' && <PhoneMock />}
+        {p.visual === 'terminal' && <TerminalMock />}
+        {p.visual === 'pipeline' && <Pipeline lang={lang} />}
+        {
+          p.visual === 'gallery' && (
+            <ul class="shots" role="list">
+              {profile.photography.shots.map((s) => (
+                <li>
+                  <img src={s.src} alt={pick(lang, s.alt)} width="800" height="534" loading="lazy" decoding="async" />
+                </li>
+              ))}
+            </ul>
+          )
+        }
+        {p.visual === 'cover' && <img class="cover" src={`/covers/${project.id}.svg`} alt="" width="800" height="500" />}
+        <figcaption class="label">
+          {
+            p.visual === 'cover'
+              ? lang === 'fr'
+                ? `Relief généré à partir de l’identifiant « ${project.id} »`
+                : `Terrain generated from the id “${project.id}”`
+              : p.visual === 'gallery'
+                ? `${pick(lang, profile.photography.album)} · ${pick(lang, profile.photography.albumMeta)}`
+                : p.visual === 'pipeline'
+                  ? lang === 'fr'
+                    ? 'Schéma d’après le README du dépôt'
+                    : 'Diagram based on the repository README'
+                  : t(lang, 'projects.illustration.note')
+          }
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="body">
+    <div class="wrap body-grid">
+      <aside class="side">
+        <h2 class="label">{t(lang, 'projects.stack')}</h2>
+        <ul class="tags" role="list">
+          {
+            p.stack.map((id) => (
+              <li>
+                <a class="tag" href={`${path(lang, 'skills')}#skill-${id}`}>
+                  {skills.get(id)?.label[lang] ?? id}
+                </a>
+              </li>
+            ))
+          }
+          {p.extra.map((x) => <li>{x}</li>)}
+        </ul>
+        {
+          p.links.other.length > 0 && (
+            <ul class="other" role="list">
+              {p.links.other.map((l) => (
+                <li>
+                  <ExternalLink lang={lang} href={l.href}>
+                    {pick(lang, l.label)}
+                  </ExternalLink>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </aside>
+
+      <div class="content">
+        {
+          p.sections.map((s, i) => (
+            <section class="block" data-reveal>
+              <h2 class="h3">
+                <span class="bi" aria-hidden="true">
+                  {pad2(i + 1)}
+                </span>
+                {pick(lang, s.title)}
+              </h2>
+              {s.body && <p class="prose">{pick(lang, s.body)}</p>}
+              {s.points && (
+                <ul class="points" role="list">
+                  {s.points.map((pt) => (
+                    <li>{pick(lang, pt)}</li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          ))
+        }
+        <Todo text={p.todo} />
+        {
+          p.sources.length > 0 && (
+            <p class="sources label">
+              {t(lang, 'projects.sources')} : {p.sources.join(' · ')}
+            </p>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <nav class="pn" aria-label={pageTitle(lang, 'projects')}>
+    <div class="wrap pn-grid">
+      <a class="pn-link" href={projectPath(lang, prev.id)} data-nav-prev rel="prev">
+        <span class="label">← {t(lang, 'projects.prev')}</span>
+        <span class="pn-title">{pick(lang, prev.data.title)}</span>
+      </a>
+      <a class="pn-link pn-next" href={projectPath(lang, next.id)} data-nav-next rel="next">
+        <span class="label">{t(lang, 'projects.next')} →</span>
+        <span class="pn-title">{pick(lang, next.data.title)}</span>
+      </a>
+    </div>
+    <div class="wrap pn-foot">
+      <a class="link" href={path(lang, 'projects')}><span class="arrow" aria-hidden="true">←</span> {t(lang, 'projects.back')}</a>
+      <span class="label" data-requires-js>{t(lang, 'projects.keys')}</span>
+    </div>
+  </nav>
+</Base>
+
+<style>
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-5) var(--s-7);
+    margin-top: var(--s-5);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--c-line);
+  }
+
+  .meta div {
+    display: grid;
+    gap: 4px;
+  }
+
+  .meta dd {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--fs-small);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: var(--s-3);
+  }
+
+  .visual {
+    padding-top: clamp(40px, 6vw, 88px);
+  }
+
+  .stage {
+    display: grid;
+    gap: var(--s-4);
+    padding: clamp(24px, 5vw, 72px);
+    background:
+      linear-gradient(var(--c-line-soft) 1px, transparent 1px) -1px -1px / 32px 32px,
+      linear-gradient(90deg, var(--c-line-soft) 1px, transparent 1px) -1px -1px / 32px 32px,
+      var(--c-bg-deep);
+    border: 1px solid var(--c-line);
+  }
+
+  .stage figcaption {
+    text-align: center;
+  }
+
+  .cover {
+    width: 100%;
+    max-width: 960px;
+    margin-inline: auto;
+    border: 1px solid var(--c-line);
+  }
+
+  .shots {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .shots img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+
+  .body {
+    padding-block: clamp(56px, 8vw, 120px);
+  }
+
+  .body-grid {
+    display: grid;
+    grid-template-columns: minmax(200px, 3fr) minmax(0, 8fr);
+    gap: var(--s-7) var(--s-8);
+  }
+
+  .side {
+    align-self: start;
+    position: sticky;
+    top: calc(var(--header-h) + 32px);
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .other {
+    display: grid;
+    gap: 8px;
+    font-size: var(--fs-small);
+  }
+
+  .content {
+    display: grid;
+    gap: clamp(40px, 5vw, 64px);
+    max-width: 760px;
+  }
+
+  .block {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .block h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+
+  .bi {
+    font-family: var(--f-mono);
+    font-size: var(--fs-mono);
+    font-weight: 450;
+    color: var(--c-accent);
+  }
+
+  .points {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--c-line);
+  }
+
+  .points li {
+    position: relative;
+    padding: 14px 0 14px 28px;
+    border-bottom: 1px solid var(--c-line);
+    color: var(--c-text-2);
+  }
+
+  .points li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 1.35em;
+    width: 12px;
+    height: 1px;
+    background: var(--c-accent-2);
+  }
+
+  .sources {
+    text-transform: none;
+  }
+
+  .pn {
+    border-top: 1px solid var(--c-line-soft);
+    padding-bottom: var(--s-7);
+  }
+
+  .pn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pn-link {
+    display: grid;
+    gap: 10px;
+    padding: clamp(32px, 5vw, 64px) 0;
+    text-decoration: none;
+  }
+
+  .pn-next {
+    text-align: right;
+    justify-items: end;
+    border-left: 1px solid var(--c-line-soft);
+  }
+
+  .pn-title {
+    font-size: clamp(1.375rem, 1rem + 1.8vw, 2.5rem);
+    font-stretch: 116%;
+    font-weight: 680;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    transition:
+      color var(--dur-1) var(--ease-out),
+      font-stretch var(--dur-3) var(--ease-out);
+  }
+
+  .pn-link:hover .pn-title {
+    color: var(--c-accent);
+    font-stretch: 125%;
+  }
+
+  .pn-link:first-child {
+    padding-right: var(--s-5);
+  }
+
+  .pn-next {
+    padding-left: var(--s-5);
+  }
+
+  .pn-foot {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--c-line-soft);
+  }
+
+  @media (max-width: 900px) {
+    .body-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .side {
+      position: static;
+    }
+
+    .shots {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .pn-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .pn-next {
+      text-align: left;
+      justify-items: start;
+      border-left: 0;
+      border-top: 1px solid var(--c-line-soft);
+      padding-left: 0;
+    }
+  }
+</style>

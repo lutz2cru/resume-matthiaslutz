@@ -1,0 +1,26 @@
+# Sources : dépôt lutz2cru/station_meteo_groupe7_a25, site tulz.fr.
+order: 8
+kind: case
+title: { fr: "Station météo connectée", en: "Connected weather station" }
+summary:
+  fr: Une station météo ESP32, de la maquette au tableau de bord Node-RED, en passant par MQTT.
+  en: An ESP32 weather station, from the mock-up to a Node-RED dashboard, through MQTT.
+intro:
+  fr: De la maquette à la programmation d'un ESP32 et de ses capteurs, avec une interface Node-RED pour piloter la station et afficher les mesures.
+  en: From the mock-up to programming an ESP32 and its sensors, with a Node-RED interface to control the station and display readings.
+domains: [iot]
+year: "2025"
+context: { fr: "Projet de cours UTBM", en: "UTBM course project" }
+team: { fr: "Projet de groupe (groupe 7)", en: "Group project (group 7)" }
+status: done
+stack: [esp32, arduino, cpp, sensors, mqtt, node-red]
+extra: [XAMPP]
+links:
+  code: https://github.com/lutz2cru/station_meteo_groupe7_a25
+sections:
+  - title: { fr: "La chaîne", en: "The chain" }
+    body:
+      fr: Les mesures de l'ESP32 passent par MQTT jusqu'à Node-RED, qui les affiche, avec une base de données sous XAMPP. Le dépôt contient le cahier des charges, le code Arduino, le flux Node-RED et le support de soutenance.
+      en: Readings from the ESP32 travel over MQTT to Node-RED, which displays them, with a database running on XAMPP. The repository holds the specification, the Arduino code, the Node-RED flow and the presentation slides.
+sources: ["github.com/lutz2cru/station_meteo_groupe7_a25"]
+todo: Préciser ta part du travail dans le groupe et les capteurs utilisés.

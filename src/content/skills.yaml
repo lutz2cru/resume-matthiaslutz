@@ -1,0 +1,148 @@
+# Compétences. Niveau repris du profil GitHub (« maîtrisés » = solid, « en cours » = learning).
+# Pas de niveau = non précisé. Les projets qui utilisent chaque compétence sont calculés
+# à partir du champ « stack » des projets : ne pas les lister ici.
+python:
+  group: data
+  label: { fr: "Python", en: "Python" }
+  level: learning
+  usedAt: [{ fr: "ARNia BFC", en: "ARNia BFC" }]
+rest-api:
+  group: data
+  label: { fr: "API REST", en: "REST APIs" }
+  level: learning
+llm:
+  group: data
+  label: { fr: "LLM", en: "LLMs" }
+  level: learning
+  usedAt: [{ fr: "ARNia BFC", en: "ARNia BFC" }]
+rag:
+  group: data
+  label: { fr: "RAG", en: "RAG" }
+  level: learning
+  usedAt: [{ fr: "ARNia BFC", en: "ARNia BFC" }]
+vector-db:
+  group: data
+  label: { fr: "Bases vectorielles", en: "Vector databases" }
+  level: learning
+mcp:
+  group: data
+  label: { fr: "Serveurs MCP", en: "MCP servers" }
+  usedAt: [{ fr: "ARNia BFC", en: "ARNia BFC" }]
+dataviz:
+  group: data
+  label: { fr: "Visualisation de données", en: "Data visualisation" }
+  usedAt: [{ fr: "ARNia BFC", en: "ARNia BFC" }]
+
+c:
+  group: languages
+  label: { fr: "C", en: "C" }
+  level: solid
+cpp:
+  group: languages
+  label: { fr: "C++", en: "C++" }
+bash:
+  group: languages
+  label: { fr: "Bash", en: "Bash" }
+  level: solid
+javascript:
+  group: languages
+  label: { fr: "JavaScript", en: "JavaScript" }
+  level: solid
+php:
+  group: languages
+  label: { fr: "PHP", en: "PHP" }
+  level: solid
+sql:
+  group: languages
+  label: { fr: "SQL", en: "SQL" }
+  level: solid
+
+html-css:
+  group: web
+  label: { fr: "HTML / CSS", en: "HTML / CSS" }
+  level: solid
+react:
+  group: web
+  label: { fr: "React", en: "React" }
+vite:
+  group: web
+  label: { fr: "Vite", en: "Vite" }
+pwa:
+  group: web
+  label: { fr: "PWA", en: "PWA" }
+supabase:
+  group: web
+  label: { fr: "Supabase", en: "Supabase" }
+cloudflare-workers:
+  group: web
+  label: { fr: "Cloudflare Workers", en: "Cloudflare Workers" }
+mariadb:
+  group: web
+  label: { fr: "MariaDB / MySQL", en: "MariaDB / MySQL" }
+  level: solid
+github-pages:
+  group: web
+  label: { fr: "GitHub Pages", en: "GitHub Pages" }
+
+linux:
+  group: systems
+  label: { fr: "Linux", en: "Linux" }
+  level: solid
+git:
+  group: systems
+  label: { fr: "Git", en: "Git" }
+  level: solid
+github-actions:
+  group: systems
+  label: { fr: "GitHub Actions", en: "GitHub Actions" }
+  level: learning
+docker:
+  group: systems
+  label: { fr: "Docker", en: "Docker" }
+  level: learning
+  usedAt: [{ fr: "ARNia BFC", en: "ARNia BFC" }]
+ncurses:
+  group: systems
+  label: { fr: "ncurses", en: "ncurses" }
+truenas:
+  group: systems
+  label: { fr: "TrueNAS Scale (ZFS)", en: "TrueNAS Scale (ZFS)" }
+autohotkey:
+  group: systems
+  label: { fr: "AutoHotkey", en: "AutoHotkey" }
+
+esp32:
+  group: iot
+  label: { fr: "ESP32", en: "ESP32" }
+  level: solid
+arduino:
+  group: iot
+  label: { fr: "Arduino", en: "Arduino" }
+mqtt:
+  group: iot
+  label: { fr: "MQTT", en: "MQTT" }
+  level: solid
+node-red:
+  group: iot
+  label: { fr: "Node-RED", en: "Node-RED" }
+  level: solid
+sensors:
+  group: iot
+  label: { fr: "Capteurs", en: "Sensors" }
+
+social-media:
+  group: communication
+  label: { fr: "Réseaux sociaux", en: "Social media" }
+  usedAt: [{ fr: "Service civique", en: "Civic service" }]
+canva:
+  group: communication
+  label: { fr: "Canva", en: "Canva" }
+  usedAt: [{ fr: "Service civique", en: "Civic service" }]
+photo-video:
+  group: communication
+  label: { fr: "Photo & vidéo", en: "Photo & video" }
+  usedAt: [{ fr: "Service civique", en: "Civic service" }, { fr: "Photomatt'on", en: "Photomatt'on" }]
+writing:
+  group: communication
+  label: { fr: "Rédaction", en: "Copywriting" }
+  usedAt: [{ fr: "Service civique", en: "Civic service" }]

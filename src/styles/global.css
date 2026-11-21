@@ -1,0 +1,521 @@
+/* TULZ — styles globaux : base, typographie, utilitaires partagés. Les composants ont leurs styles scopés. */
+@import './tokens.css';
+
+/* ------------------------------------------------------------------ base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 24px);
+  background: var(--c-bg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-motion='reduced']) {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--f-sans);
+  font-size: var(--fs-body);
+  font-stretch: 100%;
+  line-height: 1.6;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+}
+
+main {
+  flex: 1;
+  display: block;
+}
+
+img,
+svg,
+canvas,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd,
+figure,
+blockquote {
+  margin: 0;
+}
+
+ul[role='list'],
+ol[role='list'],
+.list-reset {
+  list-style: none;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+input {
+  font: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--c-accent);
+  color: var(--c-accent-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 3px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+code {
+  font-family: var(--f-mono);
+  font-size: 0.86em;
+  font-stretch: 87.5%;
+  padding: 0.1em 0.35em;
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+}
+
+/* ------------------------------------------------------------------ typographie */
+.mono,
+.label {
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono);
+  font-stretch: 87.5%;
+  font-weight: 450;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: var(--c-text-3);
+}
+
+.label--strong {
+  color: var(--c-text-2);
+}
+
+.display {
+  font-stretch: 125%;
+  font-weight: 760;
+  letter-spacing: -0.035em;
+  line-height: 0.9;
+}
+
+.h1 {
+  font-size: var(--fs-h1);
+  font-stretch: 122%;
+  font-weight: 720;
+  letter-spacing: -0.032em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+.h2 {
+  font-size: var(--fs-h2);
+  font-stretch: 118%;
+  font-weight: 680;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.h3 {
+  font-size: var(--fs-h3);
+  font-stretch: 108%;
+  font-weight: 620;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: 1.4;
+  color: var(--c-text-2);
+  max-width: 44ch;
+  text-wrap: pretty;
+}
+
+.prose {
+  max-width: var(--measure);
+  color: var(--c-text-2);
+  text-wrap: pretty;
+}
+
+.prose > * + * {
+  margin-top: 1em;
+}
+
+.prose strong {
+  color: var(--c-text);
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------------ mise en page */
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--space-section);
+}
+
+.section + .section {
+  border-top: 1px solid var(--c-line-soft);
+}
+
+.rule {
+  border: 0;
+  border-top: 1px solid var(--c-line);
+  margin: 0;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Grille de points : repli sans JavaScript pour le terrain, et texture discrète. */
+.dotgrid {
+  background-image: radial-gradient(circle at 1px 1px, rgb(232 237 242 / 0.09) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* ------------------------------------------------------------------ éléments d'interface */
+.link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45em;
+  color: var(--c-text);
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+  padding-bottom: 2px;
+  transition:
+    color var(--dur-1) var(--ease-out),
+    background-size var(--dur-2) var(--ease-out);
+}
+
+.link:hover {
+  color: var(--c-accent);
+}
+
+.link .arrow {
+  display: inline-block;
+  transition: transform var(--dur-2) var(--ease-out);
+}
+
+.link:hover .arrow {
+  transform: translateX(3px);
+}
+
+.link:hover .arrow--ext {
+  transform: translate(2px, -2px);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  min-height: 48px;
+  padding: 0 22px;
+  font-family: var(--f-sans);
+  font-size: var(--fs-small);
+  font-stretch: 110%;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  text-decoration: none;
+  color: var(--c-accent-ink);
+  background: var(--c-accent);
+  border: 1px solid var(--c-accent);
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out);
+}
+
+.btn:hover {
+  background: var(--c-text);
+  border-color: var(--c-text);
+}
+
+.btn--ghost {
+  color: var(--c-text);
+  background: transparent;
+  border-color: var(--c-line);
+}
+
+.btn--ghost:hover {
+  color: var(--c-accent-ink);
+  background: var(--c-accent);
+  border-color: var(--c-accent);
+}
+
+.kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.9em;
+  height: 1.9em;
+  padding: 0 0.45em;
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  font-stretch: 87.5%;
+  line-height: 1;
+  color: var(--c-text-2);
+  border: 1px solid var(--c-line);
+  background: var(--c-bg-deep);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tags li,
+.tag {
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono);
+  font-stretch: 87.5%;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  padding: 7px 9px 6px;
+  color: var(--c-text-2);
+  border: 1px solid var(--c-line);
+  white-space: nowrap;
+}
+
+a.tag {
+  text-decoration: none;
+  transition:
+    color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out);
+}
+
+a.tag:hover {
+  color: var(--c-accent);
+  border-color: var(--c-accent);
+}
+
+.dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  flex: none;
+}
+
+.dot--live {
+  box-shadow: 0 0 0 0 rgb(182 243 106 / 0.5);
+  animation: pulse 2.4s var(--ease-out) infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(182 243 106 / 0.45);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 8px rgb(182 243 106 / 0);
+  }
+}
+
+/* Filtres (projets, parcours, compétences) */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  font-size: var(--fs-small);
+  font-stretch: 105%;
+  font-weight: 500;
+  color: var(--c-text-2);
+  border: 1px solid var(--c-line);
+  transition:
+    color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out),
+    background-color var(--dur-1) var(--ease-out);
+}
+
+.filter:hover {
+  color: var(--c-text);
+  border-color: var(--c-text-3);
+}
+
+.filter[aria-pressed='true'] {
+  color: var(--c-accent-ink);
+  background: var(--c-accent);
+  border-color: var(--c-accent);
+}
+
+.filter .count {
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono);
+  font-stretch: 87.5%;
+  opacity: 0.75;
+}
+
+/* Les filtres n'existent qu'avec JavaScript. */
+html:not(.js) [data-requires-js] {
+  display: none !important;
+}
+
+/* Repère TODO (développement seulement). */
+.todo {
+  display: inline-flex;
+  gap: 8px;
+  align-items: baseline;
+  margin-top: 12px;
+  padding: 6px 10px;
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono);
+  font-stretch: 87.5%;
+  line-height: 1.5;
+  color: #101319;
+  background: var(--c-todo);
+}
+
+/* ------------------------------------------------------------------ révélations au défilement */
+html.js.motion-ok [data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--dur-3) var(--ease-out),
+    transform var(--dur-3) var(--ease-out);
+  transition-delay: calc(var(--reveal-i, 0) * 60ms);
+}
+
+html.js.motion-ok [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ------------------------------------------------------------------ transitions de page */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 420ms;
+  animation-timing-function: var(--ease-out);
+}
+
+::view-transition-old(root) {
+  animation-name: vt-out;
+}
+
+::view-transition-new(root) {
+  animation-name: vt-in;
+}
+
+::view-transition-group(site-header) {
+  animation: none;
+}
+
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+:root[data-motion='reduced']::view-transition-group(*),
+:root[data-motion='reduced']::view-transition-old(*),
+:root[data-motion='reduced']::view-transition-new(*) {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full'])::view-transition-group(*),
+  :root:not([data-motion='full'])::view-transition-old(*),
+  :root:not([data-motion='full'])::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+:root[data-motion='reduced'] *,
+:root[data-motion='reduced'] *::before,
+:root[data-motion='reduced'] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) *,
+  :root:not([data-motion='full']) *::before,
+  :root:not([data-motion='full']) *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

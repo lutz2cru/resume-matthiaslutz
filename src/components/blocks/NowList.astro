@@ -1,0 +1,54 @@
+---
+import type { Lang } from '~/i18n/routes';
+import { getProfile, pick } from '~/lib/content';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const profile = await getProfile();
+---
+
+<dl class="now" data-reveal-group>
+  {
+    profile.now.map((item) => (
+      <div class="row" data-reveal>
+        <dt class="label">{pick(lang, item.label)}</dt>
+        <dd>{pick(lang, item.text)}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .now {
+    border-top: 1px solid var(--c-line);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: minmax(120px, 200px) 1fr;
+    gap: var(--s-5);
+    align-items: baseline;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  dt {
+    color: var(--c-text-3);
+  }
+
+  dd {
+    color: var(--c-text);
+    font-size: var(--fs-body);
+    max-width: 60ch;
+  }
+
+  @media (max-width: 560px) {
+    .row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+</style>

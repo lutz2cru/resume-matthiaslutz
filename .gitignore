@@ -1,5 +1,18 @@
-# Outils locaux (Claude Code, Impeccable) : ne pas publier sur le site
+# Outils locaux (Claude Code, Impeccable) : ne pas publier
 .claude/settings.local.json
 .claude/skills/
 .claude/agents/
 .impeccable/live/
+
+# Astro / Node
+node_modules/
+dist/
+.astro/
+npm-debug.log*
+
+# Rapports locaux
+reports/lighthouse-*.html
+
+# Système
+.DS_Store
+Thumbs.db

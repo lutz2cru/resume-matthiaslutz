@@ -1,0 +1,150 @@
+# Parcours. Sources : site tulz.fr (version du 10/11/2026), profil GitHub, brief du 21/11/2026.
+# Ne rien ajouter qui ne soit pas vérifiable.
+# start / end servent au tri. Quand « period » est renseigné, c'est lui qui est affiché.
+- id: arnia
+  type: work
+  start: "2026-09"
+  current: true
+  title: { fr: "Apprenti ingénieur Data & IA", en: "Data & AI engineering apprentice" }
+  org: ARNia BFC
+  place: dijon
+  description:
+    fr: L'Agence Régionale du Numérique et de l'Intelligence Artificielle de Bourgogne-Franche-Comté fournit des services numériques mutualisés aux collectivités de la région. J'y développe l'outil CmonIA.
+    en: The Bourgogne-Franche-Comté regional agency for digital technology and AI provides shared digital services to the region's local authorities. I develop the CmonIA tool there.
+  points:
+    - { fr: "IA conversationnelle et RAG hybride", en: "Conversational AI and hybrid RAG" }
+    - { fr: "Serveurs MCP", en: "MCP servers" }
+    - { fr: "Visualisation de données", en: "Data visualisation" }
+    - { fr: "Outils destinés aux collectivités", en: "Tools for local authorities" }
+  tags:
+    - { fr: "Python", en: "Python" }
+    - { fr: "Docker", en: "Docker" }
+    - { fr: "IA", en: "AI" }
+    - { fr: "Secteur public", en: "Public sector" }
+
+- id: utbm-fisa
+  type: education
+  start: "2026-09"
+  end: "2029"
+  current: true
+  period: { fr: "2026 → 2029", en: "2026 → 2029" }
+  title: { fr: "Cycle ingénieur en informatique, par apprentissage", en: "Computer science engineering degree, work-study" }
+  org: UTBM (FISA)
+  place: belfort
+  description:
+    fr: Formation d'ingénieur en informatique sous statut d'apprenti, en alternance entre l'UTBM et l'ARNia BFC à Dijon.
+    en: Computer science engineering degree completed as an apprentice, alternating between UTBM and ARNia BFC in Dijon.
+
+- id: erasmus
+  type: international
+  start: "2026-02"
+  end: "2026-06"
+  title: { fr: "Semestre Erasmus", en: "Erasmus semester" }
+  org: AGH University of Krakow
+  place: krakow
+  description:
+    fr: Semestre d'études à l'étranger, cours en anglais et vie en autonomie dans un environnement international. Quatorze villes et onze pays visités depuis Cracovie.
+    en: A study semester abroad, with courses taught in English and independent living in an international environment. Fourteen cities and eleven countries visited from Krakow.
+  links:
+    - label: { fr: "Carnet de voyage Polarsteps", en: "Polarsteps travel log" }
+      href: https://www.polarsteps.com/lutz2cru
+
+- id: press
+  type: sport
+  start: "2026-02"
+  title: { fr: "Portrait dans L'Est Républicain", en: "Profile in L'Est Républicain" }
+  org: CS Vesoul · Nationale 3
+  place: vesoul
+  description:
+    fr: Un article du quotidien régional sur mon parcours de gardien, formé au CS Vesoul.
+    en: A regional newspaper piece on my path as a goalkeeper trained at CS Vesoul.
+  links:
+    - label: { fr: "Lire le portrait", en: "Read the profile (FR)" }
+      href: https://c.estrepublicain.fr/sport/2026/02/01/matthias-lutz-pur-produit-de-la-formation-du-cs-vesoul
+
+- id: service-civique
+  type: engagement
+  start: "2025-09"
+  end: "2026-06"
+  title: { fr: "Assistant communication — service civique", en: "Communication assistant — civic service" }
+  org: CSVesoul70 Partenaires
+  place: vesoul
+  description:
+    fr: Animation des réseaux sociaux, création de visuels et rédaction de contenus pour le club et ses partenaires.
+    en: Social media management, visual design and content writing for the club and its partners.
+  tags:
+    - { fr: "Réseaux sociaux", en: "Social media" }
+    - { fr: "Canva", en: "Canva" }
+    - { fr: "Photo & vidéo", en: "Photo & video" }
+    - { fr: "Rédaction", en: "Copywriting" }
+  links:
+    - label: { fr: "Lire le rapport", en: "Read the report (FR)" }
+      href: https://1drv.ms/b/c/e15c7d58f51b139c/IQDAdHpUl7maQZ_LaY847Zb0AT9RkhmTxhUMGO1v3kE_Kqk?e=NtcVm1
+  todo: Vérifier les dates — elles chevauchent le semestre Erasmus (févr. → juin 2026).
+
+- id: stellantis
+  type: work
+  start: "2025-07"
+  end: "2025-12"
+  period: { fr: "été & hiver 2025", en: "summer & winter 2025" }
+  title: { fr: "Opérateur de production & stagiaire", en: "Production operator & intern" }
+  org: Stellantis
+  description:
+    fr: Contrôle qualité, gestion de données techniques, étiquetage et emballage sur un site de production.
+    en: Quality control, technical data handling, labelling and packaging at a production site.
+  tags:
+    - { fr: "Qualité", en: "Quality" }
+    - { fr: "Production", en: "Production" }
+    - { fr: "Données techniques", en: "Technical data" }
+  links:
+    - label: { fr: "Lire le rapport", en: "Read the report (FR)" }
+      href: https://1drv.ms/b/c/e15c7d58f51b139c/EboHtLwsldFFlU6AZXj18bQB7lwSC62ScPIaaX9yN-5qdw?e=iY6x8T
+  todo: Préciser le site Stellantis (ville) si tu veux qu'il apparaisse sur le parcours.
+
+- id: crunch-time
+  type: education
+  start: "2025"
+  period: { fr: "2025", en: "2025" }
+  title: { fr: "Crunch Time 2025", en: "Crunch Time 2025" }
+  org: UTBM
+  place: belfort
+  description:
+    fr: Un projet universitaire intensif d'une semaine, en équipe, centré sur la résolution de problématiques concrètes.
+    en: An intensive one-week university project, in a team, focused on solving concrete problems.
+  todo: Préciser le mois, le sujet et le rôle tenu dans l'équipe.
+
+- id: utbm-prepa
+  type: education
+  start: "2024-09"
+  end: "2026-06"
+  period: { fr: "2024 → 2026", en: "2024 → 2026" }
+  title: { fr: "Cycle préparatoire d'ingénieur", en: "Engineering preparatory cycle" }
+  org: UTBM
+  place: belfort
+  description:
+    fr: Informatique et sciences de l'ingénieur. Certification Pix, niveau avancé.
+    en: Computer science and engineering sciences. Pix digital skills certification, advanced level.
+
+- id: mister-auto
+  type: work
+  start: "2024-07"
+  period: { fr: "été 2024", en: "summer 2024" }
+  title: { fr: "Préparateur de commandes", en: "Order picker" }
+  org: Mister Auto
+  description:
+    fr: Picking, emballage et préparation des colis à l'expédition.
+    en: Picking, packing and preparing parcels for shipping.
+  tags:
+    - { fr: "Logistique", en: "Logistics" }
+
+- id: bac
+  type: education
+  start: "2021-09"
+  end: "2024-07"
+  period: { fr: "2021 → 2024", en: "2021 → 2024" }
+  title: { fr: "Baccalauréat général, mention Bien", en: "French Baccalauréat, with honours" }
+  org: Lycée Édouard Belin
+  place: vesoul
+  description:
+    fr: Mathématiques, physique-chimie et informatique.
+    en: Mathematics, physics-chemistry and computer science.

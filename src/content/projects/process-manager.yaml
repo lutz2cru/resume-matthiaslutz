@@ -1,0 +1,38 @@
+# Source : README du dépôt JulesGIT2/Projet-LP25 (fork lutz2cru/Projet-LP25-A25).
+order: 3
+kind: case
+featured: true
+title: { fr: "Gestionnaire de processus Linux", en: "Linux process manager" }
+summary:
+  fr: Un outil inspiré de htop, écrit en C avec ncurses, qui affiche et pilote les processus d'une machine Linux.
+  en: An htop-like tool written in C with ncurses that displays and controls the processes of a Linux machine.
+intro:
+  fr: Un outil inspiré de htop, écrit en C. Il lit /proc pour afficher les processus de la machine en temps réel, avec navigation au clavier, recherche et envoi de signaux. Son architecture modulaire est pensée pour superviser aussi des machines distantes.
+  en: An htop-like tool written in C. It reads /proc to show the machine's processes in real time, with keyboard navigation, search and signal sending. Its modular design is meant to monitor remote machines too.
+domains: [systems]
+year: "2025"
+context: { fr: "Projet de cours UTBM (LP25)", en: "UTBM course project (LP25)" }
+team: { fr: "Projet d'équipe", en: "Team project" }
+status: done
+stack: [c, linux, ncurses]
+extra: [/proc, Makefile]
+links:
+  code: https://github.com/lutz2cru/Projet-LP25-A25
+visual: terminal
+sections:
+  - title: { fr: "Fonctionnalités", en: "Features" }
+    points:
+      - fr: Liste des processus rafraîchie toutes les 500 ms à partir de /proc.
+        en: Process list refreshed every 500 ms from /proc.
+      - fr: PID, nom, utilisateur, % CPU (calculé à partir de /proc/stat), % mémoire (VmRSS / MemTotal) et état.
+        en: PID, name, user, CPU % (computed from /proc/stat), memory % (VmRSS / MemTotal) and state.
+      - fr: Recherche par nom (F4), puis pause, arrêt, arrêt forcé et reprise par signaux (F5 à F8).
+        en: Search by name (F4), then pause, stop, kill and resume through signals (F5 to F8).
+      - fr: Tri par PID, CPU, mémoire, utilisateur ou nom.
+        en: Sort by PID, CPU, memory, user or name.
+  - title: { fr: "Architecture", en: "Architecture" }
+    body:
+      fr: Des modules indépendants pour l'affichage ncurses, la saisie clavier et la collecte locale des processus, plus un module réseau prévu pour les hôtes distants. La première échéance couvrait la partie locale.
+      en: Independent modules for the ncurses display, keyboard input and local process collection, plus a network module planned for remote hosts. The first milestone covered the local part.
+sources: ["github.com/JulesGIT2/Projet-LP25"]
+todo: Préciser ta part du travail dans l'équipe.

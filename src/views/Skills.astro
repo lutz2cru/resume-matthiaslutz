@@ -1,0 +1,373 @@
+---
+import Base from '~/layouts/Base.astro';
+import PageHeader from '~/components/ui/PageHeader.astro';
+import { t, pageTitle, type UIKey } from '~/i18n/ui';
+import { otherLang, path, projectPath, type Lang } from '~/i18n/routes';
+import { getProfile, getSkills, getSkillUsage, pick } from '~/lib/content';
+import { pad2 } from '~/lib/format';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const skills = await getSkills();
+const usage = await getSkillUsage();
+const profile = await getProfile();
+const GROUPS = ['data', 'languages', 'web', 'systems', 'iot', 'communication'] as const;
+const levelCount = {
+  solid: skills.filter((s) => s.data.level === 'solid').length,
+  learning: skills.filter((s) => s.data.level === 'learning').length,
+};
+const href = (p: { id: string; data: { kind: string } }) => (p.data.kind === 'case' ? projectPath(lang, p.id) : `${path(lang, 'projects')}#note-${p.id}`);
+---
+
+<Base lang={lang} page="skills" title={pageTitle(lang, 'skills')} description={t(lang, 'desc.skills')} alternate={path(otherLang(lang), 'skills')}>
+  <PageHeader index={4} title={pageTitle(lang, 'skills')} lead={t(lang, 'page.skills.lead')} seed="skills" />
+
+  <section class="skills" data-skills>
+    <div class="wrap">
+      <div class="toolbar">
+        <div class="legend">
+          <p class="label">{t(lang, 'skills.legend')}</p>
+          <p class="levels">
+            <span><i class="lv lv--solid" aria-hidden="true"></i> {t(lang, 'skills.level.solid')}</span>
+            <span><i class="lv lv--learning" aria-hidden="true"></i> {t(lang, 'skills.level.learning')}</span>
+            <span><i class="lv lv--none" aria-hidden="true"></i> {t(lang, 'skills.level.none')}</span>
+          </p>
+        </div>
+        <div class="filters" role="group" aria-label={t(lang, 'skills.filter')} data-requires-js>
+          <button type="button" class="filter" aria-pressed="true" data-filter="all">{t(lang, 'skills.all')} <span class="count">{skills.length}</span></button>
+          <button type="button" class="filter" aria-pressed="false" data-filter="solid">{t(lang, 'skills.level.solid')} <span class="count">{levelCount.solid}</span></button>
+          <button type="button" class="filter" aria-pressed="false" data-filter="learning">{t(lang, 'skills.level.learning')} <span class="count">{levelCount.learning}</span></button>
+        </div>
+      </div>
+
+      {
+        GROUPS.map((g, gi) => {
+          const items = skills.filter((s) => s.data.group === g);
+          return (
+            <section class="group" aria-labelledby={`g-${g}`} data-group>
+              <header class="group-head">
+                <span class="label">{pad2(gi + 1)}</span>
+                <h2 id={`g-${g}`} class="h3 group-title">
+                  {t(lang, `group.${g}` as UIKey)}
+                </h2>
+              </header>
+              <table class="table">
+                <caption class="sr-only">{t(lang, `group.${g}` as UIKey)}</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">{t(lang, 'skills.col.skill')}</th>
+                    <th scope="col">{t(lang, 'skills.col.level')}</th>
+                    <th scope="col">{t(lang, 'skills.col.used')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {items.map((s) => {
+                    const used = usage.get(s.id) ?? [];
+                    const level = s.data.level ?? 'none';
+                    return (
+                      <tr id={`skill-${s.id}`} data-level={level}>
+                        <th scope="row">{pick(lang, s.data.label)}</th>
+                        <td class="lvl">
+                          <i class:list={['lv', `lv--${level}`]} aria-hidden="true" />
+                          <span>{t(lang, `skills.level.${level}` as UIKey)}</span>
+                        </td>
+                        <td>
+                          {used.length || s.data.usedAt.length ? (
+                            <ul class="uses" role="list">
+                              {used.map((p) => (
+                                <li>
+                                  <a href={href(p)}>{pick(lang, p.data.title)}</a>
+                                </li>
+                              ))}
+                              {s.data.usedAt.map((u) => (
+                                <li class="ctx">{pick(lang, u)}</li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <span class="none">—</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </section>
+          );
+        })
+      }
+
+      <section class="group" aria-labelledby="g-lang">
+        <header class="group-head">
+          <span class="label">{pad2(GROUPS.length + 1)}</span>
+          <h2 id="g-lang" class="h3 group-title">{t(lang, 'skills.languages')}</h2>
+        </header>
+        <ul class="langs" role="list">
+          {
+            profile.languages.map((l) => (
+              <li>
+                <span class="lang-name">{pick(lang, l.label)}</span>
+                <span class="label">{pick(lang, l.level)}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .skills {
+    padding-block: clamp(40px, 6vw, 72px) var(--space-section);
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: end;
+    gap: var(--s-5);
+    margin-bottom: var(--s-8);
+  }
+
+  .legend {
+    display: grid;
+    gap: 10px;
+  }
+
+  .levels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    font-size: var(--fs-small);
+    color: var(--c-text-2);
+  }
+
+  .levels span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .lv {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex: none;
+  }
+
+  .lv--solid {
+    background: var(--c-accent);
+  }
+
+  .lv--learning {
+    border: 1.5px solid var(--c-accent-2);
+    background: linear-gradient(90deg, var(--c-accent-2) 50%, transparent 50%);
+  }
+
+  .lv--none {
+    border: 1px solid var(--c-text-3);
+  }
+
+  .group {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+    gap: var(--s-5) var(--s-7);
+    padding-block: var(--s-6);
+    border-top: 1px solid var(--c-line);
+  }
+
+  .group[hidden] {
+    display: none;
+  }
+
+  .group-head {
+    display: grid;
+    gap: 8px;
+    align-content: start;
+  }
+
+  .group-title {
+    font-stretch: 118%;
+    font-weight: 680;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-small);
+  }
+
+  thead th {
+    text-align: left;
+    padding: 0 12px 10px 0;
+    font-family: var(--f-mono);
+    font-size: var(--fs-mono);
+    font-stretch: 87.5%;
+    font-weight: 450;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--c-text-3);
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--c-line-soft);
+    scroll-margin-top: calc(var(--header-h) + 24px);
+    transition: background-color var(--dur-1) var(--ease-out);
+  }
+
+  tbody tr:hover {
+    background: rgb(27 34 44 / 0.55);
+  }
+
+  tbody tr:target {
+    background: var(--c-surface);
+    box-shadow: inset 3px 0 0 var(--c-accent);
+  }
+
+  tbody tr[hidden] {
+    display: none;
+  }
+
+  tbody th,
+  tbody td {
+    padding: 12px 12px 12px 0;
+    vertical-align: top;
+    text-align: left;
+  }
+
+  tbody th {
+    width: 30%;
+    font-weight: 600;
+    font-stretch: 106%;
+    color: var(--c-text);
+  }
+
+  tbody tr:target th {
+    padding-left: 12px;
+  }
+
+  .lvl {
+    width: 22%;
+    white-space: nowrap;
+    color: var(--c-text-2);
+  }
+
+  .lvl .lv {
+    margin-right: 8px;
+    vertical-align: -1px;
+  }
+
+  .uses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+  }
+
+  .uses a {
+    color: var(--c-text-2);
+    text-decoration: underline;
+    text-decoration-color: var(--c-line);
+    text-underline-offset: 0.25em;
+    transition:
+      color var(--dur-1) var(--ease-out),
+      text-decoration-color var(--dur-1) var(--ease-out);
+  }
+
+  .uses a:hover {
+    color: var(--c-accent);
+    text-decoration-color: currentColor;
+  }
+
+  .ctx,
+  .none {
+    color: var(--c-text-3);
+  }
+
+  .langs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--c-line);
+  }
+
+  .langs li {
+    display: grid;
+    gap: 6px;
+    padding: 16px 16px 16px 0;
+  }
+
+  .lang-name {
+    font-size: 1.375rem;
+    font-stretch: 116%;
+    font-weight: 660;
+  }
+
+  @media (max-width: 900px) {
+    .group {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    thead {
+      display: none;
+    }
+
+    .table,
+    tbody,
+    tr,
+    tbody th,
+    tbody td {
+      display: block;
+      width: 100%;
+    }
+
+    tbody tr {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4px 12px;
+      padding: 12px 0;
+    }
+
+    tbody th,
+    tbody td {
+      padding: 0;
+    }
+
+    tbody td:last-child {
+      grid-column: 1 / -1;
+    }
+
+    .lvl {
+      width: auto;
+      text-align: right;
+    }
+
+    .langs {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-skills]');
+  if (root) {
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    const rows = [...root.querySelectorAll<HTMLElement>('tr[data-level]')];
+    const groups = [...root.querySelectorAll<HTMLElement>('[data-group]')];
+    buttons.forEach((b) =>
+      b.addEventListener('click', () => {
+        const filter = b.dataset.filter ?? 'all';
+        buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        rows.forEach((r) => (r.hidden = filter !== 'all' && r.dataset.level !== filter));
+        groups.forEach((g) => (g.hidden = !g.querySelector('tr[data-level]:not([hidden])')));
+      }),
+    );
+  }
+</script>

@@ -1,0 +1,445 @@
+---
+import Base from '~/layouts/Base.astro';
+import PageHeader from '~/components/ui/PageHeader.astro';
+import ExternalLink from '~/components/ui/ExternalLink.astro';
+import { t, pageTitle, type UIKey } from '~/i18n/ui';
+import { otherLang, path, projectPath, type Lang } from '~/i18n/routes';
+import { getCases, getNotes, getProjects, getSkills, pick } from '~/lib/content';
+import { pad2 } from '~/lib/format';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const all = await getProjects();
+const cases = await getCases();
+const notes = await getNotes();
+const skills = new Map((await getSkills()).map((s) => [s.id, s.data]));
+const DOMAINS = ['web', 'systems', 'data', 'iot', 'infra'] as const;
+const counts = Object.fromEntries(DOMAINS.map((d) => [d, all.filter((p) => p.data.domains.includes(d)).length]));
+const domainLabel = (d: string) => t(lang, `domain.${d}` as UIKey);
+const stackLabels = (ids: string[], extra: string[]) => [...ids.map((id) => skills.get(id)?.label[lang] ?? id), ...extra];
+---
+
+<Base lang={lang} page="projects" title={pageTitle(lang, 'projects')} description={t(lang, 'desc.projects')} alternate={path(otherLang(lang), 'projects')}>
+  <PageHeader index={2} title={pageTitle(lang, 'projects')} lead={t(lang, 'page.projects.lead')} seed="projects" />
+
+  <section class="projects" data-projects data-label-one={t(lang, 'projects.count.one')} data-label-many={t(lang, 'projects.count.many')}>
+    <div class="wrap">
+      <div class="toolbar" data-requires-js>
+        <div class="filters" role="group" aria-label={t(lang, 'projects.filter')}>
+          <button type="button" class="filter" aria-pressed="true" data-filter="all">
+            {t(lang, 'projects.all')} <span class="count">{all.length}</span>
+          </button>
+          {
+            DOMAINS.map((d) => (
+              <button type="button" class="filter" aria-pressed="false" data-filter={d}>
+                {domainLabel(d)} <span class="count">{counts[d]}</span>
+              </button>
+            ))
+          }
+        </div>
+        <p class="label" role="status" aria-live="polite" data-filter-status>{all.length} {t(lang, 'projects.count.many')}</p>
+      </div>
+
+      <ol class="pindex" role="list">
+        {
+          cases.map((p, i) => (
+            <li class="prow" data-domains={p.data.domains.join(' ')}>
+              <a class="prow-link" href={projectPath(lang, p.id)} data-preview={`/covers/${p.id}.svg`}>
+                <span class="prow-idx" aria-hidden="true">{pad2(i + 1)}</span>
+                <span class="prow-main">
+                  <span class="prow-title" style={`view-transition-name: project-${p.id}`}>{pick(lang, p.data.title)}</span>
+                  <span class="prow-summary">{pick(lang, p.data.summary)}</span>
+                </span>
+                <span class="prow-meta">
+                  <span>{p.data.domains.map(domainLabel).join(' · ')}</span>
+                  <span>{p.data.year ?? '—'}</span>
+                </span>
+                <span class="prow-arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+
+      <section class="notes" aria-labelledby="notes-title" data-notes>
+        <header class="notes-head">
+          <h2 id="notes-title" class="h2">{t(lang, 'projects.notes')}</h2>
+          <p class="notes-lead">{t(lang, 'projects.notes.lead')}</p>
+        </header>
+        <ul class="note-list" role="list">
+          {
+            notes.map((p) => (
+              <li class="note" id={`note-${p.id}`} data-domains={p.data.domains.join(' ')}>
+                <div class="note-head">
+                  <h3 class="note-title">{pick(lang, p.data.title)}</h3>
+                  <p class="label">
+                    {p.data.domains.map(domainLabel).join(' · ')}
+                    {p.data.year && <> · {p.data.year}</>}
+                  </p>
+                </div>
+                <p class="note-summary">{pick(lang, p.data.summary)}</p>
+                <ul class="tags" role="list">
+                  {stackLabels(p.data.stack, p.data.extra).map((s) => (
+                    <li>{s}</li>
+                  ))}
+                </ul>
+                {(p.data.links.demo || p.data.links.code) && (
+                  <p class="note-links">
+                    {p.data.links.demo && (
+                      <ExternalLink lang={lang} href={p.data.links.demo}>
+                        {t(lang, 'projects.demo')}
+                      </ExternalLink>
+                    )}
+                    {p.data.links.code && (
+                      <ExternalLink lang={lang} href={p.data.links.code}>
+                        {t(lang, 'projects.code')}
+                      </ExternalLink>
+                    )}
+                  </p>
+                )}
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </div>
+    <div class="preview" aria-hidden="true"><img alt="" width="800" height="500" /></div>
+  </section>
+</Base>
+
+<style>
+  .projects {
+    padding-block: clamp(40px, 6vw, 72px) var(--space-section);
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-bottom: var(--s-7);
+  }
+
+  /* ---------- index des projets */
+  .pindex {
+    border-top: 1px solid var(--c-line);
+  }
+
+  .prow {
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  .prow[hidden],
+  .note[hidden] {
+    display: none;
+  }
+
+  .prow-link {
+    position: relative;
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr) minmax(160px, 240px) 32px;
+    gap: var(--s-5);
+    align-items: center;
+    padding: clamp(20px, 2.6vw, 32px) 0;
+    text-decoration: none;
+  }
+
+  .prow-link::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0;
+    background: var(--c-accent);
+    transition: width var(--dur-2) var(--ease-out);
+  }
+
+  .prow-link:hover::before,
+  .prow-link:focus-visible::before {
+    width: 3px;
+  }
+
+  .prow-idx {
+    font-family: var(--f-mono);
+    font-size: var(--fs-mono-l);
+    color: var(--c-text-3);
+    padding-left: 14px;
+  }
+
+  .prow-main {
+    display: grid;
+    gap: 6px;
+  }
+
+  .prow-title {
+    font-size: clamp(1.5rem, 1rem + 2vw, 2.75rem);
+    font-stretch: 112%;
+    font-weight: 680;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+    width: fit-content;
+    transition:
+      font-stretch var(--dur-3) var(--ease-out),
+      color var(--dur-1) var(--ease-out);
+  }
+
+  .prow-summary {
+    max-width: 62ch;
+    font-size: var(--fs-small);
+    color: var(--c-text-3);
+    transition: color var(--dur-1) var(--ease-out);
+  }
+
+  .prow-meta {
+    display: grid;
+    gap: 4px;
+    font-family: var(--f-mono);
+    font-size: var(--fs-mono);
+    font-stretch: 87.5%;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--c-text-3);
+  }
+
+  .prow-arrow {
+    color: var(--c-text-3);
+    transition:
+      transform var(--dur-2) var(--ease-out),
+      color var(--dur-1) var(--ease-out);
+  }
+
+  .prow-link:hover .prow-title,
+  .prow-link:focus-visible .prow-title {
+    color: var(--c-accent);
+    font-stretch: 125%;
+  }
+
+  .prow-link:hover .prow-summary {
+    color: var(--c-text-2);
+  }
+
+  .prow-link:hover .prow-idx,
+  .prow-link:hover .prow-arrow {
+    color: var(--c-accent);
+  }
+
+  .prow-link:hover .prow-arrow {
+    transform: translateX(6px);
+  }
+
+  /* Aperçu qui suit le curseur (ordinateur uniquement) */
+  .preview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    width: 340px;
+    aspect-ratio: 16 / 10;
+    pointer-events: none;
+    opacity: 0;
+    border: 1px solid var(--c-line);
+    background: var(--c-bg-deep);
+    transition: opacity var(--dur-2) var(--ease-out);
+    will-change: transform;
+  }
+
+  .preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .preview:global(.is-on) {
+    opacity: 1;
+  }
+
+  /* ---------- carnet */
+  .notes {
+    margin-top: var(--space-section);
+  }
+
+  .notes[hidden] {
+    display: none;
+  }
+
+  .notes-head {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--s-5);
+    align-items: end;
+    margin-bottom: var(--s-7);
+  }
+
+  .notes-lead {
+    color: var(--c-text-2);
+    max-width: 44ch;
+  }
+
+  .note-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--c-line);
+    border-left: 1px solid var(--c-line);
+  }
+
+  .note {
+    display: grid;
+    align-content: start;
+    gap: var(--s-4);
+    padding: var(--s-5);
+    border-right: 1px solid var(--c-line);
+    border-bottom: 1px solid var(--c-line);
+    scroll-margin-top: calc(var(--header-h) + 24px);
+  }
+
+  .note:target {
+    background: var(--c-surface);
+    box-shadow: inset 3px 0 0 var(--c-accent);
+  }
+
+  .note-head {
+    display: grid;
+    gap: 6px;
+  }
+
+  .note-title {
+    font-size: 1.25rem;
+    font-stretch: 110%;
+    font-weight: 640;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  .note-summary {
+    font-size: var(--fs-small);
+    color: var(--c-text-2);
+  }
+
+  .note-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    font-size: var(--fs-small);
+    margin-top: auto;
+  }
+
+  @media (max-width: 1099px) {
+    .note-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    .prow-link {
+      grid-template-columns: 36px minmax(0, 1fr);
+      grid-template-areas: 'idx main' '. meta';
+      row-gap: 12px;
+      gap: 12px 14px;
+    }
+
+    .prow-idx {
+      grid-area: idx;
+      align-self: start;
+      padding-top: 8px;
+      padding-left: 0;
+    }
+
+    .prow-main {
+      grid-area: main;
+    }
+
+    .prow-meta {
+      grid-area: meta;
+      display: flex;
+      gap: 12px;
+    }
+
+    .prow-arrow {
+      display: none;
+    }
+
+    .notes-head {
+      grid-template-columns: 1fr;
+    }
+
+    .note-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  import { isMotionReduced } from '~/scripts/preferences';
+
+  const root = document.querySelector<HTMLElement>('[data-projects]');
+  if (root) {
+    /* ---------- filtres */
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    const items = [...root.querySelectorAll<HTMLElement>('[data-domains]')];
+    const status = root.querySelector<HTMLElement>('[data-filter-status]');
+    const notes = root.querySelector<HTMLElement>('[data-notes]');
+    const apply = (filter: string) => {
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
+      let shown = 0;
+      items.forEach((el) => {
+        const match = filter === 'all' || (el.dataset.domains ?? '').split(' ').includes(filter);
+        el.hidden = !match;
+        if (match) shown++;
+      });
+      if (notes) notes.hidden = !notes.querySelector('[data-domains]:not([hidden])');
+      if (status) status.textContent = `${shown} ${shown > 1 ? root.dataset.labelMany : root.dataset.labelOne}`;
+      const url = new URL(location.href);
+      if (filter === 'all') url.searchParams.delete('domaine');
+      else url.searchParams.set('domaine', filter);
+      history.replaceState(null, '', url);
+    };
+    buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.filter ?? 'all')));
+    const initial = new URL(location.href).searchParams.get('domaine');
+    if (initial && buttons.some((b) => b.dataset.filter === initial)) apply(initial);
+
+    /* ---------- aperçu qui suit le curseur */
+    const preview = root.querySelector<HTMLElement>('.preview');
+    const img = preview?.querySelector('img');
+    const fine = matchMedia('(hover: hover) and (pointer: fine) and (min-width: 1100px)');
+    if (preview && img) {
+      let x = 0;
+      let y = 0;
+      let tx = 0;
+      let ty = 0;
+      let raf = 0;
+      let active = false;
+      const tick = () => {
+        x += (tx - x) * 0.18;
+        y += (ty - y) * 0.18;
+        preview.style.transform = `translate3d(${x + 28}px, ${y - 100}px, 0)`;
+        if (active || Math.abs(tx - x) > 0.5) raf = requestAnimationFrame(tick);
+      };
+      root.querySelectorAll<HTMLAnchorElement>('.prow-link').forEach((link) => {
+        link.addEventListener('pointerenter', (e) => {
+          if (!fine.matches || isMotionReduced()) return;
+          img.src = link.dataset.preview ?? '';
+          if (!active) {
+            x = tx = e.clientX;
+            y = ty = e.clientY;
+          }
+          active = true;
+          preview.classList.add('is-on');
+          cancelAnimationFrame(raf);
+          raf = requestAnimationFrame(tick);
+        });
+        link.addEventListener('pointermove', (e) => {
+          tx = e.clientX;
+          ty = e.clientY;
+        });
+        link.addEventListener('pointerleave', () => {
+          active = false;
+          preview.classList.remove('is-on');
+        });
+      });
+    }
+  }
+</script>

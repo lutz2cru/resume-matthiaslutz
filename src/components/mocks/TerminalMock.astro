@@ -1,0 +1,168 @@
+---
+/** Gestionnaire de processus reconstitué (données d'exemple). Le curseur de sélection descend si les animations sont actives. */
+const rows = [
+  ['1824', 'matthias', '12.4', ' 3.1', 'R', 'firefox'],
+  [' 903', 'root    ', ' 4.0', ' 0.8', 'S', 'Xorg'],
+  ['2271', 'matthias', ' 2.6', ' 1.9', 'S', 'code'],
+  ['1450', 'matthias', ' 0.9', ' 0.2', 'S', 'pipewire'],
+  ['   1', 'root    ', ' 0.0', ' 0.1', 'S', 'systemd'],
+];
+---
+
+<div class="term" aria-hidden="true">
+  <div class="bar"><i></i><i></i><i></i><span>process-manager — ncurses</span></div>
+  <pre><span class="dim">refresh</span> <span class="b">500 ms</span>   <span class="dim">tasks</span> 214
+<span class="dim">CPU</span> <span class="g">[<span class="meter cpu">||||||||||||        </span>]</span> 41.2%
+<span class="dim">MEM</span> <span class="y">[||||||              ]</span> 2.1G/7.7G
+
+<span class="head">  PID USER      %CPU %MEM S COMMAND   </span>
+{rows.map((r) => <span class="row">{` ${r[0]} ${r[1]}  ${r[2]} ${r[3]} ${r[4]} ${r[5]}`.padEnd(37, ' ')}</span>)}
+<span class="dim">F1 aide   F4 chercher   ↑↓ naviguer</span></pre>
+</div>
+
+<style>
+  .term {
+    width: 100%;
+    max-width: 620px;
+    margin-inline: auto;
+    background: #07090c;
+    border: 1px solid var(--c-line);
+    box-shadow: 0 30px 80px rgb(0 0 0 / 0.4);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  .bar i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--c-line);
+  }
+
+  .bar span {
+    margin-left: 8px;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    color: var(--c-text-3);
+  }
+
+  pre {
+    margin: 0;
+    padding: 16px 18px 18px;
+    font-family: var(--f-mono);
+    font-stretch: 87.5%;
+    font-size: clamp(9.5px, 1.25vw, 12.5px);
+    line-height: 1.75;
+    color: var(--c-text-2);
+    overflow: hidden;
+  }
+
+  .dim {
+    color: var(--c-text-3);
+  }
+
+  .b {
+    color: var(--c-accent-2);
+  }
+
+  .g {
+    color: var(--c-accent);
+  }
+
+  .y {
+    color: #f2c94c;
+  }
+
+  .head {
+    color: var(--c-accent-ink);
+    background: var(--c-accent-2);
+  }
+
+  .row {
+    display: block;
+    counter-increment: row;
+  }
+
+  .row:first-of-type {
+    color: var(--c-accent-ink);
+    background: var(--c-accent);
+  }
+
+  :global(html.motion-ok) .row {
+    animation: sel 6s steps(1) infinite;
+    animation-delay: calc(var(--d, 0) * 1s);
+  }
+
+  :global(html.motion-ok) .row:first-of-type {
+    animation-name: sel-first;
+  }
+
+  @keyframes sel-first {
+    0%,
+    19.99% {
+      color: var(--c-accent-ink);
+      background: var(--c-accent);
+    }
+    20%,
+    100% {
+      color: var(--c-text-2);
+      background: transparent;
+    }
+  }
+
+  @keyframes sel {
+    0%,
+    100% {
+      color: var(--c-text-2);
+      background: transparent;
+    }
+  }
+
+  :global(html.motion-ok) .row:nth-of-type(2) {
+    animation-name: sel-2;
+  }
+
+  :global(html.motion-ok) .row:nth-of-type(3) {
+    animation-name: sel-3;
+  }
+
+  @keyframes sel-2 {
+    20%,
+    39.99% {
+      color: var(--c-accent-ink);
+      background: var(--c-accent);
+    }
+    0%,
+    19.99%,
+    40%,
+    100% {
+      color: var(--c-text-2);
+      background: transparent;
+    }
+  }
+
+  @keyframes sel-3 {
+    40%,
+    59.99% {
+      color: var(--c-accent-ink);
+      background: var(--c-accent);
+    }
+    0%,
+    39.99%,
+    60%,
+    100% {
+      color: var(--c-text-2);
+      background: transparent;
+    }
+  }
+
+  .meter.cpu {
+    display: inline-block;
+  }
+</style>

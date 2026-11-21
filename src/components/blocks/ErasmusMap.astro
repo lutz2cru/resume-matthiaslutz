@@ -1,0 +1,159 @@
+---
+/** Carte schématique des 14 villes visitées depuis Cracovie (coordonnées reprises de l'ancien site). */
+import { t } from '~/i18n/ui';
+import type { Lang } from '~/i18n/routes';
+
+interface Props {
+  lang: Lang;
+  caption: string;
+}
+
+const { lang, caption } = Astro.props;
+const home = { x: 339, y: 412 };
+const origin = { x: 77, y: 494 };
+const cities: { fr: string; en: string; x: number; y: number; lx: number; ly: number; anchor?: 'start' | 'end' | 'middle' }[] = [
+  { fr: 'Varsovie', en: 'Warsaw', x: 360, y: 338, lx: 370, ly: 342 },
+  { fr: 'Vilnius', en: 'Vilnius', x: 446, y: 255, lx: 456, ly: 259 },
+  { fr: 'Riga', en: 'Riga', x: 422, y: 178, lx: 432, ly: 182 },
+  { fr: 'Tallinn', en: 'Tallinn', x: 435, y: 93, lx: 445, ly: 97 },
+  { fr: 'Helsinki', en: 'Helsinki', x: 439, y: 68, lx: 449, ly: 72 },
+  { fr: 'Copenhague', en: 'Copenhagen', x: 191, y: 221, lx: 183, ly: 237, anchor: 'end' },
+  { fr: 'Malmö', en: 'Malmö', x: 200, y: 224, lx: 208, ly: 215 },
+  { fr: 'Prague', en: 'Prague', x: 229, y: 411, lx: 219, ly: 415, anchor: 'end' },
+  { fr: 'Bratislava', en: 'Bratislava', x: 282, y: 477, lx: 284, ly: 495, anchor: 'middle' },
+  { fr: 'Vienne', en: 'Vienna', x: 267, y: 475, lx: 259, ly: 470, anchor: 'end' },
+  { fr: 'Budapest', en: 'Budapest', x: 321, y: 499, lx: 331, ly: 504 },
+  { fr: 'Gdańsk', en: 'Gdańsk', x: 313, y: 266, lx: 303, ly: 270, anchor: 'end' },
+  { fr: 'Zakopane', en: 'Zakopane', x: 339, y: 438, lx: 349, ly: 446 },
+];
+const arc = (c: { x: number; y: number }) => {
+  const mx = (home.x + c.x) / 2;
+  const my = (home.y + c.y) / 2;
+  const dx = c.x - home.x;
+  const dy = c.y - home.y;
+  return `M${home.x} ${home.y} Q${Math.round(mx - dy * 0.18)} ${Math.round(my + dx * 0.18)} ${c.x} ${c.y}`;
+};
+---
+
+<figure class="map">
+  <svg viewBox="40 40 500 500" role="img" aria-labelledby="map-title">
+    <title id="map-title">{t(lang, 'beyond.map')}</title>
+    <g class="grid" aria-hidden="true">
+      {Array.from({ length: 9 }, (_, i) => <line x1={40 + (i + 1) * 50} y1="40" x2={40 + (i + 1) * 50} y2="540" />)}
+      {Array.from({ length: 9 }, (_, i) => <line x1="40" y1={40 + (i + 1) * 50} x2="540" y2={40 + (i + 1) * 50} />)}
+    </g>
+    <path class="arc-home" d={`M${origin.x} ${origin.y} Q196 414 ${home.x} ${home.y}`} pathLength="1" />
+    {cities.map((c, i) => <path class="arc" d={arc(c)} pathLength="1" style={`--i:${i}`} />)}
+    <circle class="halo" cx={home.x} cy={home.y} r="16" />
+    <circle class="pt-home" cx={home.x} cy={home.y} r="5.5" />
+    <circle class="origin" cx={origin.x} cy={origin.y} r="5" />
+    {cities.map((c) => <circle class="pt" cx={c.x} cy={c.y} r="3.2" />)}
+    <text class="lbl-home" x="354" y="417">{lang === 'fr' ? 'Cracovie' : 'Krakow'}</text>
+    <text class="lbl" x={origin.x} y="515" text-anchor="middle">Belfort</text>
+    <text class="lbl-small" x={origin.x} y="529" text-anchor="middle">{t(lang, 'beyond.start')}</text>
+    {
+      cities.map((c) => (
+        <text class="lbl" x={c.lx} y={c.ly} text-anchor={c.anchor ?? 'start'}>
+          {c[lang]}
+        </text>
+      ))
+    }
+  </svg>
+  <figcaption class="label">{caption}</figcaption>
+</figure>
+
+<style>
+  .map {
+    display: grid;
+    gap: var(--s-3);
+    padding: var(--s-4);
+    border: 1px solid var(--c-line);
+    background: var(--c-bg-deep);
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .grid line {
+    stroke: var(--c-line-soft);
+  }
+
+  .arc,
+  .arc-home {
+    fill: none;
+    stroke-linecap: round;
+  }
+
+  .arc {
+    stroke: var(--c-accent-2);
+    stroke-width: 1.1;
+    stroke-opacity: 0.75;
+    stroke-dasharray: 1;
+  }
+
+  .arc-home {
+    stroke: var(--c-text-3);
+    stroke-width: 1;
+    stroke-dasharray: 0.012 0.012;
+  }
+
+  :global(html.motion-ok) .map .arc {
+    stroke-dashoffset: 1;
+    animation: draw 1.6s var(--ease-out) forwards;
+    animation-delay: calc(400ms + var(--i) * 70ms);
+    animation-play-state: paused;
+  }
+
+  :global(html.motion-ok) .map:global(.is-in) .arc,
+  :global(html.motion-ok) :global(.is-in) .map .arc {
+    animation-play-state: running;
+  }
+
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .halo {
+    fill: var(--c-accent);
+    fill-opacity: 0.14;
+  }
+
+  .pt-home {
+    fill: var(--c-accent);
+  }
+
+  .origin {
+    fill: none;
+    stroke: var(--c-text-2);
+    stroke-width: 1.5;
+  }
+
+  .pt {
+    fill: var(--c-text);
+  }
+
+  text {
+    font-family: var(--f-sans);
+    font-size: 11.5px;
+    fill: var(--c-text-2);
+  }
+
+  .lbl-home {
+    font-size: 15px;
+    font-weight: 700;
+    font-stretch: 116%;
+    fill: var(--c-accent);
+  }
+
+  .lbl-small {
+    font-family: var(--f-mono);
+    font-size: 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    fill: var(--c-text-3);
+  }
+</style>
