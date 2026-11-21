@@ -11,7 +11,7 @@ dist/
 npm-debug.log*
 
 # Rapports locaux
-reports/lighthouse-*.html
+reports/
 
 # Système
 .DS_Store
