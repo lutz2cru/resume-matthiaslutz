@@ -1,6 +1,6 @@
 # Rapport de refonte — TULZ
 
-21 novembre 2026 · branche `refonte/tulz-universe` · rien n'est publié.
+21 novembre 2026 · fusionné dans `main` et **publié sur tulz.fr le 21/11/2026** (GitHub Actions).
 
 ## 1. Ce qui a changé
 
@@ -83,14 +83,18 @@ Points à confirmer :
 - **Dépôts non repris** : `pea-visu` (données financières personnelles), `grist-GLPI-test` (peut-être lié au travail), `muscu-tracker` et `cracolive-matt` (peu documentés). À ajouter si tu le souhaites.
 - **Site de vocabulaire** : le lien n'a pas répondu pendant les tests.
 
-## 7. Avant la mise en production
+## 7. Mise en production (faite le 21/11/2026)
 
-1. Relire le contenu et compléter les TODO (`npm run dev`).
-2. GitHub : *Settings → Pages → Source* : **GitHub Actions**.
-3. Mettre à jour l'adresse du dépôt, qui a déménagé : `git remote set-url origin https://github.com/lutz2cru/resume-matthiaslutz.git`.
-4. Fusionner `refonte/tulz-universe` dans `main` et pousser. Le workflow vérifie, construit puis publie.
-5. Après publication : ouvrir chaque page sur tulz.fr ; tester l'aperçu de partage (LinkedIn Post Inspector) ; déclarer `https://tulz.fr/sitemap-index.xml` dans Google Search Console.
-6. Conseillé : sortir le dépôt de OneDrive (le dossier `node_modules/` y est synchronisé) et harmoniser l'identité Git (`lutz2cru` / `lutztoucru`).
+- GitHub Pages est passé en mode « GitHub Actions » (domaine `tulz.fr` et HTTPS conservés).
+- L'adresse du dépôt a été mise à jour (`lutz2cru/resume-matthiaslutz`).
+- La refonte a été fusionnée dans `main`. Le premier déploiement a échoué sur `npm ci` : le fichier de verrouillage généré sous Windows ne contenait pas des dépendances que npm exige sous Linux. Pendant ce temps, l'ancien site est resté en ligne. Le fichier a été régénéré et validé avec npm 11 et 12, et le second déploiement a réussi.
+- Vérifié en ligne : les 16 pages FR/EN, les couvertures, l'image de partage, le sitemap et robots.txt répondent 200. Les fichiers internes (PRODUCT.md, README, `legacy/`) ne sont pas publiés.
+
+Il reste à faire :
+
+1. Compléter les TODO (section 6) ; chaque push sur `main` republie le site.
+2. Tester l'aperçu de partage (LinkedIn Post Inspector) et déclarer `https://tulz.fr/sitemap-index.xml` dans Google Search Console.
+3. Conseillé : sortir le dépôt de OneDrive et harmoniser l'identité Git (`lutz2cru` / `lutztoucru`).
 
 Pistes pour plus tard :
 

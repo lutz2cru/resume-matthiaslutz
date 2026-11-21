@@ -53,13 +53,9 @@ title: { fr: "Station météo connectée", en: "Connected weather station" }
 
 Le site est publié par GitHub Actions (`.github/workflows/deploy.yml`) à chaque push sur `main`.
 
-**À faire une seule fois, avant de fusionner la refonte dans `main`** :
+La source GitHub Pages du dépôt est réglée sur **GitHub Actions** (fait le 21/11/2026). Le domaine `tulz.fr` est défini dans les réglages Pages et dans `public/CNAME`. Le déploiement s'arrête si `npm run verify` échoue : le site en ligne n'est alors pas modifié.
 
-1. Sur GitHub : *Settings → Pages → Build and deployment → Source* : choisir **GitHub Actions** (aujourd'hui : « Deploy from a branch »).
-2. Vérifier que le domaine personnalisé reste `tulz.fr` (le fichier `public/CNAME` est publié avec le site).
-3. Fusionner la branche `refonte/tulz-universe` dans `main`, puis pousser.
-
-Sans l'étape 1, GitHub Pages servirait le code source au lieu du site construit.
+Si une dépendance change, régénère `package-lock.json` avec `npm install` et vérifie avec `npm ci --dry-run` avant de pousser.
 
 **Revenir à l'ancien site** : il est conservé dans l'historique (tag `sauvegarde/site-statique-2026-11-21`) et, pour référence, dans `legacy/site-statique/`.
 
