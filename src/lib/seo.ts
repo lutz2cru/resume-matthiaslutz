@@ -1,5 +1,5 @@
 import type { Lang } from '~/i18n/routes';
-import { PAGES } from '~/i18n/routes';
+import { HOME } from '~/i18n/routes';
 import type { getProfile } from './content';
 
 type Profile = Awaited<ReturnType<typeof getProfile>>;
@@ -10,8 +10,7 @@ export function personJsonLd(lang: Lang, profile: Profile): Record<string, unkno
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: profile.name,
-    url: `https://tulz.fr${PAGES.home[lang]}`,
-    image: 'https://tulz.fr/og.png',
+    url: `https://tulz.fr${HOME[lang]}`,
     email: `mailto:${profile.email}`,
     jobTitle: profile.role[lang],
     worksFor: { '@type': 'Organization', name: 'ARNia BFC' },

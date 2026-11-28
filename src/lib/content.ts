@@ -2,15 +2,12 @@
  * Accès typé au contenu. Les vues n'appellent jamais getCollection directement.
  */
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
-import type { ImageMetadata } from 'astro';
 import type { Lang } from '~/i18n/routes';
 
 export type L10n = { fr: string; en: string };
-export type Project = CollectionEntry<'projects'>;
 export type JourneyEntry = CollectionEntry<'journey'>;
 export type Skill = CollectionEntry<'skills'>;
-export type Interest = CollectionEntry<'interests'>;
-export type Place = CollectionEntry<'places'>;
+export type SkillGroup = Skill['data']['group'];
 
 export function pick(lang: Lang, value: L10n): string;
 export function pick(lang: Lang, value: L10n | undefined): string | undefined;
@@ -24,83 +21,39 @@ export async function getProfile() {
   return entry.data;
 }
 
-export async function getSkills(): Promise<Skill[]> {
-  return getCollection('skills');
+/** Ordre d'affichage des groupes de compétences. */
+export const SKILL_GROUPS = ['data', 'languages', 'web', 'systems', 'iot', 'communication'] as const satisfies readonly SkillGroup[];
+
+const LEVEL_RANK = { solid: 0, learning: 1 } as const;
+
+/**
+ * Compétences regroupées dans l'ordre de SKILL_GROUPS. Dans chaque groupe : pratiquées, puis en
+ * apprentissage, puis sans niveau précisé, chacune par ordre alphabétique dans la langue de la page.
+ */
+export async function getSkillGroups(lang: Lang): Promise<{ group: SkillGroup; skills: Skill[] }[]> {
+  const skills = (await getCollection('skills')).sort((a, b) => {
+    const rank = (s: Skill) => (s.data.level ? LEVEL_RANK[s.data.level] : 2);
+    return rank(a) - rank(b) || a.data.label[lang].localeCompare(b.data.label[lang], lang);
+  });
+  return SKILL_GROUPS.map((group) => ({ group, skills: skills.filter((s) => s.data.group === group) })).filter((g) => g.skills.length);
 }
 
-export async function getProjects(): Promise<Project[]> {
-  const [projects, skills] = await Promise.all([getCollection('projects'), getSkills()]);
-  const known = new Set(skills.map((s) => s.id));
-  for (const p of projects) {
-    const unknown = p.data.stack.filter((id) => !known.has(id));
-    if (unknown.length) {
-      throw new Error(`Projet « ${p.id} » : compétences inconnues dans stack (${unknown.join(', ')}). Ajoute-les à skills.yaml.`);
-    }
-  }
-  return projects.sort((a, b) => a.data.order - b.data.order);
-}
-
-export async function getCases(): Promise<Project[]> {
-  return (await getProjects()).filter((p) => p.data.kind === 'case');
-}
-
-export async function getNotes(): Promise<Project[]> {
-  return (await getProjects()).filter((p) => p.data.kind === 'note');
-}
-
-/** Pour chaque compétence, les projets qui l'utilisent (calculé, jamais saisi). */
-export async function getSkillUsage(): Promise<Map<string, Project[]>> {
-  const usage = new Map<string, Project[]>();
-  for (const p of await getProjects()) {
-    for (const id of p.data.stack) {
-      const list = usage.get(id) ?? [];
-      list.push(p);
-      usage.set(id, list);
-    }
-  }
-  return usage;
-}
-
-export async function getJourney(): Promise<JourneyEntry[]> {
-  const entries = await getCollection('journey');
-  return entries.sort((a, b) => {
+/** Le parcours en deux listes, chacune du plus récent au plus ancien (l'entrée en cours d'abord). */
+export async function getJourney(): Promise<{ experience: JourneyEntry[]; education: JourneyEntry[] }> {
+  const entries = (await getCollection('journey')).sort((a, b) => {
     if (a.data.current !== b.data.current) return a.data.current ? -1 : 1;
     return b.data.start.localeCompare(a.data.start);
   });
+  return {
+    experience: entries.filter((e) => e.data.type === 'work' || e.data.type === 'engagement'),
+    education: entries.filter((e) => e.data.type === 'education' || e.data.type === 'international'),
+  };
 }
 
-export async function getPlaces(): Promise<Map<string, Place['data']>> {
+/** Nom affiché des lieux (places.yaml). */
+export async function getPlaceNames(): Promise<Map<string, L10n>> {
   const places = await getCollection('places');
-  return new Map(places.map((p) => [p.id, p.data]));
-}
-
-export async function getInterests(): Promise<Interest[]> {
-  return getCollection('interests');
-}
-
-/** Captures réelles des projets (src/assets/images/projects/), optimisées par Astro au build. */
-const SHOTS = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/projects/*.{png,jpg,jpeg,webp}', { eager: true });
-
-export function projectShot(project: Project): ImageMetadata | undefined {
-  const file = project.data.shot?.file;
-  if (!file) return undefined;
-  const found = SHOTS[`/src/assets/images/projects/${file}`];
-  if (!found) throw new Error(`Projet « ${project.id} » : capture introuvable (src/assets/images/projects/${file}).`);
-  return found.default;
-}
-
-/** Parcours regroupé en trois parties lisibles : expérience, formation, engagements. */
-export const JOURNEY_SECTIONS = {
-  experience: ['work'],
-  education: ['education', 'international'],
-  engagement: ['engagement', 'sport'],
-} as const;
-
-export type JourneySection = keyof typeof JOURNEY_SECTIONS;
-
-export function journeySection(entry: JourneyEntry): JourneySection {
-  const type = entry.data.type;
-  return (Object.keys(JOURNEY_SECTIONS) as JourneySection[]).find((k) => (JOURNEY_SECTIONS[k] as readonly string[]).includes(type)) ?? 'engagement';
+  return new Map(places.map((p) => [p.id, p.data.name]));
 }
 
 /** Un repère TODO n'est rendu qu'en développement. */

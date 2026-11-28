@@ -1,6 +1,5 @@
 # Compétences. Niveau repris du profil GitHub (« maîtrisés » = solid, « en cours » = learning).
-# Pas de niveau = non précisé. Les projets qui utilisent chaque compétence sont calculés
-# à partir du champ « stack » des projets : ne pas les lister ici.
+# Pas de niveau = non précisé.
 python:
   group: data
   label: { fr: "Python", en: "Python" }
@@ -141,7 +140,7 @@ canva:
 photo-video:
   group: communication
   label: { fr: "Photo & vidéo", en: "Photo & video" }
-  usedAt: [{ fr: "Service civique", en: "Civic service" }, { fr: "Photomatt'on", en: "Photomatt'on" }]
+  usedAt: [{ fr: "Service civique", en: "Civic service" }]
 writing:
   group: communication
   label: { fr: "Rédaction", en: "Copywriting" }

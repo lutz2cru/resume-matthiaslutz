@@ -1,98 +1,36 @@
-/* TULZ — jetons de design. Voir DESIGN_SYSTEM.md. Aucune couleur ne doit être écrite en dur dans un composant. */
+/* Jetons de design. Voir DESIGN_SYSTEM.md. Aucune couleur n'est écrite en dur dans un composant.
+   Style : minimalisme suisse. Encre presque noire sur papier blanc, un seul bleu d'action.
+   Thème sombre automatique (préférence du système). */
 :root {
-  color-scheme: dark;
+  color-scheme: light dark;
 
-  /* ---------- palette brute (ne pas utiliser directement dans les composants) */
-  --p-night-900: #090b17;
-  --p-night-800: #0d1020;
-  --p-night-700: #141830;
-  --p-night-600: #191d32;
-  --p-night-500: #222740;
-  --p-night-400: #2e3454;
-  --p-night-300: #3a4166;
-  --p-violet-500: #8b5cf6;
-  --p-violet-600: #7655ee;
-  --p-violet-700: #6a48e0;
-  --p-violet-400: #a78bfa;
-  --p-violet-300: #c4b5fd;
-  --p-blue-400: #60a5fa;
-  --p-cyan-300: #67e8f9;
-  --p-orchid-300: #f0abfc;
-  --p-white: #ffffff;
+  /* ---------- couleurs (thème clair) — contrastes mesurés sur --c-bg */
+  --c-bg: #ffffff;
+  --c-bg-soft: #f5f6f8; /* bandeau des repères, survols */
+  --c-text: #121318; /* 18,9:1 */
+  --c-text-2: #464b55; /* 8,9:1 — texte courant secondaire */
+  --c-text-3: #656a75; /* 5,4:1 — dates, libellés */
+  --c-line: #e2e4e9; /* filets */
+  --c-line-strong: #c3c7cf; /* filets appuyés, contours */
+  --c-accent: #1f45d6; /* 7,3:1 — liens, rubrique active, repères */
+  --c-accent-soft: #eef1fd;
+  --c-on-accent: #ffffff;
+  --c-focus: #1f45d6;
 
-  /* ---------- surfaces */
-  --c-bg: var(--p-night-800); /* fond principal */
-  --c-bg-deep: var(--p-night-900); /* pied de page, voiles, fonds de scène */
-  --c-surface: var(--p-night-600); /* blocs mis en avant, champs */
-  --c-surface-2: var(--p-night-500); /* survol des surfaces */
-  --c-line: var(--p-night-400); /* filets, bordures */
-  --c-line-soft: var(--p-night-700); /* grille de fond, séparateurs discrets */
-  --c-line-strong: var(--p-night-300); /* bordures de contrôles */
+  /* ---------- typographie (Archivo variable : graisse 100–900, chasse 62–125 %) */
+  --font: 'Archivo Variable', 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --fs-small: 0.875rem; /* 14 px : libellés */
+  --fs-meta: 0.9375rem; /* 15 px : dates, métadonnées */
+  --fs-body: 1.0625rem; /* 17 px : texte courant */
+  --fs-h3: 1.1875rem; /* 19 px : titres d'entrée */
+  --fs-lede: clamp(1.125rem, 1rem + 0.55vw, 1.4375rem);
+  --fs-h2: clamp(1.75rem, 1.2rem + 1.9vw, 2.625rem);
+  --fs-quote: clamp(1.5rem, 1.1rem + 1.5vw, 2.25rem);
+  --fs-display: clamp(3rem, 1.4rem + 6.4vw, 7rem);
+  --lh-body: 1.6;
+  --lh-tight: 1.15;
 
-  /* ---------- texte */
-  --c-text: #f1f5f9; /* 17,2:1 sur le fond */
-  --c-text-2: #a6b0c3; /* 8,7:1 */
-  --c-text-3: #8590a8; /* 5,9:1 sur le fond, 4,6:1 sur --c-surface-2 */
-
-  /* ---------- rôles de couleur
-     Violet : identité, état actif, interactions importantes.
-     Bleu : navigation, détails techniques, informations secondaires.
-     Cyan : indicateurs, petits détails, animations. */
-  --c-brand: var(--p-violet-500); /* aplats, tracés, grands éléments (pas de petit texte) */
-  --c-accent: var(--p-violet-400); /* texte et filets identitaires : actif, survol important (6,9:1) */
-  --c-accent-strong: var(--p-violet-300); /* texte accentué sur surface */
-  --c-action: var(--p-violet-600); /* fond des boutons principaux (texte blanc 4,9:1) */
-  --c-action-hover: var(--p-violet-700); /* survol des boutons principaux (5,6:1) */
-  --c-action-ink: var(--p-white);
-  --c-tech: var(--p-blue-400); /* navigation, index, métadonnées techniques (7,4:1) */
-  --c-signal: var(--p-cyan-300); /* pastilles d'état, progression, petits repères (13:1) */
-  --c-alert: #fb7185; /* alerte (rupture dans le schéma SP-Bot) */
-  --c-todo: #f2c94c; /* repères TODO, développement seulement */
-
-  /* Voiles et teintes dérivées (toujours calculées depuis la palette). */
-  --c-brand-tint: color-mix(in srgb, var(--p-violet-500) 14%, transparent);
-  --c-tech-tint: color-mix(in srgb, var(--p-blue-400) 12%, transparent);
-  --c-signal-tint: color-mix(in srgb, var(--p-cyan-300) 12%, transparent);
-  --c-overlay: color-mix(in srgb, var(--p-night-900) 88%, transparent);
-  --c-header: color-mix(in srgb, var(--p-night-800) 84%, transparent);
-  --c-grid-dot: color-mix(in srgb, var(--c-text) 8%, transparent);
-
-  /* Dégradé identitaire : réservé à quelques éléments graphiques (filet actif, ligne du parcours, sommet du relief). */
-  --grad-brand: linear-gradient(100deg, var(--p-violet-500), var(--p-blue-400));
-  --grad-brand-v: linear-gradient(180deg, var(--p-violet-500), var(--p-blue-400) 70%, var(--p-cyan-300));
-
-  /* Types d'étapes du parcours */
-  --c-type-work: var(--p-violet-400);
-  --c-type-education: var(--p-blue-400);
-  --c-type-international: var(--p-cyan-300);
-  --c-type-engagement: var(--p-orchid-300);
-  --c-type-sport: var(--c-text-2);
-
-  /* Profondeur */
-  --shadow-1: 0 10px 30px -12px rgb(3 4 12 / 0.6);
-  --shadow-2: 0 30px 80px -24px rgb(3 4 12 / 0.75);
-
-  /* Polices */
-  --f-sans: 'Archivo Variable', 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --f-mono: 'Martian Mono Variable', 'Martian Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
-
-  /* Échelle typographique (affichage plafonné à 6rem) */
-  --fs-mono: 0.6875rem;
-  --fs-mono-l: 0.75rem;
-  --fs-small: 0.9375rem;
-  --fs-body: 1.0625rem;
-  --fs-lead: clamp(1.25rem, 1.08rem + 0.75vw, 1.625rem);
-  --fs-h3: clamp(1.25rem, 1.15rem + 0.45vw, 1.5rem);
-  --fs-h2: clamp(2rem, 1.45rem + 2.4vw, 3.5rem);
-  --fs-h1: clamp(2.25rem, 1.4rem + 4.4vw, 5.5rem); /* 36 px à 320 px : « Gestionnaire » tient sur une ligne */
-  --fs-display: clamp(3.25rem, 1.4rem + 7.2vw, 6rem);
-  --measure: 66ch;
-
-  /* Rayons : angles droits partout, sauf pastilles et badges. */
-  --r-0: 0;
-  --r-pill: 999px;
-
-  /* Espacements */
+  /* ---------- espacements (grille de 4 / 8 px) */
   --s-1: 4px;
   --s-2: 8px;
   --s-3: 12px;
@@ -103,36 +41,31 @@
   --s-8: 64px;
   --s-9: 96px;
   --s-10: 128px;
+
+  /* ---------- mise en page */
+  --page-max: 1200px;
   --gutter: clamp(16px, 4vw, 48px);
-  --space-section: clamp(80px, 10vw, 152px);
-  --wrap: 1440px;
-  --header-h: 64px;
-  --tap: 44px;
+  --measure: 68ch;
+  --header-h: 60px;
 
-  /* Mouvement */
-  --ease-out: cubic-bezier(0.2, 0.7, 0.1, 1);
-  --ease-in-out: cubic-bezier(0.6, 0, 0.2, 1);
-  --dur-1: 160ms;
-  --dur-2: 320ms;
-  --dur-3: 700ms;
-
-  /* Profondeur (z) */
-  --z-header: 50;
-  --z-menu: 60;
-  --z-palette: 80;
-  --z-skip: 100;
+  /* ---------- mouvement */
+  --dur-1: 150ms;
+  --dur-2: 220ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-:root[data-motion='reduced'] {
-  --dur-1: 0ms;
-  --dur-2: 0ms;
-  --dur-3: 0ms;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion='full']) {
-    --dur-1: 0ms;
-    --dur-2: 0ms;
-    --dur-3: 0ms;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-bg: #0e1014;
+    --c-bg-soft: #161920;
+    --c-text: #eceef2; /* 16,8:1 */
+    --c-text-2: #b4b9c4; /* 9,4:1 */
+    --c-text-3: #8d93a0; /* 6,0:1 */
+    --c-line: #252932;
+    --c-line-strong: #3a3f4b;
+    --c-accent: #94abff; /* 8,7:1 */
+    --c-accent-soft: #171d36;
+    --c-on-accent: #0e1014;
+    --c-focus: #94abff;
   }
 }

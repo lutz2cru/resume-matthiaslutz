@@ -10,85 +10,71 @@
         font-weight: 100 900;
         font-stretch: 62% 125%;
       }
-      @font-face {
-        font-family: 'Martian Mono Variable';
-        src: url('../../node_modules/@fontsource-variable/martian-mono/files/martian-mono-latin-standard-normal.woff2') format('woff2');
-        font-weight: 100 800;
-        font-stretch: 75% 112.5%;
-      }
       html,
       body {
         margin: 0;
         width: 1200px;
         height: 630px;
         overflow: hidden;
-        background: #101319;
-        color: #e8edf2;
+        background: #ffffff;
+        color: #121318;
         font-family: 'Archivo Variable', sans-serif;
+        font-variant-numeric: tabular-nums;
       }
-      .terrain {
+      .page {
         position: absolute;
-        inset: 0;
-        background: url('cover.svg') center / cover;
-        opacity: 0.55;
-        -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
-        mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
-      }
-      .content {
-        position: absolute;
-        inset: 64px 72px;
+        inset: 72px 80px 64px;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
       }
-      .top,
-      .bottom {
-        font-family: 'Martian Mono Variable', monospace;
-        font-stretch: 87.5%;
-        font-size: 17px;
-        letter-spacing: 0.04em;
+      .site {
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #7c8794;
-        display: flex;
-        gap: 14px;
-        align-items: center;
-      }
-      .dot {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: #b6f36a;
+        color: #1f45d6;
       }
       h1 {
-        margin: 0;
-        font-size: 148px;
-        font-stretch: 125%;
-        font-weight: 780;
-        letter-spacing: -0.045em;
-        line-height: 0.86;
+        margin: 40px 0 0;
+        font-size: 128px;
+        font-weight: 700;
+        font-stretch: 92%;
+        line-height: 0.92;
+        letter-spacing: -0.04em;
       }
       p {
-        margin: 26px 0 0;
-        max-width: 760px;
-        font-size: 30px;
-        line-height: 1.3;
-        color: #a9b3bf;
+        margin: 28px 0 0;
+        max-width: 900px;
+        font-size: 34px;
+        line-height: 1.35;
+        color: #464b55;
       }
-      .bottom b {
-        color: #e8edf2;
+      .sections {
+        display: flex;
+        gap: 40px;
+        margin-top: auto;
+        padding-top: 24px;
+        border-top: 2px solid #121318;
+        font-size: 24px;
         font-weight: 600;
+      }
+      .sections span {
+        color: #1f45d6;
+        margin-right: 10px;
       }
     </style>
   </head>
   <body>
-    <div class="terrain"></div>
-    <div class="content">
-      <div class="top"><span class="dot"></span> TULZ — carte personnelle</div>
-      <div>
-        <h1>Matthias<br />Lutz</h1>
-        <p>Apprenti ingénieur Data &amp; IA · UTBM · gardien de but et photographe de sport.</p>
+    <div class="page">
+      <div class="site">tulz.fr</div>
+      <h1>Matthias Lutz</h1>
+      <p>Apprenti ingénieur Data &amp; IA à l'ARNia BFC, élève ingénieur à l'UTBM, gardien de but en Nationale 3.</p>
+      <div class="sections">
+        <div><span>01</span>Expériences</div>
+        <div><span>02</span>Formations</div>
+        <div><span>03</span>Compétences</div>
+        <div><span>04</span>Handball</div>
       </div>
-      <div class="bottom"><b>tulz.fr</b> · Projets · Parcours · Hors-code</div>
     </div>
   </body>
 </html>

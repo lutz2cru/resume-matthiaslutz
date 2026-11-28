@@ -1,50 +1,32 @@
 ---
 /** Page 404 bilingue (servie par GitHub Pages pour toute URL inconnue). */
 import Base from '~/layouts/Base.astro';
-import Terrain from '~/components/ui/Terrain.astro';
 import { t } from '~/i18n/ui';
 ---
 
-<Base lang="fr" page={null} title={t('fr', 'notfound.title')} description={t('fr', 'notfound.text')} alternate="/en/" noindex>
-  <section class="nf">
-    <Terrain id="terrain-404" variant="hero" seed="off-the-map" />
-    <div class="wrap inner">
-      <p class="label"><span class="code">404</span> · {t('fr', 'notfound.title')} / <span lang="en">{t('en', 'notfound.title')}</span></p>
-      <h1 class="h1">{t('fr', 'notfound.title')}</h1>
-      <p class="lead">{t('fr', 'notfound.text')}</p>
-      <p class="lead" lang="en">{t('en', 'notfound.text')}</p>
-      <div class="cta">
-        <a class="btn" href="/">{t('fr', 'notfound.back')}</a>
-        <a class="btn btn--ghost" href="/en/" lang="en">{t('en', 'notfound.back')}</a>
-      </div>
-    </div>
+<Base lang="fr" title={`404 — ${t('fr', 'notfound.title')}`} description={t('fr', 'notfound.text')} alternate="/en/" noindex>
+  <section class="wrap nf">
+    <p class="label">404</p>
+    <h1>{t('fr', 'notfound.title')}</h1>
+    <p>{t('fr', 'notfound.text')} <a class="link" href="/">{t('fr', 'notfound.back')}</a></p>
+    <p lang="en">{t('en', 'notfound.text')} <a class="link" href="/en/" hreflang="en">{t('en', 'notfound.back')}</a></p>
   </section>
 </Base>
 
 <style>
   .nf {
-    position: relative;
-    isolation: isolate;
-    min-height: 72vh;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-  }
-
-  .inner {
-    position: relative;
     display: grid;
-    gap: var(--s-5);
-    padding-block: var(--s-9);
+    gap: var(--s-4);
+    padding-block: var(--s-10) var(--s-8);
   }
 
-  .code {
-    color: var(--c-accent);
+  h1 {
+    font-size: var(--fs-h2);
+    letter-spacing: -0.025em;
   }
 
-  .cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+  p:not(.label) {
+    max-width: var(--measure);
+    color: var(--c-text-2);
   }
 </style>

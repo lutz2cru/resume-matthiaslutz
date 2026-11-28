@@ -3,7 +3,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse } from 'yaml';
 
-const roots = ['src/content', 'src/content/projects'];
+const roots = ['src/content'];
 let failed = 0;
 for (const dir of roots) {
   for (const name of readdirSync(dir)) {

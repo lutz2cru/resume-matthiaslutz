@@ -23,26 +23,9 @@ export function formatPeriod(
   return start;
 }
 
-/** 47.322, 5.041 → « 47.32° N  05.04° E ». */
-export function formatCoord(lat: number, lon: number): string {
-  const la = `${Math.abs(lat).toFixed(2)}° ${lat >= 0 ? 'N' : 'S'}`;
-  const lo = `${Math.abs(lon).toFixed(2).padStart(5, '0')}° ${lon >= 0 ? 'E' : 'O'}`;
-  return `${la}  ${lo}`;
-}
-
-export function pad2(n: number): string {
-  return String(n).padStart(2, '0');
-}
-
 /** « 2026-11-21 » → « 21 nov. 2026 ». */
 export function formatDay(lang: Lang, iso: string): string {
   const [year, month, day] = iso.split('-');
   if (!day || !month) return formatMonth(lang, iso);
-  const d = String(Number(day));
-  return lang === 'fr' ? `${d} ${MONTHS.fr[Number(month) - 1]} ${year}` : `${d} ${MONTHS.en[Number(month) - 1]} ${year}`;
-}
-
-/** « 2026-11 » → « nov. 2026 ». */
-export function formatUpdated(lang: Lang, iso: string): string {
-  return formatMonth(lang, iso);
+  return `${Number(day)} ${MONTHS[lang][Number(month) - 1]} ${year}`;
 }

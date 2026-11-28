@@ -1,5 +1,5 @@
 ---
-/** Lien sortant : nouvel onglet, rel sûr, mention pour les lecteurs d'écran. */
+/** Lien sortant : nouvel onglet, rel sûr, flèche décorative, mention pour les lecteurs d'écran. */
 import Icon from './Icon.astro';
 import { t } from '~/i18n/ui';
 import type { Lang } from '~/i18n/routes';
@@ -7,35 +7,11 @@ import type { Lang } from '~/i18n/routes';
 interface Props {
   lang: Lang;
   href: string;
-  /** true : pas de soulignement ni de flèche (le style vient du parent). */
-  plain?: boolean;
   class?: string;
   hreflang?: string;
 }
 
-const { lang, href, plain = false, class: className, hreflang } = Astro.props;
-const isExternal = /^https?:/.test(href);
+const { lang, href, class: className, hreflang } = Astro.props;
 ---
 
-{
-  isExternal ? (
-    <a class:list={[!plain && 'link', className]} href={href} target="_blank" rel="noopener" hreflang={hreflang}>
-      <slot />
-      {!plain && (
-        <span class="arrow arrow--ext">
-          <Icon name="ext" />
-        </span>
-      )}
-      <span class="sr-only"> {t(lang, 'external')}</span>
-    </a>
-  ) : (
-    <a class:list={[!plain && 'link', className]} href={href}>
-      <slot />
-      {!plain && (
-        <span class="arrow">
-          <Icon name="arrow" />
-        </span>
-      )}
-    </a>
-  )
-}
+<a class:list={['link', className]} href={href} target="_blank" rel="noopener" hreflang={hreflang}><slot /><Icon name="ext" /><span class="sr-only"> {t(lang, 'external')}</span></a>

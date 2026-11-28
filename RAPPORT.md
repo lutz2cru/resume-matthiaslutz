@@ -157,3 +157,18 @@ Branche `finition/palette-violet`, sauvegarde préalable : tag local `sauvegarde
 4. **Site de vocabulaire** : en panne ou abandonné ? À retirer si besoin.
 5. **Statut** de la gestion d'entrepôt BD70 et des projets du carnet sans statut.
 6. Les TODO de la section 6 restent valables (rôles en équipe, Caisse Noire, Crunch Time, ville Stellantis, photo de handball).
+
+## 9. Simplification — une seule page (28/11/2026)
+
+Demande : un portfolio simple qui décrit seulement les compétences, la pratique du handball, les expériences professionnelles et les formations. Choix confirmés : une seule page, FR + EN conservés, pas de portrait ; contact et CV, Erasmus et service civique, article de L'Est Républicain gardés.
+
+| Avant | Après |
+|---|---|
+| 6 territoires + 14 fiches projet par langue (43 pages) | 1 page par langue + 404 ; les anciennes adresses redirigent vers la bonne rubrique |
+| Identité « carte topographique », sombre, palette violette | Minimalisme suisse : encre sur papier blanc, un seul bleu, thème sombre automatique |
+| Palette de commandes, terrain animé, constellation, maquettes | Un script de quelques lignes (rubrique active dans la navigation) |
+| Projets, photographie, voyages, centres d'intérêt | Retirés du site (le contenu reste dans l'historique Git) |
+
+Retirés du contenu : `src/content/projects/`, `interests.yaml`, les blocs `bio`, `now`, `highlights`, `photography`, `erasmus` de `profile.yaml`, l'entrée « press » du parcours (le lien est dans la rubrique Handball) et le lien Polarsteps. Image de partage et favicon refaits (`npm run assets`).
+
+Restent à vérifier (TODO visibles en `npm run dev`) : dates du service civique, ville Stellantis, mois et sujet du Crunch Time.

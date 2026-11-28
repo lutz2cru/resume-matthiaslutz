@@ -1,4 +1,4 @@
-# Identité et textes généraux de TULZ.
+# Identité et textes généraux du site (une seule page : expériences, formations, compétences, handball).
 # Chaque texte : fr / en. Les champs « todo » s'affichent seulement en développement.
 main:
   name: Matthias Lutz
@@ -8,69 +8,25 @@ main:
     fr: Apprenti ingénieur Data & IA
     en: Data & AI engineering apprentice
   tagline:
-    fr: Apprenti ingénieur Data & IA à l'ARNia BFC et élève ingénieur en informatique à l'UTBM. Gardien de but en Nationale 3, photographe de sport le week-end.
-    en: Data & AI engineering apprentice at ARNia BFC and computer science engineering student at UTBM. Handball goalkeeper in Nationale 3, sports photographer at weekends.
+    fr: Apprenti ingénieur Data & IA à l'ARNia BFC, élève ingénieur en informatique à l'UTBM et gardien de but en Nationale 3.
+    en: Data & AI engineering apprentice at ARNia BFC, computer science engineering student at UTBM and handball goalkeeper in Nationale 3.
   links:
     linkedin: https://www.linkedin.com/in/matthias-lutz1/
     github: https://github.com/lutz2cru
     cv:
       fr: https://cvdesignr.com/p/6900b1618eb03?hl=fr_FR
       en: https://cvdesignr.com/p/6900b1618eb03?hl=en_US
-    photomatton: https://photomatton.matthias-lutz2006.workers.dev/
-    polarsteps: https://www.polarsteps.com/lutz2cru
-    repo: https://github.com/lutz2cru/resume-matthiaslutz
-  bio:
-    - fr: Je suis élève ingénieur en informatique par apprentissage à l'UTBM. Depuis septembre 2026, je travaille à l'ARNia BFC, à Dijon, l'agence régionale du numérique et de l'intelligence artificielle de Bourgogne-Franche-Comté, qui fournit des services numériques mutualisés aux collectivités de la région.
-      en: I'm a computer science engineering student at UTBM, on a work-study programme. Since September 2026 I've been working at ARNia BFC in Dijon, the Bourgogne-Franche-Comté regional agency for digital technology and AI, which provides shared digital services to the region's local authorities.
-    - fr: Avant ça, il y a eu le cycle préparatoire de l'UTBM, un semestre Erasmus à Cracovie, un service civique dans la communication d'un club de handball, et des emplois d'été chez Stellantis et Mister Auto.
-      en: Before that came UTBM's preparatory cycle, an Erasmus semester in Krakow, a civic service doing communication for a handball club, and summer jobs at Stellantis and Mister Auto.
-    - fr: "J'aime construire des outils simples, fiables et bien documentés, qui servent à des gens que je connais : une application pour la caisse noire d'une équipe, un robot qui surveille les stations-service de la région, une page qui regroupe les fiches de révision de ma promo."
-      en: I like building simple, reliable, well-documented tools for people I know — an app for a team's fine kitty, a bot that watches local petrol stations, a page that gathers my class's revision sheets.
-    - fr: Le week-end, je suis dans les cages en Nationale 3 au CS Vesoul, le club qui m'a formé, ou au bord du terrain avec un appareil photo.
-      en: At weekends I'm in goal in Nationale 3 for CS Vesoul, the club that trained me, or pitchside with a camera.
-  # Accueil : l'essentiel sous le nom (entreprise, formation, hors du code). Uniquement des faits déjà publiés.
-  highlights:
+  # Repères sous le nom : l'essentiel en quelques secondes. Uniquement des faits déjà publiés.
+  facts:
     - label: { fr: "En alternance", en: "Work-study" }
       value: { fr: "ARNia BFC, Dijon", en: "ARNia BFC, Dijon" }
-      detail: { fr: "Data & IA, au service des collectivités de Bourgogne-Franche-Comté", en: "Data & AI, serving local authorities in Bourgogne-Franche-Comté" }
+      detail: { fr: "Data & IA pour les collectivités de Bourgogne-Franche-Comté", en: "Data & AI for local authorities in Bourgogne-Franche-Comté" }
     - label: { fr: "Formation", en: "Studies" }
       value: { fr: "UTBM, cycle ingénieur en informatique", en: "UTBM, computer science engineering" }
       detail: { fr: "Par apprentissage (FISA), 2026 → 2029", en: "Work-study programme (FISA), 2026 → 2029" }
-    - label: { fr: "Hors du code", en: "Beyond code" }
-      value: { fr: "Gardien de but en Nationale 3", en: "Goalkeeper in Nationale 3" }
-      detail: { fr: "Photographe de sport · Erasmus à Cracovie", en: "Sports photographer · Erasmus in Krakow" }
-  now:
-    - label: { fr: "Travail", en: "Work" }
-      text:
-        fr: À l'ARNia BFC — IA conversationnelle et RAG hybride, serveurs MCP, visualisation de données, outils pour les collectivités.
-        en: At ARNia BFC — conversational AI and hybrid RAG, MCP servers, data visualisation, tools for local authorities.
-    - label: { fr: "Études", en: "Studies" }
-      text:
-        fr: Cycle ingénieur en informatique par apprentissage à l'UTBM, 2026 → 2029.
-        en: Computer science engineering degree, work-study, at UTBM, 2026 → 2029.
-    - label: { fr: "J'apprends", en: "Learning" }
-      text:
-        fr: Python, API REST, architectures LLM et RAG, bases vectorielles, Docker, GitHub Actions.
-        en: Python, REST APIs, LLM and RAG architectures, vector databases, Docker, GitHub Actions.
-    - label: { fr: "Terrain", en: "On court" }
-      text:
-        fr: Gardien de but en Nationale 3 avec le CS Vesoul.
-        en: Goalkeeper in Nationale 3 with CS Vesoul.
-    - label: { fr: "Dernier album", en: "Latest album" }
-      text:
-        fr: Rugby U19, RCV contre Tavaux, le 10 octobre 2026, sur Photomatt'on.
-        en: U19 rugby, RCV vs Tavaux, 10 October 2026, on Photomatt'on.
-  facts:
-    - label: { fr: "Entreprise", en: "Company" }
-      value: { fr: "ARNia BFC, Dijon", en: "ARNia BFC, Dijon" }
-    - label: { fr: "École", en: "School" }
-      value: { fr: "UTBM, Belfort-Montbéliard", en: "UTBM, Belfort-Montbéliard" }
-    - label: { fr: "Diplôme", en: "Degree" }
-      value: { fr: "Ingénieur informatique, 2029", en: "Computer science engineer, 2029" }
-    - label: { fr: "Club", en: "Club" }
-      value: { fr: "CS Vesoul, Nationale 3", en: "CS Vesoul, Nationale 3" }
-    - label: { fr: "Erasmus", en: "Erasmus" }
-      value: { fr: "AGH Cracovie, 2026", en: "AGH Krakow, 2026" }
+    - label: { fr: "Handball", en: "Handball" }
+      value: { fr: "Gardien de but, CS Vesoul", en: "Goalkeeper, CS Vesoul" }
+      detail: { fr: "Nationale 3", en: "Nationale 3" }
   languages:
     - label: { fr: "Français", en: "French" }
       level: { fr: "langue maternelle", en: "native" }
@@ -82,7 +38,8 @@ main:
     club: CS Vesoul
     level: Nationale 3
     position: { fr: "Gardien de but", en: "Goalkeeper" }
-    background: { fr: "Formé au club", en: "Club academy" }
+    background: { fr: "Formé au club", en: "Trained at the club" }
+    division: { fr: "5e division française", en: "5th tier in France" }
     quote:
       fr: Gardien de but en Nationale 3, au club qui m'a formé.
       en: Goalkeeper in Nationale 3, at the club that trained me.
@@ -92,40 +49,6 @@ main:
       - fr: J'ai aussi mis ces liens au service du club, en réalisant mon service civique en communication auprès de CSVesoul70 Partenaires.
         en: I also gave back to the club by doing my civic service in communication with CSVesoul70 Partenaires.
     press:
-      label: { fr: "Portrait — L'Est Républicain", en: "Profile — L'Est Républicain (FR)" }
+      label: { fr: "Portrait dans L'Est Républicain", en: "Profile in L'Est Républicain (FR)" }
       href: https://c.estrepublicain.fr/sport/2026/02/01/matthias-lutz-pur-produit-de-la-formation-du-cs-vesoul
     pressDate: "2026-02-01"
-    todo: Ajouter une photo de match dans les cages (src/assets/images/), crédit du photographe compris.
-  photography:
-    lead:
-      fr: Le week-end, je suis au bord du terrain. Je photographie les matchs de handball et de rugby, puis je publie chaque album sur Photomatt'on, le site que j'ai créé pour les partager avec les clubs, les joueurs et leurs familles.
-      en: At weekends I'm pitchside. I shoot handball and rugby matches, then publish every album on Photomatt'on, the site I built to share them with clubs, players and their families.
-    album: { fr: "Rugby U19, RCV contre Tavaux", en: "U19 rugby, RCV vs Tavaux" }
-    albumMeta: { fr: "Vesoul · 10.10.2026", en: "Vesoul · 10.10.2026" }
-    shots:
-      - src: https://loepgmjzdftjlvfvpdfa.supabase.co/storage/v1/object/public/media/albums/9db5dcfe-141f-49f9-8c03-b38096ba4879/57bb7ed5-bfd3-48c4-bb9e-88b7e1031833-thumb.webp
-        alt: { fr: "Rugby U19 : regroupement au sol", en: "U19 rugby: a ruck on the ground" }
-      - src: https://loepgmjzdftjlvfvpdfa.supabase.co/storage/v1/object/public/media/albums/9db5dcfe-141f-49f9-8c03-b38096ba4879/d57cbd80-8bdf-4cae-9de6-6c71bd76d68d-thumb.webp
-        alt: { fr: "Rugby U19 : un joueur attrape le ballon en touche", en: "U19 rugby: a player catches the ball at a lineout" }
-      - src: https://loepgmjzdftjlvfvpdfa.supabase.co/storage/v1/object/public/media/albums/9db5dcfe-141f-49f9-8c03-b38096ba4879/9a113256-603a-4870-979f-4ff7510b0bec-thumb.webp
-        alt: { fr: "Rugby U19 : les joueurs regroupés le long de la ligne de touche", en: "U19 rugby: players gathered along the touchline" }
-      - src: https://loepgmjzdftjlvfvpdfa.supabase.co/storage/v1/object/public/media/albums/9db5dcfe-141f-49f9-8c03-b38096ba4879/ea4d136d-8535-461c-8e11-8f9553262000-thumb.webp
-        alt: { fr: "Rugby U19 : un porteur de ballon face à la défense de Tavaux", en: "U19 rugby: a ball carrier facing the Tavaux defence" }
-      - src: https://loepgmjzdftjlvfvpdfa.supabase.co/storage/v1/object/public/media/albums/9db5dcfe-141f-49f9-8c03-b38096ba4879/3b0b7924-bfed-4174-b8ce-2465653ecf38-thumb.webp
-        alt: { fr: "Rugby U19 : un joueur de Vesoul au premier plan", en: "U19 rugby: a Vesoul player in the foreground" }
-      - src: https://loepgmjzdftjlvfvpdfa.supabase.co/storage/v1/object/public/media/albums/9db5dcfe-141f-49f9-8c03-b38096ba4879/6dcf7128-a3a5-4e95-b8a7-58d4c13426d5-thumb.webp
-        alt: { fr: "Rugby U19 : une action au sol près de la ligne", en: "U19 rugby: a ruck near the line" }
-    todo: "Le 21/11/2026, Photomatt'on n'affiche que des « albums de démonstration » : l'album RCV – Tavaux (10/10/2026) n'y est plus listé, même si ses photos se chargent. Vérifier l'album et la mention « Dernier album »."
-  erasmus:
-    lead:
-      fr: Un semestre à Cracovie, à l'AGH University of Krakow — et autant d'occasions d'explorer l'Europe centrale, les pays baltes et la Scandinavie.
-      en: A semester in Krakow at AGH University — and plenty of chances to explore Central Europe, the Baltics and Scandinavia.
-    text:
-      fr: "Suivre des cours en anglais, s'organiser seul dans un nouveau pays, voyager avec un budget étudiant : une expérience qui m'a rendu plus autonome et plus à l'aise dans un contexte international."
-      en: Taking courses in English, getting organised alone in a new country, travelling on a student budget — an experience that made me more independent and at ease in international settings.
-    months: 6
-    cities: 14
-    countries: 11
-    period: { fr: "Cracovie, camp de base — févr. à juin 2026", en: "Krakow as base camp — Feb to Jun 2026" }
-    # « months » n'est plus affiché : 6 mois (texte de mai 2026) ne colle pas avec févr. → juin 2026 (5 mois).
-    todo: "Confirmer la durée de l'Erasmus : « 6 mois » (texte de mai 2026) ou févr. → juin 2026 (5 mois) ? Le site dit « un semestre » en attendant." 

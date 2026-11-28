@@ -1,5 +1,6 @@
 # Parcours. Sources : site tulz.fr (version du 10/11/2026), profil GitHub, brief du 21/11/2026.
 # Ne rien ajouter qui ne soit pas vérifiable.
+# type : work et engagement → Expériences ; education et international → Formations.
 # start / end servent au tri. Quand « period » est renseigné, c'est lui qui est affiché.
 - id: arnia
   type: work
@@ -45,22 +46,6 @@
   description:
     fr: Semestre d'études à l'AGH University of Krakow, avec des cours en anglais et une vie en autonomie dans un environnement international.
     en: A study semester at AGH University of Krakow, with courses taught in English and independent living in an international environment.
-  links:
-    - label: { fr: "Carnet de voyage Polarsteps", en: "Polarsteps travel log" }
-      href: https://www.polarsteps.com/lutz2cru
-
-- id: press
-  type: sport
-  start: "2026-02"
-  title: { fr: "Portrait dans L'Est Républicain", en: "Profile in L'Est Républicain" }
-  org: CS Vesoul · Nationale 3
-  place: vesoul
-  description:
-    fr: Un article du quotidien régional sur mon parcours de gardien, formé au CS Vesoul.
-    en: A regional newspaper piece on my path as a goalkeeper trained at CS Vesoul.
-  links:
-    - label: { fr: "Lire le portrait", en: "Read the profile (FR)" }
-      href: https://c.estrepublicain.fr/sport/2026/02/01/matthias-lutz-pur-produit-de-la-formation-du-cs-vesoul
 
 - id: service-civique
   type: engagement

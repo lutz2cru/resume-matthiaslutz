@@ -5,7 +5,6 @@ import { existsSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import sharp from 'sharp';
-import { renderCoverSVG } from '../src/lib/terrain.ts';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const pub = (p) => resolve(root, 'public', p);
@@ -17,7 +16,6 @@ await sharp(favicon, { density: 768 }).resize(180, 180).png().toFile(pub('apple-
 console.log('icônes : favicon-32.png, apple-touch-icon.png');
 
 // 2. Image de partage
-writeFileSync(resolve(root, 'scripts/og/cover.svg'), renderCoverSVG('tulz-og', { width: 1200, height: 630, cell: 12, levels: 14 }));
 const candidates = [
   process.env.CHROME_PATH,
   'C:/Program Files/Google/Chrome/Application/chrome.exe',

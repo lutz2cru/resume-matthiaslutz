@@ -1,39 +1,36 @@
 ---
 /**
- * Gabarit commun : <head> (SEO, langues, polices), en-tête, pied de page, palette de commandes.
+ * Gabarit commun : <head> (SEO, langues, police), en-tête avec les rubriques, pied de page avec le contact.
  */
 import '@fontsource-variable/archivo/wdth.css';
-import '@fontsource-variable/martian-mono/standard.css';
 import '~/styles/global.css';
 import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
-import SiteHeader from '~/components/site/SiteHeader.astro';
-import SiteFooter from '~/components/site/SiteFooter.astro';
-import CommandPalette from '~/components/site/CommandPalette.astro';
+import ExternalLink from '~/components/ui/ExternalLink.astro';
+import Icon from '~/components/ui/Icon.astro';
 import { t } from '~/i18n/ui';
-import type { Lang, PageKey } from '~/i18n/routes';
+import { ANCHORS, HOME, SECTIONS, otherLang, type Lang } from '~/i18n/routes';
 import { getProfile } from '~/lib/content';
+import { formatMonth } from '~/lib/format';
 
 interface Props {
   lang: Lang;
-  /** Page courante (pour la navigation), ou null pour une fiche projet / 404. */
-  page: PageKey | null;
   title: string;
   description: string;
   /** URL équivalente dans l'autre langue. */
   alternate: string;
-  image?: string;
   noindex?: boolean;
   jsonLd?: Record<string, unknown>;
 }
 
-const { lang, page, title, description, alternate, image, noindex = false, jsonLd } = Astro.props;
+const { lang, title, description, alternate, noindex = false, jsonLd } = Astro.props;
 const profile = await getProfile();
+const other = otherLang(lang);
 const site = Astro.site ?? new URL('https://tulz.fr');
 const canonical = new URL(Astro.url.pathname, site).href;
 const alternateAbs = new URL(alternate, site).href;
 const urls = lang === 'fr' ? { fr: canonical, en: alternateAbs } : { fr: alternateAbs, en: canonical };
-const ogImage = new URL(image ?? '/og.png', site).href;
-const fullTitle = page === 'home' ? `${profile.name} — TULZ` : `${title} — ${profile.name} · TULZ`;
+const ogImage = new URL('/og.png', site).href;
+const home = HOME[lang];
 ---
 
 <!doctype html>
@@ -41,11 +38,12 @@ const fullTitle = page === 'home' ? `${profile.name} — TULZ` : `${title} — $
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{fullTitle}</title>
+    <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content={profile.name} />
-    <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#0d1020" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0e1014" media="(prefers-color-scheme: dark)" />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     {
       !noindex && (
@@ -56,10 +54,10 @@ const fullTitle = page === 'home' ? `${profile.name} — TULZ` : `${title} — $
         </>
       )
     }
-    <meta property="og:type" content={page === 'home' || page === 'about' ? 'profile' : 'website'} />
-    <meta property="og:site_name" content="TULZ" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content={profile.name} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:title" content={fullTitle} />
+    <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
@@ -73,31 +71,67 @@ const fullTitle = page === 'home' ? `${profile.name} — TULZ` : `${title} — $
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin />
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
-    <script is:inline>
-      // Avant le premier rendu : JavaScript disponible + préférence d'animation (système ou choix enregistré).
-      (() => {
-        const root = document.documentElement;
-        root.classList.add('js');
-        let pref = null;
-        try {
-          pref = localStorage.getItem('tulz-motion');
-        } catch (e) {}
-        if (pref === 'reduced' || pref === 'full') root.dataset.motion = pref;
-        const reduce = pref ? pref === 'reduced' : matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!reduce) root.classList.add('motion-ok');
-      })();
-    </script>
   </head>
-  <body data-page={page ?? 'other'}>
+  <body>
     <a class="skip" href="#main">{t(lang, 'skip')}</a>
-    <SiteHeader lang={lang} current={page} alternate={alternate} />
+
+    <header class="site-head">
+      <div class="wrap head-in">
+        <a class="brand" href={home}>{profile.name}</a>
+        <nav class="nav" aria-label={t(lang, 'nav.label')}>
+          <ul>
+            {
+              SECTIONS.map((section) => (
+                <li>
+                  <a href={`${home}#${ANCHORS[section][lang]}`} data-nav={ANCHORS[section][lang]}>
+                    {t(lang, `section.${section}` as const)}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+        <a class="lang" href={alternate} hreflang={other} lang={other}>{t(lang, 'lang.switch')}</a>
+      </div>
+    </header>
+
     <main id="main" tabindex="-1">
       <slot />
     </main>
-    <SiteFooter lang={lang} alternate={alternate} />
-    <CommandPalette lang={lang} alternate={alternate} />
+
+    <footer class="site-foot" aria-labelledby="contact-title">
+      <div class="wrap foot-in">
+        <h2 class="label" id="contact-title">{t(lang, 'contact.title')}</h2>
+        <a class="foot-mail" href={`mailto:${profile.email}`}>{profile.email}</a>
+        <ul class="foot-links">
+          <li><ExternalLink lang={lang} href={profile.links.linkedin}>LinkedIn</ExternalLink></li>
+          <li><ExternalLink lang={lang} href={profile.links.github}>GitHub</ExternalLink></li>
+          <li><ExternalLink lang={lang} href={profile.links.cv[lang]}>{t(lang, 'contact.cv')}</ExternalLink></li>
+        </ul>
+        <p class="foot-meta">
+          <span>{t(lang, 'footer.updated')} {formatMonth(lang, profile.updated)}</span>
+          <a class="foot-top" href="#main"><Icon name="up" />{t(lang, 'footer.top')}</a>
+        </p>
+      </div>
+    </footer>
+
     <script>
-      import '~/scripts/global';
+      // Rubrique en cours de lecture : aria-current sur le lien de navigation (amélioration progressive).
+      const links = new Map([...document.querySelectorAll<HTMLAnchorElement>('[data-nav]')].map((a) => [a.dataset.nav, a]));
+      const sections = [...document.querySelectorAll<HTMLElement>('main section[id]')].filter((s) => links.has(s.id));
+      if (sections.length && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              links.forEach((a) => a.removeAttribute('aria-current'));
+              links.get(entry.target.id)?.setAttribute('aria-current', 'true');
+            }
+          },
+          { rootMargin: '-35% 0px -60% 0px' },
+        );
+        sections.forEach((s) => io.observe(s));
+      }
     </script>
   </body>
 </html>
@@ -105,13 +139,13 @@ const fullTitle = page === 'home' ? `${profile.name} — TULZ` : `${title} — $
 <style is:global>
   .skip {
     position: fixed;
-    top: 8px;
-    left: 8px;
-    z-index: var(--z-skip);
-    padding: 12px 16px;
+    top: var(--s-2);
+    left: var(--s-2);
+    z-index: 20;
+    padding: var(--s-3) var(--s-4);
     font-weight: 600;
-    color: var(--c-action-ink);
-    background: var(--c-action);
+    color: var(--c-on-accent);
+    background: var(--c-accent);
     text-decoration: none;
     transform: translateY(-160%);
     transition: transform var(--dur-1) var(--ease-out);
@@ -123,5 +157,200 @@ const fullTitle = page === 'home' ? `${profile.name} — TULZ` : `${title} — $
 
   main:focus {
     outline: none;
+  }
+
+  /* ---------- en-tête */
+  .site-head {
+    background: var(--c-bg);
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  .head-in {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'brand lang'
+      'nav nav';
+    align-items: center;
+    column-gap: var(--s-5);
+  }
+
+  .brand {
+    grid-area: brand;
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+
+  .lang {
+    grid-area: lang;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: var(--s-3);
+    font-size: var(--fs-meta);
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid var(--c-line-strong);
+    border-radius: 999px;
+    transition:
+      border-color var(--dur-1) var(--ease-out),
+      color var(--dur-1) var(--ease-out);
+  }
+
+  .lang:hover {
+    border-color: var(--c-accent);
+    color: var(--c-accent);
+  }
+
+  .nav {
+    grid-area: nav;
+    margin-inline: calc(var(--gutter) * -1);
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-top: 1px solid var(--c-line);
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav ul {
+    display: flex;
+    gap: var(--s-5);
+    width: max-content;
+    padding-inline: var(--gutter);
+  }
+
+  .nav a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: var(--fs-meta);
+    font-weight: 500;
+    color: var(--c-text-2);
+    text-decoration: none;
+    transition: color var(--dur-1) var(--ease-out);
+  }
+
+  .nav a:hover,
+  .nav a[aria-current] {
+    color: var(--c-text);
+  }
+
+  .nav a[aria-current]::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: var(--c-accent);
+  }
+
+  @media (min-width: 768px) {
+    .site-head {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .head-in {
+      grid-template-columns: auto 1fr auto;
+      grid-template-areas: 'brand nav lang';
+      height: var(--header-h);
+    }
+
+    .nav {
+      margin: 0;
+      border-top: 0;
+      justify-self: center;
+      overflow: visible;
+    }
+
+    .nav ul {
+      gap: var(--s-6);
+      padding: 0;
+    }
+
+    .nav a {
+      min-height: var(--header-h);
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    html {
+      scroll-padding-top: var(--s-5);
+    }
+  }
+
+  /* ---------- pied de page */
+  .site-foot {
+    margin-top: var(--s-10);
+    border-top: 1px solid var(--c-text);
+  }
+
+  .foot-in {
+    display: grid;
+    gap: var(--s-5);
+    padding-block: var(--s-8) var(--s-7);
+  }
+
+  .foot-mail {
+    justify-self: start;
+    font-size: var(--fs-h2);
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    line-height: var(--lh-tight);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.18em;
+    text-decoration-color: var(--c-accent);
+    overflow-wrap: anywhere;
+    transition: color var(--dur-1) var(--ease-out);
+  }
+
+  .foot-mail:hover {
+    color: var(--c-accent);
+  }
+
+  .foot-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-6);
+  }
+
+  .foot-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .foot-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-3);
+    margin-top: var(--s-6);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--c-line);
+    font-size: var(--fs-meta);
+    color: var(--c-text-3);
+  }
+
+  .foot-top {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    color: var(--c-text-2);
+    text-decoration: none;
+  }
+
+  .foot-top:hover {
+    color: var(--c-accent);
   }
 </style>
