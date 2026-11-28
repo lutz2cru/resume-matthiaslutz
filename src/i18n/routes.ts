@@ -19,10 +19,6 @@ export const ANCHORS = {
   handball: { fr: 'handball', en: 'handball' },
 } as const satisfies Record<Section, Record<Lang, string>>;
 
-export function anchor(lang: Lang, section: Section): string {
-  return ANCHORS[section][lang];
-}
-
 export function otherLang(lang: Lang): Lang {
   return lang === 'fr' ? 'en' : 'fr';
 }

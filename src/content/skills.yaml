@@ -4,7 +4,6 @@ python:
   group: data
   label: { fr: "Python", en: "Python" }
   level: learning
-  usedAt: [{ fr: "ARNia BFC", en: "ARNia BFC" }]
 rest-api:
   group: data
   label: { fr: "API REST", en: "REST APIs" }
@@ -13,12 +12,10 @@ llm:
   group: data
   label: { fr: "LLM", en: "LLMs" }
   level: learning
-  usedAt: [{ fr: "ARNia BFC", en: "ARNia BFC" }]
 rag:
   group: data
   label: { fr: "RAG", en: "RAG" }
   level: learning
-  usedAt: [{ fr: "ARNia BFC", en: "ARNia BFC" }]
 vector-db:
   group: data
   label: { fr: "Bases vectorielles", en: "Vector databases" }
@@ -26,11 +23,9 @@ vector-db:
 mcp:
   group: data
   label: { fr: "Serveurs MCP", en: "MCP servers" }
-  usedAt: [{ fr: "ARNia BFC", en: "ARNia BFC" }]
 dataviz:
   group: data
   label: { fr: "Visualisation de données", en: "Data visualisation" }
-  usedAt: [{ fr: "ARNia BFC", en: "ARNia BFC" }]
 
 c:
   group: languages
@@ -99,7 +94,6 @@ docker:
   group: systems
   label: { fr: "Docker", en: "Docker" }
   level: learning
-  usedAt: [{ fr: "ARNia BFC", en: "ARNia BFC" }]
 ncurses:
   group: systems
   label: { fr: "ncurses", en: "ncurses" }
@@ -132,16 +126,12 @@ sensors:
 social-media:
   group: communication
   label: { fr: "Réseaux sociaux", en: "Social media" }
-  usedAt: [{ fr: "Service civique", en: "Civic service" }]
 canva:
   group: communication
   label: { fr: "Canva", en: "Canva" }
-  usedAt: [{ fr: "Service civique", en: "Civic service" }]
 photo-video:
   group: communication
   label: { fr: "Photo & vidéo", en: "Photo & video" }
-  usedAt: [{ fr: "Service civique", en: "Civic service" }]
 writing:
   group: communication
   label: { fr: "Rédaction", en: "Copywriting" }
-  usedAt: [{ fr: "Service civique", en: "Civic service" }]

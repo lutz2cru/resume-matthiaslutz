@@ -37,7 +37,6 @@ src/
   styles/                tokens.css, global.css
 scripts/                 validate-yaml, check-links, make-assets (icônes + og.png)
 .github/workflows/       déploiement GitHub Pages
-legacy/                  ancien site statique (référence ; non publié)
 ```
 
 ## 3. Flux de données

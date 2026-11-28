@@ -44,8 +44,6 @@ const places = defineCollection({
   loader: file('./src/content/places.yaml'),
   schema: z.object({
     name: l10n,
-    lat: z.number(),
-    lon: z.number(),
   }),
 });
 
@@ -56,8 +54,6 @@ const skills = defineCollection({
     label: l10n,
     /** solid = « pratiqué », learning = « en apprentissage », selon le profil GitHub. Absent = non précisé. */
     level: z.enum(['solid', 'learning']).optional(),
-    /** Contexte d'usage (ex. travail, service civique). */
-    usedAt: z.array(l10n).default([]),
   }),
 });
 

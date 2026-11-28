@@ -4,7 +4,7 @@
  * Toujours décoratives : le texte voisin porte le sens.
  */
 interface Props {
-  name: 'ext' | 'up' | 'mail';
+  name: 'ext' | 'up';
   class?: string;
 }
 
@@ -14,5 +14,4 @@ const { name, class: className } = Astro.props;
 <svg class:list={['icon', `icon--${name}`, className]} viewBox="0 0 16 16" stroke-width="1.6" stroke-linecap="square" aria-hidden="true" focusable="false">
   {name === 'ext' && <path d="M5 11 11 5M6 4.5h5.5V10" />}
   {name === 'up' && <path d="M8 13.5v-10M4.5 7 8 3.5 11.5 7" />}
-  {name === 'mail' && <><path d="M2.5 4h11v8h-11z" /><path d="m2.5 4.5 5.5 4.2 5.5-4.2" /></>}
 </svg>

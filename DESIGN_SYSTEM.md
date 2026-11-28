@@ -20,7 +20,6 @@ Toutes les couleurs vivent dans `src/styles/tokens.css` ; les composants n'utili
 | Rôle | Clair | Sombre | Usage |
 |---|---|---|---|
 | `--c-bg` | `#FFFFFF` | `#0E1014` | Fond |
-| `--c-bg-soft` | `#F5F6F8` | `#161920` | Réservé (survols, bandeaux) |
 | `--c-text` | `#121318` (18,9:1) | `#ECEEF2` (16,8:1) | Titres, valeurs, filets d'ouverture |
 | `--c-text-2` | `#464B55` (8,9:1) | `#B4B9C4` (9,4:1) | Texte courant secondaire |
 | `--c-text-3` | `#656A75` (5,4:1) | `#8D93A0` (6,0:1) | Dates, libellés |

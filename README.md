@@ -68,5 +68,4 @@ src/lib/          accès au contenu, formats de date, données structurées
 src/styles/       jetons et styles globaux
 public/           fichiers servis tels quels
 scripts/          vérifications et génération d'images
-legacy/           ancien site, non publié
 ```

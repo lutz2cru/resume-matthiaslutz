@@ -172,3 +172,8 @@ Demande : un portfolio simple qui décrit seulement les compétences, la pratiqu
 Retirés du contenu : `src/content/projects/`, `interests.yaml`, les blocs `bio`, `now`, `highlights`, `photography`, `erasmus` de `profile.yaml`, l'entrée « press » du parcours (le lien est dans la rubrique Handball) et le lien Polarsteps. Image de partage et favicon refaits (`npm run assets`).
 
 Restent à vérifier (TODO visibles en `npm run dev`) : dates du service civique, ville Stellantis, mois et sujet du Crunch Time.
+
+### Nettoyage avant mise en ligne (28/11/2026)
+
+- Supprimé : `legacy/` (ancien site HTML et ancien document de design). Récupérable avec `git checkout 8da8187 -- legacy`.
+- Retiré du code : textes d'interface, jetons CSS et icône inutilisés, fonction `anchor()`, champs YAML non affichés (`usedAt` des compétences, coordonnées des villes), police Martian Mono (dépendance npm).

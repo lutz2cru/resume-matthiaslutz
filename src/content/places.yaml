@@ -1,17 +1,9 @@
-# Lieux du parcours (coordonnées publiques des villes, WGS 84).
+# Noms des villes du parcours (champ « place » de journey.yaml).
 dijon:
   name: { fr: "Dijon", en: "Dijon" }
-  lat: 47.322
-  lon: 5.041
 belfort:
   name: { fr: "Belfort-Montbéliard", en: "Belfort-Montbéliard" }
-  lat: 47.638
-  lon: 6.863
 vesoul:
   name: { fr: "Vesoul", en: "Vesoul" }
-  lat: 47.62
-  lon: 6.154
 krakow:
   name: { fr: "Cracovie", en: "Krakow" }
-  lat: 50.065
-  lon: 19.945

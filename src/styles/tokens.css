@@ -6,7 +6,6 @@
 
   /* ---------- couleurs (thème clair) — contrastes mesurés sur --c-bg */
   --c-bg: #ffffff;
-  --c-bg-soft: #f5f6f8; /* bandeau des repères, survols */
   --c-text: #121318; /* 18,9:1 */
   --c-text-2: #464b55; /* 8,9:1 — texte courant secondaire */
   --c-text-3: #656a75; /* 5,4:1 — dates, libellés */
@@ -50,14 +49,12 @@
 
   /* ---------- mouvement */
   --dur-1: 150ms;
-  --dur-2: 220ms;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --c-bg: #0e1014;
-    --c-bg-soft: #161920;
     --c-text: #eceef2; /* 16,8:1 */
     --c-text-2: #b4b9c4; /* 9,4:1 */
     --c-text-3: #8d93a0; /* 6,0:1 */

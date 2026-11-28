@@ -7,7 +7,6 @@ const fr = {
   'skip': 'Aller au contenu',
   'nav.label': 'Rubriques',
   'lang.switch': 'English',
-  'lang.switch.label': 'Read this page in English',
   'external': '(nouvel onglet)',
 
   'desc.home': 'Matthias Lutz, apprenti ingénieur Data & IA à l\'ARNia BFC et élève ingénieur à l\'UTBM : expériences, formations, compétences et handball.',
@@ -17,7 +16,6 @@ const fr = {
   'section.skills': 'Compétences',
   'section.handball': 'Handball',
 
-  'contact.email': 'E-mail',
   'contact.cv': 'CV en ligne',
   'contact.title': 'Contact',
 
@@ -54,7 +52,6 @@ const en: Record<Key, string> = {
   'skip': 'Skip to content',
   'nav.label': 'Sections',
   'lang.switch': 'Français',
-  'lang.switch.label': 'Lire cette page en français',
   'external': '(opens in a new tab)',
 
   'desc.home': 'Matthias Lutz, Data & AI engineering apprentice at ARNia BFC and engineering student at UTBM: experience, education, skills and handball.',
@@ -64,7 +61,6 @@ const en: Record<Key, string> = {
   'section.skills': 'Skills',
   'section.handball': 'Handball',
 
-  'contact.email': 'Email',
   'contact.cv': 'Online CV',
   'contact.title': 'Contact',
 
